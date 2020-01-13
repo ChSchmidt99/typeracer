@@ -18,13 +18,42 @@ application {
     mainClassName = 'de.lmu.ifi.sosylab.HelloWorld'
 }
 
-jar {
+task worldJar(type: Jar) {
+  dependsOn compileJava
+
+  archiveBaseName = "world"
+  from (sourceSets.main.output) {
+    include "**"
+    exclude "**/HelloMars.class"  // not needed for HelloWorld
+  }
+
   manifest {
     attributes(
-      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
       'Main-Class': 'de.lmu.ifi.sosylab.HelloWorld'
     )
   }
+}
+
+task marsJar(type: Jar) {
+  dependsOn compileJava
+
+  archiveBaseName = "mars"
+  from (sourceSets.main.output) {
+    include "**"
+    exclude "**/HelloWorld.class"  // not needed for HelloMars
+  }
+
+  manifest {
+    attributes(
+      'Main-Class': 'de.lmu.ifi.sosylab.HelloMars'
+    )
+  }
+}
+
+
+task jar(type: Jar, overwrite: true) {
+  dependsOn worldJar, marsJar
+  actions = []  // don't do anything besides calling the dependent jar tasks
 }
 
 checkstyle {
