@@ -2,20 +2,19 @@ plugins {
   id "java"
   id "application"
   id "checkstyle"
-  id "com.github.spotbugs" version "3.0.0"
+  id "com.github.spotbugs" version "4.2.3"
 }
 
 repositories {
-  jcenter()
+  mavenCentral()
 }
 
 dependencies {
-	testCompile 'org.junit.jupiter:junit-jupiter:5.5.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }
 
 application {
-    mainClassName = 'de.lmu.ifi.sosylab.HelloWorld'
+    mainClass = 'de.lmu.ifi.sosylab.HelloWorld'
 }
 
 task worldJar(type: Jar) {
@@ -57,14 +56,18 @@ task jar(type: Jar, overwrite: true) {
 }
 
 checkstyle {
-  configFile = file('test/checkstyle.xml')
+  toolVersion '8.43'
   maxWarnings = 0
 }
 
-tasks.withType(com.github.spotbugs.SpotBugsTask) {
+spotbugsMain {
   reports {
-    xml.enabled = false
-    html.enabled = true
+    html {
+      enabled = true
+    }
+    xml {
+      enabled = false
+    }
   }
 }
 
