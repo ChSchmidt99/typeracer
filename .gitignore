@@ -3,3 +3,11 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore IntelliJ IDE folders
+.idea/workspace.xml
+.idea/uiDesigner.xml
+.idea/dictionaries
+.idea/findbugs-idea.xml
+.idea/junitgenerator-prj-settings.xml
+.idea/vcs.xml
