@@ -2,6 +2,7 @@ plugins {
   id "java"
   id "application"
   id "checkstyle"
+  id "jacoco"
   id "com.github.spotbugs" version "4.2.3"
 }
 
@@ -76,4 +77,29 @@ test {
 	testLogging {
 		events "passed", "skipped", "failed"
 	}
+}
+
+// TODO: (for students) Configure that jacocoTestReport is always run after successful tests,
+// so that test report is always up-to-date
+// Maybe even track test report and JavaDoc-HTML in Repository?
+
+// TODO: (for students) Think about configuring the JavaDoc task used for generating JavaDoc HTML
+
+jacocoTestReport {
+  dependsOn test // always run tests before generating new report
+  finalizedBy jacocoTestCoverageVerification // always check coverage after generating report
+}
+
+
+// TODO: (for students) Add limits or adjust limit to your team's Definition of Done
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        counter = "BRANCH"
+        value = "COVEREDRATIO"
+        minimum = 0.8
+      }
+    }
+  }
 }

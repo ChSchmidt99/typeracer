@@ -65,3 +65,6 @@ spotbugs:tests:
   artifacts:
     paths:
       - 'build/reports/'
+
+
+# TODO: (for students) Add JaCoCo test-report generation with artifact, JavaDoc-HTML generation
