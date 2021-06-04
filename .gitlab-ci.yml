@@ -25,10 +25,43 @@ build:
   only:
     - master
 
-test:
+# Use `gradlew check --continue` locally to run all tests defined in build.gradle
+junit:
   stage: test
   script:
-    - ./gradlew check
+    - ./gradlew test
+  artifacts:
+    paths:
+      - 'build/reports/'
+
+checkstyle:app:
+  stage: test
+  script:
+    - ./gradlew checkstyleMain
+  artifacts:
+    paths:
+      - 'build/reports/'
+
+checkstyle:tests:
+  stage: test
+  script:
+    - ./gradlew checkstyleTest
+  artifacts:
+    paths:
+      - 'build/reports/'
+
+spotbugs:app:
+  stage: test
+  script:
+    - ./gradlew spotbugsMain
+  artifacts:
+    paths:
+      - 'build/reports/'
+
+spotbugs:tests:
+  stage: test
+  script:
+    - ./gradlew spotbugsTest
   artifacts:
     paths:
       - 'build/reports/'
