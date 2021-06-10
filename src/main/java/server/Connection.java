@@ -31,29 +31,16 @@ public class Connection implements Closeable {
 
     public void handleRequests() {
         try {
-            StringBuilder sb = new StringBuilder();
             String line;
             while ( (line = this.reader.readLine()) != null) {
-                // TODO: Handle invalid requests
-                sb.append(line).append(System.lineSeparator());
-                if (isValidJson(sb.toString())){
-                    receivedRequest(sb.toString());
-                    // Reset StringBuilder
-                    sb.setLength(0);
-                }
+                receivedRequest(line);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-
-    private boolean isValidJson(String message) {
-        // TODO: Implement me!
-        return true;
-    }
-
     private void receivedRequest(String message) {
+        // TODO: Handle invalid requests
         System.out.println("Received message: " + message);
     }
-
 }

@@ -8,8 +8,7 @@ public class Main {
         try {
             InetAddress addr = InetAddress.getByName("127.0.0.1");
             Client client = new Client(addr,8080);
-            client.writeToServer("Hello");
-            client.writeToServer("World");
+            client.writeToServer("Hello \\n World");
             client.writeToServer("From Client");
         } catch (IOException e) {
             System.out.print(e.getMessage());
