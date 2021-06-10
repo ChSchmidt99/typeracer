@@ -1,5 +1,9 @@
 package server;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import requests.SampleRequest;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -7,6 +11,7 @@ public class Connection implements Closeable {
 
     private final Socket socket;
     private final BufferedReader reader;
+    private final Gson gson;
 
     /**
      * Constructor of RequestHandler.
@@ -16,6 +21,8 @@ public class Connection implements Closeable {
     public Connection(Socket socket) throws IOException {
         this.socket = socket;
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        GsonBuilder builder = new GsonBuilder();
+        this.gson = builder.create();
     }
 
     /** Closes socket specified when creating RequestHandler. */
@@ -41,6 +48,6 @@ public class Connection implements Closeable {
     }
     private void receivedRequest(String message) {
         // TODO: Handle invalid requests
-        System.out.println("Received message: " + message);
+        SampleRequest request = gson.fromJson(message, SampleRequest.class);
     }
 }
