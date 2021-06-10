@@ -4,6 +4,7 @@ plugins {
   id "checkstyle"
   id "jacoco"
   id "com.github.spotbugs" version "4.2.3"
+  id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 repositories {
@@ -16,7 +17,12 @@ dependencies {
 }
 
 application {
-    mainClass = 'de.lmu.ifi.sosylab.HelloWorld'
+    mainClass = 'app.Main'
+}
+
+javafx {
+  version = "15.0.1"
+  modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 task worldJar(type: Jar) {
@@ -30,7 +36,7 @@ task worldJar(type: Jar) {
 
   manifest {
     attributes(
-      'Main-Class': 'de.lmu.ifi.sosylab.HelloWorld'
+      'Main-Class': 'app.Main'
     )
   }
 }
@@ -46,7 +52,7 @@ task marsJar(type: Jar) {
 
   manifest {
     attributes(
-      'Main-Class': 'de.lmu.ifi.sosylab.HelloMars'
+      'Main-Class': 'app.Main'
     )
   }
 }
