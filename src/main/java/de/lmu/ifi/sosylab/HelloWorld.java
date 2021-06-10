@@ -11,10 +11,6 @@ public class HelloWorld {
    * @param args ignored
    */
   public static void main(String[] args) {
-    if (args[1] == "Hello") {
-      System.out.println("Hello, World");
-    } else {
-      // do nothing
-    }
+    System.out.println("Hello, World");
   }
 }

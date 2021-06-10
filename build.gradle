@@ -50,7 +50,6 @@ task marsJar(type: Jar) {
   }
 }
 
-
 task jar(type: Jar, overwrite: true) {
   dependsOn worldJar, marsJar
   actions = []  // don't do anything besides calling the dependent jar tasks
