@@ -1,5 +1,8 @@
 package server;
 
+import backend.Api;
+import backend.ApiImpl;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,6 +21,7 @@ public class Server implements Closeable {
   private final Set<Closeable> closeables;
   private final ExecutorService executorService;
   private boolean isRunning;
+  private final Api api;
 
   /**
    * Constructor of Server.
@@ -28,6 +32,7 @@ public class Server implements Closeable {
     isRunning = false;
     closeables = new HashSet<>();
     executorService = Executors.newFixedThreadPool(maxClients + 1);
+    this.api = new ApiImpl();
   }
 
   @Override
@@ -56,7 +61,7 @@ public class Server implements Closeable {
       if (clientSocket != null) {
         Logger.log(Logger.LogLevel.INFO, "Accepted Connection, Socket: "
                 + clientSocket);
-        Connection handler = new Connection(clientSocket);
+        Connection handler = new Connection(clientSocket, this.api);
         closeables.add(handler);
         executorService.execute(handler::handleRequests);
       }

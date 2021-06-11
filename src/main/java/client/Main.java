@@ -16,8 +16,10 @@ public class Main {
   public static void main(String[] args) {
     try {
       InetAddress addr = InetAddress.getByName("127.0.0.1");
-      Client client = new Client(addr, 8080);
-      client.sendSampleRequest();
+      Client client = new ClientImpl(addr, 8080);
+      client.registerUser("Cooler Mensch");
+      client.newGame("some userId");
+      client.joinGame("some userId", "some gameId");
     } catch (IOException e) {
       System.out.print(e.getMessage());
     }
