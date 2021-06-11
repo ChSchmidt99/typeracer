@@ -4,7 +4,6 @@ plugins {
   id "checkstyle"
   id "jacoco"
   id "com.github.spotbugs" version "4.2.3"
-  id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 repositories {
@@ -17,49 +16,49 @@ dependencies {
 }
 
 application {
-    mainClass = 'app.Main'
+    mainClass = 'client.Main'
 }
 
-javafx {
-  version = "15.0.1"
-  modules = [ 'javafx.controls', 'javafx.fxml' ]
-}
-
-task worldJar(type: Jar) {
+task clientJar(type: Jar) {
   dependsOn compileJava
 
-  archiveBaseName = "world"
+  archiveBaseName = "client"
   from (sourceSets.main.output) {
     include "**"
-    exclude "**/HelloMars.class"  // not needed for HelloWorld
+    exclude "server/**"
   }
 
   manifest {
     attributes(
-      'Main-Class': 'app.Main'
+      'Main-Class': 'client.Main'
     )
   }
 }
 
-task marsJar(type: Jar) {
+task serverJar(type: Jar) {
   dependsOn compileJava
 
-  archiveBaseName = "mars"
+  archiveBaseName = "server"
   from (sourceSets.main.output) {
     include "**"
-    exclude "**/HelloWorld.class"  // not needed for HelloMars
+    exclude "client/**"
   }
 
   manifest {
     attributes(
-      'Main-Class': 'app.Main'
+            'Main-Class': 'server.Main'
     )
   }
 }
 
 task jar(type: Jar, overwrite: true) {
-  dependsOn worldJar, marsJar
+  dependsOn clientJar, serverJar
   actions = []  // don't do anything besides calling the dependent jar tasks
+}
+
+task runServer(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'server.Main'
 }
 
 checkstyle {
