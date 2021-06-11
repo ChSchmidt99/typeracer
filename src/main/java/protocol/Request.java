@@ -1,7 +1,7 @@
-package requests;
+package protocol;
 
 /**
- * Example Request for testing.
+ * Represents a Json Request.
  */
 public class Request {
 

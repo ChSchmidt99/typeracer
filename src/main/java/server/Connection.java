@@ -3,13 +3,11 @@ package server;
 import backend.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import requests.Request;
-import requests.RequestTypes;
+import protocol.Request;
+import protocol.RequestTypes;
+import protocol.Response;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -20,11 +18,12 @@ public class Connection implements Closeable {
 
   private final Socket socket;
   private final BufferedReader reader;
+  private final PrintWriter writer;
   private final Gson gson;
   private final Api api;
 
   /**
-   * Constructor of RequestHandler.
+   * Constructor of Connection.
    *
    * @param socket the Request handler is supposed to run on
    * @throws IOException if socket is not connected
@@ -33,13 +32,14 @@ public class Connection implements Closeable {
     this.socket = socket;
     this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
             StandardCharsets.UTF_8));
+    this.writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
     GsonBuilder builder = new GsonBuilder();
     this.gson = builder.create();
     this.api = api;
   }
 
   /**
-   * Closes socket specified when creating RequestHandler.
+   * Closes socket specified when creating Connection.
    */
   @Override
   public void close() {
@@ -65,6 +65,10 @@ public class Connection implements Closeable {
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  public void sendResponse(Response response) {
+    writer.println(gson.toJson(response));
   }
 
   private void receivedRequest(Request request) {

@@ -1,4 +1,4 @@
-package requests;
+package protocol;
 
 public class RequestTypes {
     public static final String REGISTER = "register";

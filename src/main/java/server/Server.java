@@ -56,9 +56,6 @@ public class Server implements Closeable {
     while (isRunning) {
       Logger.log(Logger.LogLevel.INFO, "Awaiting Connections...");
       Socket clientSocket = socket.accept();
-
-
-
       if (clientSocket != null) {
         Logger.log(Logger.LogLevel.INFO, "Accepted Connection, Socket: "
                 + clientSocket);
