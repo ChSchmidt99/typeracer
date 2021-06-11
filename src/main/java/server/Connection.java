@@ -2,14 +2,14 @@ package server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import requests.SampleRequest;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import requests.Request;
-import requests.RequestInterfaceAdapter;
 
 /**
  * Representing a Connection to a Client.
@@ -31,7 +31,6 @@ public class Connection implements Closeable {
     this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
             StandardCharsets.UTF_8));
     GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(Request.class, new RequestInterfaceAdapter());
     this.gson = builder.create();
   }
 
@@ -63,9 +62,8 @@ public class Connection implements Closeable {
   }
 
   private void receivedRequest(String message) {
-    System.out.println(message);
     // TODO: Handle invalid requests
-    Request request = gson.fromJson(message, Request.class);
-    request.execute();
+    SampleRequest request = gson.fromJson(message, SampleRequest.class);
+    System.out.println(request);
   }
 }

@@ -3,7 +3,7 @@ package requests;
 /**
  * Example Request for testing.
  */
-public class SampleRequest implements Request {
+public class SampleRequest {
 
   public final int id;
   public final String name;
@@ -17,10 +17,5 @@ public class SampleRequest implements Request {
   public SampleRequest(int id, String name) {
     this.id = id;
     this.name = name;
-  }
-
-  @Override
-  public void execute() {
-    System.out.println(name + " executed successfully");
   }
 }

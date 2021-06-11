@@ -8,8 +8,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import requests.Request;
-import requests.RequestInterfaceAdapter;
+
 import requests.SampleRequest;
 
 /**
@@ -34,7 +33,6 @@ public class Client implements Closeable {
     this.writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
 
     GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(Request.class, new RequestInterfaceAdapter());
     this.gson = builder.create();
   }
 
@@ -45,8 +43,8 @@ public class Client implements Closeable {
   }
 
   void sendSampleRequest() {
-    Request request = new SampleRequest(1, "Hello World");
-    String json = gson.toJson(request, Request.class);
+    SampleRequest request = new SampleRequest(1, "Hello World");
+    String json = gson.toJson(request);
     writeToServer(json);
   }
 
