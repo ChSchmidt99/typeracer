@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 
 import requests.Request;
 import requests.RequestFactory;
-import requests.RequestTypes;
 
 /**
  * Client provides all communication with the server.

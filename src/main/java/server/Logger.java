@@ -3,36 +3,51 @@ package server;
 /**
  * Use as static class to log information with a corresponding log level.
  */
-public abstract class Logger {
+abstract class Logger {
 
   /**
    * Use LogLevel to change the amount of information that is logged.
    */
-  public static enum LogLevel {
+  enum LogLevel {
     /**
      * Includes INFO, ERROR and additional DEBUG information.
      */
     DEBUG,
+
     /**
      * Includes ERROR and INFO information.
      */
     INFO,
+
     /**
      * Just outputs Errors.
      */
-    ERROR
+    ERROR,
+
+    /**
+     * Log nothing.
+     */
+    OFF
   }
 
   /**
-   * Change LEVEL to adjust the information logged.
+   * Set how much information is logged.
    */
-  public static final LogLevel level = LogLevel.INFO;
+  static void setLevel(LogLevel level) {
+    Logger.level = level;
+  }
+
+  private static LogLevel level = LogLevel.INFO;
+
+  // TODO: Add convenience functions like logInfo(String message) etc.
 
   /**
    * Log a message to standard out, it will only be displayed, if it has the appropriate level.
    */
-  public static void log(LogLevel level, String message) {
+  static void log(LogLevel level, String message) {
     switch (Logger.level) {
+      case OFF:
+        return;
       case DEBUG:
         System.out.println(level + ": " + message);
         break;

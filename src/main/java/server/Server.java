@@ -25,13 +25,11 @@ public class Server implements Closeable {
 
   /**
    * Constructor of Server.
-   *
-   * @param maxClients maximum number of clients
    */
-  public Server(int maxClients) {
+  public Server() {
     isRunning = false;
     closeables = new HashSet<>();
-    executorService = Executors.newFixedThreadPool(maxClients + 1);
+    executorService = Executors.newCachedThreadPool();
     this.api = new ApiImpl();
   }
 
@@ -58,6 +56,9 @@ public class Server implements Closeable {
     while (isRunning) {
       Logger.log(Logger.LogLevel.INFO, "Awaiting Connections...");
       Socket clientSocket = socket.accept();
+
+
+
       if (clientSocket != null) {
         Logger.log(Logger.LogLevel.INFO, "Accepted Connection, Socket: "
                 + clientSocket);

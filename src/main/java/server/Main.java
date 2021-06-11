@@ -4,8 +4,7 @@ package server;
  * Server main, run Server.
  */
 public class Main {
-  // TODO: Maybe add those parameters to a server config file
-  private static final int MAX_CLIENTS = 25;
+  // TODO: Maybe add parameters to a server config file or read options
   private static final int PORT = 8080;
 
   /**
@@ -14,7 +13,7 @@ public class Main {
    * @param args no arguments used
    */
   public static void main(String[] args) {
-    Server server = new Server(MAX_CLIENTS);
+    Server server = new Server();
     try {
       server.run(PORT);
     } catch (Exception exp) {
