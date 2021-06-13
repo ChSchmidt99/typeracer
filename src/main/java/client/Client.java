@@ -1,15 +1,44 @@
 package client;
 
+/**
+ * Provides interface for all Server communication.
+ */
 public interface Client {
 
-    void registerUser(String userName);
+  /**
+   * Register a new user.
+   *
+   * @param userName name of user
+   */
+  void registerUser(String userName);
 
-    void newGame(String userId);
+  /**
+   * Start a new game.
+   *
+   * @param userId of host
+   */
+  void newGame(String userId);
 
-    void joinGame(String userId, String gameId);
+  /**
+   * Join an ongoing game.
+   *
+   * @param userId of player
+   * @param gameId of game
+   */
+  void joinGame(String userId, String gameId);
 
-    void subscribe(ClientObserver observer);
+  /**
+   * Subscribe to receive responses.
+   *
+   * @param observer {@link ClientObserver}
+   */
+  void subscribe(ClientObserver observer);
 
-    void unsubscribe(ClientObserver observer);
+  /**
+   * Unsubscribe from responses.
+   *
+   * @param observer {@link ClientObserver}
+   */
+  void unsubscribe(ClientObserver observer);
 
 }

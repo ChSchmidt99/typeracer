@@ -5,10 +5,10 @@ package backend;
  */
 public interface Api {
 
-    void registerPlayer(String connectionId, String name);
+  void registerPlayer(String connectionId, String name);
 
-    void createNewGame(String connectionId, String userId);
+  void createNewGame(String connectionId, String userId);
 
-    void joinGame(String connectionId, String userId, String gameId);
+  void joinGame(String connectionId, String userId, String gameId);
 
 }

@@ -1,8 +1,7 @@
 package server;
 
-import protocol.Response;
-
 import java.util.HashMap;
+import protocol.Response;
 
 class PushServiceImpl implements PushService {
 

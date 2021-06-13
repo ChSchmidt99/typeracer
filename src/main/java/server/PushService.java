@@ -2,10 +2,14 @@ package server;
 
 import protocol.Response;
 
+/**
+ * Service used to send responses to clients.
+ */
 public interface PushService {
 
   /**
    * Send a {@link Response} to the specified Connection.
+   *
    * @param connectionId of some existing {@link Connection}
    * @param response some {@link Response}
    * @throws Exception when no Connection with connectionId exists

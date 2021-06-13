@@ -3,14 +3,17 @@ package server;
 import backend.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import protocol.Request;
-import protocol.RequestTypes;
-import protocol.Response;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import protocol.Request;
+import protocol.RequestTypes;
+import protocol.Response;
 
 /**
  * Representing a Connection to a Client.
@@ -72,6 +75,7 @@ class Connection implements Closeable {
 
   /**
    * Send a {@link Response} to the Connection.
+   *
    * @param response some Response
    */
   void sendResponse(Response response) {

@@ -2,7 +2,6 @@ package server;
 
 import backend.Api;
 import backend.ApiImpl;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -37,6 +36,7 @@ public class Server implements Closeable, OnDisconnect {
 
   /**
    * Closes all connections and then the server itself.
+   *
    * @throws IOException when something can't be closed
    */
   @Override
@@ -60,6 +60,7 @@ public class Server implements Closeable, OnDisconnect {
 
   /**
    * Callback when connection to a client is lost.
+   *
    * @param connection the disconnected {@link Connection}
    */
   @Override
@@ -79,8 +80,11 @@ public class Server implements Closeable, OnDisconnect {
         Connection connection = new Connection(clientSocket, this.api);
         pushService.addConnection(connection);
         closeables.add(connection);
-        executorService.execute(() -> {connection.handleRequests(this);});
+        executorService.execute(() -> {
+          connection.handleRequests(this);
+        });
       }
+
     }
   }
 }

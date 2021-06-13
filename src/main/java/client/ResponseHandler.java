@@ -1,9 +1,6 @@
 package client;
 
 import com.google.gson.Gson;
-import protocol.Response;
-import protocol.ResponseTypes;
-
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import protocol.Response;
+import protocol.ResponseTypes;
 
 class ResponseHandler implements Closeable {
 
@@ -32,6 +31,7 @@ class ResponseHandler implements Closeable {
 
   /**
    * Closes reader and executor service.
+   *
    * @throws IOException when reader can't be closed
    */
   @Override
@@ -65,7 +65,9 @@ class ResponseHandler implements Closeable {
   private void receivedResponse(Response response) {
     switch (response.type) {
       case ResponseTypes.ERROR:
-        observers.forEach((observer) -> { observer.receivedError(response.message);});
+        observers.forEach((observer) -> {
+          observer.receivedError(response.message);
+        });
         break;
       default:
         System.out.println("Received unknown ResponseType: " + response.type);
