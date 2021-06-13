@@ -22,7 +22,7 @@ application {
 sourceSets {
   main {
     resources {
-      srcDirs "src/main/java/database"
+      srcDirs "src/main/java/database/resources"
     }
   }
 }

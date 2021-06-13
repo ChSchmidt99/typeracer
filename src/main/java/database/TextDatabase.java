@@ -1,14 +1,18 @@
 package database;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TextDatabase {
 
   private ArrayList<String> dictionary;
 
-  public TextDatabase() throws FileNotFoundException {
+  public TextDatabase() throws IOException {
     dictionary = new ArrayList<String>();
     URL path = this.getClass().getClassLoader().getResource("dictionary.txt");
     if (path == null) {
@@ -17,11 +21,15 @@ public class TextDatabase {
 
     System.out.println(path.getPath());
 
-    //        Scanner s = new Scanner(new File(path), "UTF-8");
-    //        while (s.hasNextLine()) {
-    //            dictionary.add(s.next());
-    //        }
-    //        s.close();
+    File f = new File(path.getPath());
+    Scanner s = new Scanner(f, StandardCharsets.UTF_8);
+
+    while (s.hasNextLine()) {
+      dictionary.add(s.nextLine());
+    }
+
+    s.close();
+
   }
 
   public ArrayList<String> getDictionary() {
@@ -32,7 +40,7 @@ public class TextDatabase {
     try {
       TextDatabase t = new TextDatabase();
       System.out.println(t.getDictionary());
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
