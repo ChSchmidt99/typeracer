@@ -18,6 +18,15 @@ application {
     mainClass = 'de.lmu.ifi.sosylab.HelloWorld'
 }
 
+
+sourceSets {
+  main {
+    resources {
+      srcDirs "src/main/java/database"
+    }
+  }
+}
+
 task worldJar(type: Jar) {
   dependsOn compileJava
 
