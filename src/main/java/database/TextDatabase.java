@@ -17,11 +17,11 @@ public class TextDatabase {
 
     System.out.println(path.getPath());
 
-    //        Scanner s = new Scanner(new File(path), "UTF-8");
-    //        while (s.hasNextLine()) {
-    //            dictionary.add(s.next());
-    //        }
-    //        s.close();
+           Scanner s = new Scanner(new File(path), "UTF-8");
+           while (s.hasNextLine()) {
+               dictionary.add(s.next());
+           }
+           s.close();
   }
 
   public ArrayList<String> getDictionary() {
