@@ -15,13 +15,14 @@ import java.util.concurrent.Executors;
 /**
  * Main instance for Server.
  */
-public class Server implements Closeable {
+public class Server implements Closeable, OnDisconnect {
 
   private ServerSocket socket;
   private final Set<Closeable> closeables;
   private final ExecutorService executorService;
   private boolean isRunning;
   private final Api api;
+  private final PushServiceImpl pushService;
 
   /**
    * Constructor of Server.
@@ -30,9 +31,14 @@ public class Server implements Closeable {
     isRunning = false;
     closeables = new HashSet<>();
     executorService = Executors.newCachedThreadPool();
-    this.api = new ApiImpl();
+    this.pushService = new PushServiceImpl();
+    this.api = new ApiImpl(pushService);
   }
 
+  /**
+   * Closes all connections and then the server itself.
+   * @throws IOException when something can't be closed
+   */
   @Override
   public void close() throws IOException {
     isRunning = false;
@@ -52,16 +58,28 @@ public class Server implements Closeable {
     awaitConnections();
   }
 
+  /**
+   * Callback when connection to a client is lost.
+   * @param connection the disconnected {@link Connection}
+   */
+  @Override
+  public void closedConnection(Connection connection) {
+    Logger.logInfo("Connection " + connection.getId() + " disconnected");
+    closeables.remove(connection);
+    connection.close();
+    pushService.removeConnection(connection);
+  }
+
   private void awaitConnections() throws IOException {
     while (isRunning) {
-      Logger.log(Logger.LogLevel.INFO, "Awaiting Connections...");
+      Logger.logInfo("Awaiting Connections...");
       Socket clientSocket = socket.accept();
       if (clientSocket != null) {
-        Logger.log(Logger.LogLevel.INFO, "Accepted Connection, Socket: "
-                + clientSocket);
-        Connection handler = new Connection(clientSocket, this.api);
-        closeables.add(handler);
-        executorService.execute(handler::handleRequests);
+        Logger.logInfo("Accepted Connection, Socket: " + clientSocket);
+        Connection connection = new Connection(clientSocket, this.api);
+        pushService.addConnection(connection);
+        closeables.add(connection);
+        executorService.execute(() -> {connection.handleRequests(this);});
       }
     }
   }

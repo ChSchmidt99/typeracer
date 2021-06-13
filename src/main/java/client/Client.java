@@ -8,4 +8,8 @@ public interface Client {
 
     void joinGame(String userId, String gameId);
 
+    void subscribe(ClientObserver observer);
+
+    void unsubscribe(ClientObserver observer);
+
 }

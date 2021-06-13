@@ -10,16 +10,18 @@ import protocol.Response;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 /**
  * Representing a Connection to a Client.
  */
-public class Connection implements Closeable {
+class Connection implements Closeable {
 
   private final Socket socket;
   private final BufferedReader reader;
   private final PrintWriter writer;
   private final Gson gson;
+  private final String id;
   private final Api api;
 
   /**
@@ -28,7 +30,7 @@ public class Connection implements Closeable {
    * @param socket the Request handler is supposed to run on
    * @throws IOException if socket is not connected
    */
-  public Connection(Socket socket, Api api) throws IOException {
+  Connection(Socket socket, Api api) throws IOException {
     this.socket = socket;
     this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
             StandardCharsets.UTF_8));
@@ -36,6 +38,7 @@ public class Connection implements Closeable {
     GsonBuilder builder = new GsonBuilder();
     this.gson = builder.create();
     this.api = api;
+    this.id = UUID.randomUUID().toString();
   }
 
   /**
@@ -47,14 +50,14 @@ public class Connection implements Closeable {
       socket.close();
       reader.close();
     } catch (IOException e) {
-      Logger.log(Logger.LogLevel.ERROR, e.getMessage());
+      Logger.logError(e.getMessage());
     }
   }
 
   /**
    * Listens on socket and forwards all received messages.
    */
-  public void handleRequests() {
+  void handleRequests(OnDisconnect onDisconnect) {
     try {
       String line;
       while ((line = this.reader.readLine()) != null) {
@@ -63,27 +66,35 @@ public class Connection implements Closeable {
         receivedRequest(request);
       }
     } catch (IOException e) {
-      System.out.println(e.getMessage());
+      onDisconnect.closedConnection(this);
     }
   }
 
-  public void sendResponse(Response response) {
+  /**
+   * Send a {@link Response} to the Connection.
+   * @param response some Response
+   */
+  void sendResponse(Response response) {
     writer.println(gson.toJson(response));
+  }
+
+  String getId() {
+    return id;
   }
 
   private void receivedRequest(Request request) {
     switch (request.type) {
       case RequestTypes.REGISTER:
-        api.registerPlayer(request.playerName);
+        api.registerPlayer(id, request.playerName);
         break;
       case RequestTypes.NEW_GAME:
-        api.createNewGame(request.userId);
+        api.createNewGame(id, request.userId);
         break;
       case RequestTypes.JOIN_GAME:
-        api.joinGame(request.userId, request.gameId);
+        api.joinGame(id, request.userId, request.gameId);
         break;
       default:
-        Logger.log(Logger.LogLevel.ERROR, "Unknown Request type: " + request.type);
+        Logger.logError("Unknown Request type: " + request.type);
     }
   }
 }

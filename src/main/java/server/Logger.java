@@ -3,7 +3,7 @@ package server;
 /**
  * Use as static class to log information with a corresponding log level.
  */
-abstract class Logger {
+public abstract class Logger {
 
   /**
    * Use LogLevel to change the amount of information that is logged.
@@ -39,7 +39,18 @@ abstract class Logger {
 
   private static LogLevel level = LogLevel.INFO;
 
-  // TODO: Add convenience functions like logInfo(String message) etc.
+  public static void logInfo(String message) {
+    log(LogLevel.INFO, message);
+  }
+
+  public static void logDebug(String message) {
+    log(LogLevel.DEBUG, message);
+  }
+
+  public static void logError(String message) {
+    log(LogLevel.ERROR, message);
+  }
+
 
   /**
    * Log a message to standard out, it will only be displayed, if it has the appropriate level.
