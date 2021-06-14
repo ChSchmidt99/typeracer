@@ -3,6 +3,7 @@ package server;
 import backend.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import protocol.Request;
 import protocol.RequestTypes;
 import protocol.Response;
+import protocol.ResponseFactory;
 
 /**
  * Representing a Connection to a Client.
@@ -64,12 +66,13 @@ class Connection implements Closeable {
     try {
       String line;
       while ((line = this.reader.readLine()) != null) {
-        // TODO: Handle invalid requests
         Request request = gson.fromJson(line, Request.class);
         receivedRequest(request);
       }
     } catch (IOException e) {
       onDisconnect.closedConnection(this);
+    } catch (JsonSyntaxException e) {
+      sendResponse(ResponseFactory.makeErrorResponse("Invalid Request"));
     }
   }
 
