@@ -100,6 +100,12 @@ class Connection implements Closeable {
       case RequestTypes.JOIN_GAME:
         api.joinGame(id, request.userId, request.gameId);
         break;
+      case RequestTypes.LEAVE_GAME:
+        api.leaveGame(id);
+        break;
+      case RequestTypes.START_GAME:
+        api.startGame(id);
+        break;
       default:
         Logger.logError("Unknown Request type: " + request.type);
     }

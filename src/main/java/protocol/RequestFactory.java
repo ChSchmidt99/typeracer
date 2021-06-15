@@ -43,4 +43,14 @@ public class RequestFactory {
     return request;
   }
 
+  public static Request makeStartGameRequest() {
+    Request request = new Request(RequestTypes.START_GAME);
+    return request;
+  }
+
+  public static Request makeLeaveGameRequest() {
+    Request request = new Request(RequestTypes.LEAVE_GAME);
+    return request;
+  }
+
 }

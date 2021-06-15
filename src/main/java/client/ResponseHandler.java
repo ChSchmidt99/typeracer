@@ -69,6 +69,26 @@ class ResponseHandler implements Closeable {
           observer.receivedError(response.message);
         });
         break;
+      case ResponseTypes.JOINED_GAME:
+        observers.forEach((observer) -> {
+          observer.joinedGame(response.gameId, response.isRunning);
+        });
+        break;
+      case ResponseTypes.GAME_STARTING:
+        observers.forEach((observer) -> {
+          observer.gameStarting(response.textToType);
+        });
+        break;
+      case ResponseTypes.PLAYER_JOINED:
+        observers.forEach((observer) -> {
+          observer.playerJoined(response.playerName);
+        });
+        break;
+      case ResponseTypes.PLAYER_LEFT:
+        observers.forEach((observer) -> {
+          observer.playerLeft(response.playerName);
+        });
+        break;
       default:
         System.out.println("Received unknown ResponseType: " + response.type);
     }

@@ -12,4 +12,12 @@ public interface ClientObserver {
    */
   void receivedError(String message);
 
+  void joinedGame(String gameId, boolean isRunning);
+
+  void gameStarting(String text);
+
+  void playerJoined(String name);
+
+  void playerLeft(String name);
+
 }

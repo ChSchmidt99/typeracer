@@ -21,7 +21,7 @@ public class Main implements ClientObserver {
       client.subscribe(m);
       client.registerUser("Cooler Mensch");
       client.newGame("some userId");
-      client.joinGame("some userId", "some gameId");
+      client.startGame();
     } catch (IOException e) {
       System.out.print(e.getMessage());
     }
@@ -30,5 +30,25 @@ public class Main implements ClientObserver {
   @Override
   public void receivedError(String message) {
     System.out.println(message);
+  }
+
+  @Override
+  public void joinedGame(String gameId, boolean isRunning) {
+    System.out.println("Joined Game " + gameId);
+  }
+
+  @Override
+  public void gameStarting(String text) {
+    System.out.println("Game starting with text: " + text);
+  }
+
+  @Override
+  public void playerJoined(String name) {
+    System.out.println("Player joined: " + name);
+  }
+
+  @Override
+  public void playerLeft(String name) {
+    System.out.println("Player Left: " + name);
   }
 }

@@ -27,6 +27,10 @@ public interface Client {
    */
   void joinGame(String userId, String gameId);
 
+  void startGame();
+
+  void leaveGame();
+
   /**
    * Subscribe to receive responses.
    *

@@ -62,6 +62,18 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
+  public void startGame() {
+    Request request = RequestFactory.makeStartGameRequest();
+    writeToServer(gson.toJson(request));
+  }
+
+  @Override
+  public void leaveGame() {
+    Request request = RequestFactory.makeLeaveGameRequest();
+    writeToServer(gson.toJson(request));
+  }
+
+  @Override
   public void subscribe(ClientObserver observer) {
     responseHandler.subscribe(observer);
   }
