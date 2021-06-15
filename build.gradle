@@ -11,55 +11,49 @@ repositories {
 }
 
 dependencies {
-  implementation 'junit:junit:4.13.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
-  implementation 'com.google.code.gson:gson:2.8.7'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }
 
 application {
-    mainClass = 'client.Main'
+    mainClass = 'de.lmu.ifi.sosylab.HelloWorld'
 }
 
-task clientJar(type: Jar) {
+task worldJar(type: Jar) {
   dependsOn compileJava
 
-  archiveBaseName = "client"
+  archiveBaseName = "world"
   from (sourceSets.main.output) {
     include "**"
-    exclude "server/**"
+    exclude "**/HelloMars.class"  // not needed for HelloWorld
   }
 
   manifest {
     attributes(
-      'Main-Class': 'client.Main'
+      'Main-Class': 'de.lmu.ifi.sosylab.HelloWorld'
     )
   }
 }
 
-task serverJar(type: Jar) {
+task marsJar(type: Jar) {
   dependsOn compileJava
 
-  archiveBaseName = "server"
+  archiveBaseName = "mars"
   from (sourceSets.main.output) {
     include "**"
-    exclude "client/**"
+    exclude "**/HelloWorld.class"  // not needed for HelloMars
   }
 
   manifest {
     attributes(
-            'Main-Class': 'server.Main'
+      'Main-Class': 'de.lmu.ifi.sosylab.HelloMars'
     )
   }
 }
+
 
 task jar(type: Jar, overwrite: true) {
-  dependsOn clientJar, serverJar
+  dependsOn worldJar, marsJar
   actions = []  // don't do anything besides calling the dependent jar tasks
-}
-
-task runServer(type: JavaExec) {
-  classpath = sourceSets.main.runtimeClasspath
-  main = 'server.Main'
 }
 
 checkstyle {
