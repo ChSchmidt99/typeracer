@@ -1,4 +1,4 @@
-package de.lmu.ifi.sosylab;
+/*package de.lmu.ifi.sosylab;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,3 +38,4 @@ public class MyObjectTest {
     fail("Expected to test gitlab CI");
   }
 }
+*/

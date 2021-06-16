@@ -12,7 +12,7 @@
           xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="1920.0" minWidth="10.0"
-                           prefWidth="872.2856968470982"/>
+                           prefWidth="872"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints fillHeight="false" maxHeight="600.0" minHeight="100.0" prefHeight="300.0" valignment="CENTER"
