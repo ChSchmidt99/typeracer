@@ -1,6 +1,8 @@
 package app;
 
 import java.util.Objects;
+
+import app.controller.StartscreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,14 +15,11 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
-    Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getProtectionDomain()
-            .getClassLoader().getResource("gui/startscreen.fxml"))));
-    primaryStage.setTitle("TypeRacer");
-    primaryStage.setScene(new Scene(root, 1280, 720));
-    primaryStage.show();
+  public void start(Stage stage) throws Exception {
+    StartscreenController startscreenController = new StartscreenController(stage);
+    startscreenController.show();
+    stage.setTitle("TypeRacer");
   }
-
 
   public static void main(String[] args) {
     launch(args);
