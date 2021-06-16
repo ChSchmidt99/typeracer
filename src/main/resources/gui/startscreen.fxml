@@ -11,7 +11,7 @@
     <Label id="title" text="TypeRacer" />
     <VBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <Button id="button" text="Singleplayer" />
-        <Button id="button" fx:id="switchToLobby" text="Multiplayer" />
+        <Button id="button" fx:id="switchToMultiplayerLobby" text="Multiplayer" />
     </VBox>
    <columnConstraints>
       <ColumnConstraints fillWidth="false" halignment="CENTER" prefWidth="1280.0" />
