@@ -1,17 +1,17 @@
 plugins {
-  id "java"
-  id "application"
-  id "checkstyle"
-  id "jacoco"
-  id "com.github.spotbugs" version "4.2.3"
+    id "java"
+    id "application"
+    id "checkstyle"
+    id "jacoco"
+    id "com.github.spotbugs" version "4.2.3"
 }
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }
 
 application {
@@ -19,64 +19,73 @@ application {
 }
 
 task worldJar(type: Jar) {
-  dependsOn compileJava
+    dependsOn compileJava
 
-  archiveBaseName = "world"
-  from (sourceSets.main.output) {
-    include "**"
-    exclude "**/HelloMars.class"  // not needed for HelloWorld
-  }
+    archiveBaseName = "world"
+    from(sourceSets.main.output) {
+        include "**"
+        exclude "**/HelloMars.class"  // not needed for HelloWorld
+    }
 
-  manifest {
-    attributes(
-      'Main-Class': 'de.lmu.ifi.sosylab.HelloWorld'
-    )
-  }
+    sourceSets {
+        main {
+            resources {
+                srcDirs "src/main/java/database/resources"
+            }
+        }
+    }
+
+
+    manifest {
+        attributes(
+                'Main-Class': 'de.lmu.ifi.sosylab.HelloWorld'
+        )
+    }
 }
 
 task marsJar(type: Jar) {
-  dependsOn compileJava
+    dependsOn compileJava
 
-  archiveBaseName = "mars"
-  from (sourceSets.main.output) {
-    include "**"
-    exclude "**/HelloWorld.class"  // not needed for HelloMars
-  }
+    archiveBaseName = "mars"
+    from(sourceSets.main.output) {
+        include "**"
+        exclude "**/HelloWorld.class"  // not needed for HelloMars
+    }
 
-  manifest {
-    attributes(
-      'Main-Class': 'de.lmu.ifi.sosylab.HelloMars'
-    )
-  }
+    manifest {
+        attributes(
+                'Main-Class': 'de.lmu.ifi.sosylab.HelloMars'
+        )
+    }
 }
 
 
 task jar(type: Jar, overwrite: true) {
-  dependsOn worldJar, marsJar
-  actions = []  // don't do anything besides calling the dependent jar tasks
+    dependsOn worldJar, marsJar
+    actions = []  // don't do anything besides calling the dependent jar tasks
 }
 
 checkstyle {
-  toolVersion '8.43'
-  maxWarnings = 0
+    toolVersion '8.43'
+    maxWarnings = 0
 }
 
 spotbugsMain {
-  reports {
-    html {
-      enabled = true
+    reports {
+        html {
+            enabled = true
+        }
+        xml {
+            enabled = false
+        }
     }
-    xml {
-      enabled = false
-    }
-  }
 }
 
 test {
-	useJUnitPlatform()
-	testLogging {
-		events "passed", "skipped", "failed"
-	}
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 // TODO: (for students) Configure that jacocoTestReport is always run after successful tests,
@@ -86,20 +95,20 @@ test {
 // TODO: (for students) Think about configuring the JavaDoc task used for generating JavaDoc HTML
 
 jacocoTestReport {
-  dependsOn test // always run tests before generating new report
-  finalizedBy jacocoTestCoverageVerification // always check coverage after generating report
+    dependsOn test // always run tests before generating new report
+    finalizedBy jacocoTestCoverageVerification // always check coverage after generating report
 }
 
 
 // TODO: (for students) Add limits or adjust limit to your team's Definition of Done
 jacocoTestCoverageVerification {
-  violationRules {
-    rule {
-      limit {
-        counter = "BRANCH"
-        value = "COVEREDRATIO"
-        minimum = 0.8
-      }
+    violationRules {
+        rule {
+            limit {
+                counter = "BRANCH"
+                value = "COVEREDRATIO"
+                minimum = 0.8
+            }
+        }
     }
-  }
 }

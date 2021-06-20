@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TextDatabase {
@@ -29,17 +30,22 @@ public class TextDatabase {
     }
 
     s.close();
-
   }
 
   public ArrayList<String> getDictionary() {
     return dictionary;
   }
 
+  public String getPhrase() {
+    int guessedIndex = new Random().nextInt(dictionary.size());
+    return dictionary.get(guessedIndex);
+  }
+
   public static void main(String[] args) {
     try {
       TextDatabase t = new TextDatabase();
-      System.out.println(t.getDictionary());
+      // System.out.println(t.getDictionary());
+      System.out.println(t.getPhrase());
     } catch (IOException e) {
       e.printStackTrace();
     }

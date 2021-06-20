@@ -1,7 +1,7 @@
-package server;
-
-interface OnDisconnect {
-
-  void closedConnection(Connection connection);
-
-}
+// package server;
+//
+// interface OnDisconnect {
+//
+//  void closedConnection(Connection connection);
+//
+// }
