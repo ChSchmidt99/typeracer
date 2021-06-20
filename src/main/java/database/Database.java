@@ -1,5 +1,7 @@
 package database;
 
+import java.io.IOException;
+
 public interface Database {
 
   String getTextToType();
@@ -10,8 +12,7 @@ public interface Database {
    * @param username name of user
    * @return userId
    */
-  String registerUser(String username);
+  String registerUser(String username) throws IOException;
 
   String getUsername(String userId);
-
 }
