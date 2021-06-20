@@ -25,7 +25,6 @@ public class MockDatabase implements Database {
         username,
         StandardCharsets.UTF_8,
         StandardOpenOption.APPEND);
-
     return "Some ID";
   }
 
