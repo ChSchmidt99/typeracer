@@ -1,3 +1,14 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:5.2.0"
+  }
+}
+
 plugins {
   id "java"
   id "application"
@@ -13,13 +24,39 @@ repositories {
 
 dependencies {
   implementation 'junit:junit:4.13.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
   implementation 'com.google.code.gson:gson:2.8.7'
+
+  implementation "org.openjfx:javafx-base:11:win"
+  implementation "org.openjfx:javafx-graphics:11:win"
+  implementation "org.openjfx:javafx-controls:11:win"
+  implementation "org.openjfx:javafx-fxml:11:win"
+  implementation "org.openjfx:javafx-web:11:win"
+  implementation "org.openjfx:javafx-swing:11:win"
+  implementation "org.openjfx:javafx-media:11:win"
+
+  implementation "org.openjfx:javafx-base:11:linux"
+  implementation "org.openjfx:javafx-graphics:11:linux"
+  implementation "org.openjfx:javafx-controls:11:linux"
+  implementation "org.openjfx:javafx-fxml:11:linux"
+  implementation "org.openjfx:javafx-web:11:linux"
+  implementation "org.openjfx:javafx-swing:11:linux"
+  implementation "org.openjfx:javafx-media:11:linux"
+
+  implementation "org.openjfx:javafx-base:11:mac"
+  implementation "org.openjfx:javafx-graphics:11:mac"
+  implementation "org.openjfx:javafx-controls:11:mac"
+  implementation "org.openjfx:javafx-fxml:11:mac"
+  implementation "org.openjfx:javafx-web:11:mac"
+  implementation "org.openjfx:javafx-swing:11:mac"
+  implementation "org.openjfx:javafx-media:11:mac"
 }
 
 application {
-    mainClass = 'app.Main'
+    mainClass = 'app.Runner'
 }
+
+mainClassName = "app.Runner"
 
 javafx {
   version = "11.0.2"
@@ -37,7 +74,7 @@ task clientJar(type: Jar) {
 
   manifest {
     attributes(
-      'Main-Class': 'app.Main'
+      'Main-Class': 'app.Runner'
     )
   }
 }
@@ -115,3 +152,5 @@ jacocoTestCoverageVerification {
     }
   }
 }
+
+apply plugin: "com.github.johnrengelman.shadow"
