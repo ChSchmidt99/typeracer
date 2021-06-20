@@ -1,13 +1,11 @@
-# Sample project
+# Typeracer Team 8 
 
-This project consists of a simple gradle config and some example source files
-done for the SEP WS19/20 at LMU Munich.
+The super cool typeracer of team 8.
 
 ## Dependencies
 
 The project requires Java 11.
-It was only tested on Ubuntu 18.04 with openjdk 11.0.3 2019-04-16,
-so no other guarantees can be made.
+It was tested on Arch with openjdk 11.0.11 2021-04-20.
 
 The project is built with `gradle`, version 5.6.4. The provided `gradlew` wrapper automatically downloads and uses
 the correct gradle version.

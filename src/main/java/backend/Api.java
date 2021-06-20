@@ -11,4 +11,8 @@ public interface Api {
 
   void joinGame(String connectionId, String userId, String gameId);
 
+  void leaveGame(String connectionId);
+
+  void startGame(String connectionId);
+
 }
