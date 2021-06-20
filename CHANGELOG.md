@@ -6,6 +6,13 @@ The format is based on
 and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
+## [Abgabe 1] - 2021-06-20
+### Added
+- server browser screen
+- create game screen
+- game lobby screen  
+- all necessary controllers and fxml files
+- basic transition functionality
 ## [Abgabe 1] 
 ## [0.0.1] - 2021-06-13
 ### Added
@@ -17,8 +24,3 @@ and this project adheres to
 ### Added
 - main method
 - basic startscreen
-- server browser screen
-- create game screen
-- game lobby screen  
-- all necessary controllers and fxml files
-- basic transition functionality
