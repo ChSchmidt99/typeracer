@@ -6,7 +6,7 @@ The format is based on
 and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
-## [Abgabe 1] - 2021-06-20
+## [Abgabe 2] - 2021-06-20
 ### Added
 - server browser screen
 - create game screen
