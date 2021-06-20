@@ -9,7 +9,8 @@ and this project adheres to
 ## [Abgabe 1] - 2021-06-10
 ### Added
 - main method
-- finished basic startscreen
-- finished server browser screen
+- basic startscreen
+- server browser screen
+- create game screen  
 - all necessary controllers and fxml files
 - basic transition functionality

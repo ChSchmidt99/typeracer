@@ -3,6 +3,7 @@ package app.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ abstract class Controller {
 
   protected Stage stage;
   private final static String ERROR = "Failed to load .fxml file";
+  private static final String ALERT_HEADER = "Error";
 
   /**
    * Constructor for controllers, takes current @param stage and @param fxmlpath and switches to next view upon creation.
@@ -30,6 +32,14 @@ abstract class Controller {
       System.out.println(ERROR);
       e.printStackTrace();
     }
+  }
+
+  void displayError(String errormessage) {
+    Alert alert = new Alert(Alert.AlertType.WARNING);
+    alert.setTitle(ALERT_HEADER);
+    alert.setContentText(errormessage);
+    alert.setHeaderText(null);
+    alert.showAndWait();
   }
 
   public void show() {
