@@ -2,10 +2,12 @@ package backend;
 
 import database.Database;
 import database.MockDatabase;
+import java.util.List;
+import protocol.LobbyModel;
 import protocol.Response;
 import protocol.ResponseFactory;
-import server.Logger;
 import server.PushService;
+
 
 /**
  * Currently just an experimental Api implementation.
@@ -13,51 +15,53 @@ import server.PushService;
 public class ApiImpl implements Api {
 
   private final PushService pushService;
-  private final GameStore gameStore;
+  private final LobbyStore lobbyStore;
   private final Database database;
 
+  /**
+   * Create an instance implementing the Api interface.
+   *
+   * @param pushService service where responses are sent to
+   */
   public ApiImpl(PushService pushService) {
     this.pushService = pushService;
-    this.gameStore = new GameStore();
+    this.lobbyStore = new LobbyStore();
     this.database = new MockDatabase();
   }
 
   @Override
   public void registerPlayer(String connectionId, String name) {
     String userId = database.registerUser(name);
-    Response response = ResponseFactory.makeErrorResponse("Not implemented");
-    try {
-      pushService.sendResponse(connectionId, response);
-    } catch (Exception e) {
-      Logger.logError(e.getMessage());
-    }
+    Response response = ResponseFactory.makeRegisteredResponse(userId);
+    pushService.sendResponse(connectionId, response);
   }
 
   @Override
-  public void createNewGame(String connectionId, String userId) {
-    String gameId = gameStore.createNewGame(pushService);
-    gameStore.joinGame(gameId, connectionId, userId);
+  public void createNewLobby(String connectionId, String userId) {
+    String lobbyId = lobbyStore.createNewLobby(connectionId, pushService);
+    lobbyStore.joinLobby(lobbyId, connectionId, userId);
   }
 
   @Override
-  public void joinGame(String connectionId, String userId, String gameId) {
-    System.out.println("Called join game with: " + gameId);
-    Response response = ResponseFactory.makeErrorResponse("Not implemented");
-    try {
-      pushService.sendResponse(connectionId, response);
-    } catch (Exception e) {
-      Logger.logError(e.getMessage());
-    }
+  public void joinLobby(String lobbyId, String connectionId, String userId) {
+    lobbyStore.joinLobby(lobbyId, connectionId, userId);
   }
 
   @Override
-  public void leaveGame(String connectionId) {
-    gameStore.leaveGame(connectionId);
+  public void leaveLobby(String connectionId) {
+    lobbyStore.leaveLobby(connectionId);
   }
 
   @Override
-  public void startGame(String connectionId) {
-    gameStore.startGame(connectionId);
+  public void startRace(String connectionId) {
+    lobbyStore.startGame(connectionId);
+  }
+
+  @Override
+  public void getLobbies(String connectionId) {
+    List<LobbyModel> lobbies = lobbyStore.getOpenLobbies();
+    Response response = ResponseFactory.makeLobbiesResponse(lobbies);
+    pushService.sendResponse(connectionId, response);
   }
 
 }

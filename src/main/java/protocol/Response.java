@@ -1,21 +1,34 @@
 package protocol;
 
+import java.util.List;
+
 /**
  * Represents a Json Response.
  */
 public class Response {
 
+  /**
+   * All possible Response types.
+   */
+  public static class Types {
+    public static final String ERROR = "error";
+    public static final String LOBBY_UPDATE = "lobby update";
+    public static final String GAME_STARTING = "game starting";
+    public static final String REGISTERED = "registered";
+    public static final String OPEN_LOBBIES = "open lobbies";
+  }
+
   public final String type;
 
   public String message;
 
-  public String gameId;
+  public String userId;
 
-  public boolean isRunning;
+  public LobbyModel lobby;
 
-  public String playerName;
+  public RaceModel race;
 
-  public String textToType;
+  public List<LobbyModel> lobbies;
 
   /**
    * Create a Request with given params.

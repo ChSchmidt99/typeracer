@@ -13,7 +13,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import protocol.Request;
-import protocol.RequestTypes;
 import protocol.Response;
 import protocol.ResponseFactory;
 
@@ -91,20 +90,23 @@ class Connection implements Closeable {
 
   private void receivedRequest(Request request) {
     switch (request.type) {
-      case RequestTypes.REGISTER:
+      case Request.Types.REGISTER:
         api.registerPlayer(id, request.playerName);
         break;
-      case RequestTypes.NEW_GAME:
-        api.createNewGame(id, request.userId);
+      case Request.Types.NEW_LOBBY:
+        api.createNewLobby(id, request.userId);
         break;
-      case RequestTypes.JOIN_GAME:
-        api.joinGame(id, request.userId, request.gameId);
+      case Request.Types.JOIN_LOBBY:
+        api.joinLobby(request.lobbyId, id, request.userId);
         break;
-      case RequestTypes.LEAVE_GAME:
-        api.leaveGame(id);
+      case Request.Types.LEAVE_LOBBY:
+        api.leaveLobby(id);
         break;
-      case RequestTypes.START_GAME:
-        api.startGame(id);
+      case Request.Types.START_RACE:
+        api.startRace(id);
+        break;
+      case Request.Types.GET_LOBBIES:
+        api.getLobbies(id);
         break;
       default:
         Logger.logError("Unknown Request type: " + request.type);

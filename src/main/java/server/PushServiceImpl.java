@@ -2,7 +2,6 @@ package server;
 
 import java.util.HashMap;
 import java.util.Set;
-
 import protocol.Response;
 
 class PushServiceImpl implements PushService {
@@ -32,7 +31,7 @@ class PushServiceImpl implements PushService {
 
   @Override
   public void sendResponse(Set<String> connectionIds, Response response) {
-    for (String connectionId: connectionIds) {
+    for (String connectionId : connectionIds) {
       try {
         sendResponse(connectionId, response);
       } catch (Exception e) {

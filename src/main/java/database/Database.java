@@ -1,5 +1,8 @@
 package database;
 
+/**
+ * Interface with all Database functionality.
+ */
 public interface Database {
 
   String getTextToType();

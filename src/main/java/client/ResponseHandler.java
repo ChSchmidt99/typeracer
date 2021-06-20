@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import protocol.Response;
-import protocol.ResponseTypes;
 
 class ResponseHandler implements Closeable {
 
@@ -64,29 +63,29 @@ class ResponseHandler implements Closeable {
 
   private void receivedResponse(Response response) {
     switch (response.type) {
-      case ResponseTypes.ERROR:
+      case Response.Types.REGISTERED:
+        observers.forEach((observer) -> {
+          observer.registered(response.userId);
+        });
+        break;
+      case Response.Types.ERROR:
         observers.forEach((observer) -> {
           observer.receivedError(response.message);
         });
         break;
-      case ResponseTypes.JOINED_GAME:
+      case Response.Types.GAME_STARTING:
         observers.forEach((observer) -> {
-          observer.joinedGame(response.gameId, response.isRunning);
+          observer.gameStarting(response.race);
         });
         break;
-      case ResponseTypes.GAME_STARTING:
+      case Response.Types.LOBBY_UPDATE:
         observers.forEach((observer) -> {
-          observer.gameStarting(response.textToType);
+          observer.receivedLobbyUpdate(response.lobby);
         });
         break;
-      case ResponseTypes.PLAYER_JOINED:
+      case Response.Types.OPEN_LOBBIES:
         observers.forEach((observer) -> {
-          observer.playerJoined(response.playerName);
-        });
-        break;
-      case ResponseTypes.PLAYER_LEFT:
-        observers.forEach((observer) -> {
-          observer.playerLeft(response.playerName);
+          observer.receivedOpenLobbies(response.lobbies);
         });
         break;
       default:

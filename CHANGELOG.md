@@ -7,6 +7,12 @@ and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
 ## [Abgabe 1] 
+
+## [0.0.2] - 2021-06-20
+### Added
+- Backend lobby management (create, join, leave, start)
+- Get all open lobbies
+
 ## [0.0.1] - 2021-06-13
 ### Added
 - Api interface that provides all server functions

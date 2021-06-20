@@ -1,6 +1,9 @@
 package database;
 
-public class MockDatabase implements Database{
+/**
+ * Temporary Database to avoid errors.
+ */
+public class MockDatabase implements Database {
   @Override
   public String getTextToType() {
     return "Hallo Welt";

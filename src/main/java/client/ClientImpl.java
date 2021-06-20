@@ -46,31 +46,37 @@ public class ClientImpl implements Closeable, Client {
   @Override
   public void registerUser(String userName) {
     Request request = RequestFactory.makeRegisterRequest(userName);
-    writeToServer(gson.toJson(request));
+    sendRequest(request);
   }
 
   @Override
   public void newGame(String userId) {
-    Request request = RequestFactory.makeNewGameRequest(userId);
-    writeToServer(gson.toJson(request));
+    Request request = RequestFactory.makeNewLobbyRequest(userId);
+    sendRequest(request);
   }
 
   @Override
   public void joinGame(String userId, String gameId) {
-    Request request = RequestFactory.makeJoinGameRequest(userId, gameId);
-    writeToServer(gson.toJson(request));
+    Request request = RequestFactory.makeJoinLobbyRequest(userId, gameId);
+    sendRequest(request);
   }
 
   @Override
   public void startGame() {
-    Request request = RequestFactory.makeStartGameRequest();
-    writeToServer(gson.toJson(request));
+    Request request = RequestFactory.makeStartRaceRequest();
+    sendRequest(request);
   }
 
   @Override
   public void leaveGame() {
-    Request request = RequestFactory.makeLeaveGameRequest();
-    writeToServer(gson.toJson(request));
+    Request request = RequestFactory.makeLeaveLobbyRequest();
+    sendRequest(request);
+  }
+
+  @Override
+  public void requestLobbies() {
+    Request request = RequestFactory.makeGetOpenLobbiesRequest();
+    sendRequest(request);
   }
 
   @Override
@@ -83,8 +89,8 @@ public class ClientImpl implements Closeable, Client {
     responseHandler.unsubscribe(observer);
   }
 
-  private void writeToServer(String message) {
-    this.writer.println(message);
+  private void sendRequest(Request request) {
+    this.writer.println(gson.toJson(request));
   }
 
 }

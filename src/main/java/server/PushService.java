@@ -1,8 +1,7 @@
 package server;
 
-import protocol.Response;
-
 import java.util.Set;
+import protocol.Response;
 
 /**
  * Service used to send responses to clients.

@@ -8,15 +8,25 @@
     "playerName":"*some username*"
 }
 
-### Create new game
+### Create new lobby
 {
-    "type":"new game",
+    "type":"new lobby",
     "userId":"*some userId*"
 }
 
-### Join existing game
+### Join existing lobby
 {
-    "type":"join game",
+    "type":"join lobby",
     "userId":"*some userId*",
-    "gameId":"*some gameId*"
+    "lobbyId":"*some gameId*"
+}
+
+### Leave current lobby
+{
+    "type":"leave lobby"
+}
+
+### Start match in current lobby
+{
+    "type":"start race"
 }

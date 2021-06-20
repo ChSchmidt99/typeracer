@@ -7,12 +7,14 @@ public interface Api {
 
   void registerPlayer(String connectionId, String name);
 
-  void createNewGame(String connectionId, String userId);
+  void createNewLobby(String connectionId, String userId);
 
-  void joinGame(String connectionId, String userId, String gameId);
+  void joinLobby(String lobbyId, String connectionId, String userId);
 
-  void leaveGame(String connectionId);
+  void leaveLobby(String connectionId);
 
-  void startGame(String connectionId);
+  void startRace(String connectionId);
+
+  void getLobbies(String connectionId);
 
 }

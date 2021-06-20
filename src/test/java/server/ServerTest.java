@@ -29,7 +29,6 @@ public class ServerTest {
   @BeforeAll
   void startServer() {
     server = new Server();
-    //Logger.setLevel(Logger.LogLevel.ERROR);
     new Thread(() -> {
       try {
         server.run(PORT);

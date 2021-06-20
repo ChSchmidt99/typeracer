@@ -1,9 +1,15 @@
 package client;
 
+import java.util.List;
+import protocol.LobbyModel;
+import protocol.RaceModel;
+
 /**
  * Observer to receive responses from {@link Client}.
  */
 public interface ClientObserver {
+
+  void registered(String userId);
 
   /**
    * Received error response from server.
@@ -12,12 +18,10 @@ public interface ClientObserver {
    */
   void receivedError(String message);
 
-  void joinedGame(String gameId, boolean isRunning);
+  void gameStarting(RaceModel race);
 
-  void gameStarting(String text);
+  void receivedLobbyUpdate(LobbyModel lobby);
 
-  void playerJoined(String name);
-
-  void playerLeft(String name);
+  void receivedOpenLobbies(List<LobbyModel> lobbies);
 
 }

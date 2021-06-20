@@ -12,7 +12,7 @@ public class RequestFactory {
    * @return {@link Request}
    */
   public static Request makeRegisterRequest(String playerName) {
-    Request request = new Request(RequestTypes.REGISTER);
+    Request request = new Request(Request.Types.REGISTER);
     request.playerName = playerName;
     return request;
   }
@@ -23,8 +23,8 @@ public class RequestFactory {
    * @param userId of initial player
    * @return {@link Request}
    */
-  public static Request makeNewGameRequest(String userId) {
-    Request request = new Request(RequestTypes.NEW_GAME);
+  public static Request makeNewLobbyRequest(String userId) {
+    Request request = new Request(Request.Types.NEW_LOBBY);
     request.userId = userId;
     return request;
   }
@@ -33,24 +33,28 @@ public class RequestFactory {
    * Make a join game {@link Request} used to join existing games.
    *
    * @param userId of player
-   * @param gameId of game
+   * @param lobbyId of lobby
    * @return {@link Request}
    */
-  public static Request makeJoinGameRequest(String userId, String gameId) {
-    Request request = new Request(RequestTypes.JOIN_GAME);
+  public static Request makeJoinLobbyRequest(String userId, String lobbyId) {
+    Request request = new Request(Request.Types.JOIN_LOBBY);
     request.userId = userId;
-    request.gameId = gameId;
+    request.lobbyId = lobbyId;
     return request;
   }
 
-  public static Request makeStartGameRequest() {
-    Request request = new Request(RequestTypes.START_GAME);
-    return request;
+  public static Request makeStartRaceRequest() {
+    return new Request(Request.Types.START_RACE);
+
   }
 
-  public static Request makeLeaveGameRequest() {
-    Request request = new Request(RequestTypes.LEAVE_GAME);
-    return request;
+  public static Request makeLeaveLobbyRequest() {
+    return new Request(Request.Types.LEAVE_LOBBY);
+
+  }
+
+  public static Request makeGetOpenLobbiesRequest() {
+    return new Request(Request.Types.GET_LOBBIES);
   }
 
 }

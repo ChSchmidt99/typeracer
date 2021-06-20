@@ -1,50 +1,69 @@
 package protocol;
 
+import java.util.List;
+
 /**
  * Factory used for creating {@link Response} instances.
  */
 public class ResponseFactory {
 
   /**
-   * Make Error response.
+   * Make Error response. Used for any errors encountered.
    *
    * @param message error message
    * @return {@link Response}
    */
   public static Response makeErrorResponse(String message) {
-    Response response = new Response(ResponseTypes.ERROR);
+    Response response = new Response(Response.Types.ERROR);
     response.message = message;
     return response;
   }
 
   /**
-   * Make joined game response.
+   * Make Lobby response. Used for any lobby updates.
    *
-   * @param gameId of the joined game
+   * @param lobby {@link LobbyModel} of the updated lobby
    * @return {@link Response}
    */
-  public static Response makeJoinedGameResponse(String gameId, boolean isRunning) {
-    Response response = new Response(ResponseTypes.JOINED_GAME);
-    response.gameId = gameId;
-    response.isRunning = isRunning;
+  public static Response makeLobbyUpdateResponse(LobbyModel lobby) {
+    Response response = new Response(Response.Types.LOBBY_UPDATE);
+    response.lobby = lobby;
     return response;
   }
 
-  public static Response makePlayerJoinedResponse(String playerName) {
-    Response response = new Response(ResponseTypes.PLAYER_JOINED);
-    response.playerName = playerName;
+  /**
+   * Make race starting response. Used to notify users when a race is about to start.
+   *
+   * @param textToType text of the race
+   * @return {@link Response}
+   */
+  public static Response makeRaceStartingResponse(String textToType) {
+    Response response = new Response(Response.Types.GAME_STARTING);
+    response.race = new RaceModel(textToType);
     return response;
   }
 
-  public static Response makePlayerLeftResponse(String playerName) {
-    Response response = new Response(ResponseTypes.PLAYER_LEFT);
-    response.playerName = playerName;
+  /**
+   * Make registered response. Used to send userId to newly registered players
+   *
+   * @param userId id of user
+   * @return {@link Response}
+   */
+  public static Response makeRegisteredResponse(String userId) {
+    Response response = new Response(Response.Types.REGISTERED);
+    response.userId = userId;
     return response;
   }
 
-  public static Response makeGameStartingResponse(String textToType) {
-    Response response = new Response(ResponseTypes.GAME_STARTING);
-    response.textToType = textToType;
+  /**
+   * Make Lobbies response. Used to send all open lobbies to clients.
+   *
+   * @param lobbies list of {@link LobbyModel}
+   * @return {@link Response}
+   */
+  public static Response makeLobbiesResponse(List<LobbyModel> lobbies) {
+    Response response = new Response(Response.Types.OPEN_LOBBIES);
+    response.lobbies = lobbies;
     return response;
   }
 

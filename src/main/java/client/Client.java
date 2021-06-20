@@ -31,6 +31,8 @@ public interface Client {
 
   void leaveGame();
 
+  void requestLobbies();
+
   /**
    * Subscribe to receive responses.
    *

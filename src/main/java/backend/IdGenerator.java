@@ -9,6 +9,7 @@ class IdGenerator {
 
   /**
    * Id generator starting at startId.
+   *
    * @param startId first ID
    */
   IdGenerator(int startId) {
@@ -17,6 +18,7 @@ class IdGenerator {
 
   /**
    * Returns a unique ID and increments the counter.
+   *
    * @return current ID
    */
   String getId() {
