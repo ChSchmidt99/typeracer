@@ -8,7 +8,7 @@ import javafx.stage.Stage;
  */
 public class StartscreenController extends Controller {
 
-  private final static String FXMLPATH = "view/startscreen.fxml";
+  private static final String FXMLPATH = "view/startscreen.fxml";
 
   /**
    * Constructor for StartscreenController; creates a new Startscreen.
@@ -23,5 +23,7 @@ public class StartscreenController extends Controller {
   }
 
   @FXML
-  private void switchToSingleplayer() { new SingleplayerController(stage); }
+  private void switchToSingleplayer() {
+    new SingleplayerController(stage);
+  }
 }

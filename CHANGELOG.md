@@ -11,6 +11,7 @@ and this project adheres to
 - main method
 - basic startscreen
 - server browser screen
-- create game screen  
+- create game screen
+- game lobby screen  
 - all necessary controllers and fxml files
 - basic transition functionality

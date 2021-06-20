@@ -2,13 +2,13 @@
     -fx-background-color: linear-gradient(from 1% 100% to 100% 1%, #424242, #1C1C1C);
 }
 
-.serverbrowser {
+.labelscrollpane {
     -fx-max-height: 300px;
     -fx-max-width: 640px;
     -fx-min-height: 200px;
 }
 
-.serverlabel {
+.listlabel {
     -fx-font-family: "Helvetica";
     -fx-font-size: 12px;
     -fx-pref-Height: 30px;
@@ -32,6 +32,16 @@
     -fx-max-width: 400px;
     -fx-min-height: 40px;
     -fx-font-size: 20px;
+}
+
+.userlist {
+    -fx-min-height: 300px;
+    -fx-min-width: 300px;
+    -fx-max-width: 500px;
+}
+
+.checkbox {
+    -fx-text-fill: white;
 }
 
 .button, .title {

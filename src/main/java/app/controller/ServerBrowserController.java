@@ -13,7 +13,7 @@ class ServerBrowserController extends Controller {
   @FXML
   TextField username;
 
-  ServerBrowserController (Stage stage) {
+  ServerBrowserController(Stage stage) {
     super(stage, FXMLPATH);
   }
 

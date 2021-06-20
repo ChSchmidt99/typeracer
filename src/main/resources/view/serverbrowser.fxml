@@ -14,7 +14,7 @@
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="Open Servers" />
     <VBox alignment="TOP_CENTER" GridPane.rowIndex="1">
-        <ScrollPane styleClass="serverbrowser">
+        <ScrollPane styleClass="labelscrollpane">
             <AnchorPane>
                 <VBox>
                     <padding>
@@ -25,7 +25,7 @@
                             <Label styleClass="serverstatus, green"/>
                         </graphic>
                     </Label>
-                    <Label onMouseClicked="#joinGame" styleClass="serverlabel" text="Test">
+                    <Label onMouseClicked="#joinGame" styleClass="listlabel" text="Test">
                         <graphic>
                             <Label styleClass="serverstatus, red"/>
                         </graphic>
