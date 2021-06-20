@@ -17,6 +17,7 @@ public class MockDatabase implements Database {
     return "Hallo Welt";
   }
 
+
   @Override
   public String registerUser(String username) throws IOException {
     URL path = this.getClass().getResource("database.txt");
