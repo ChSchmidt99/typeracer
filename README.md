@@ -6,8 +6,7 @@ done for the SEP WS19/20 at LMU Munich.
 ## Dependencies
 
 The project requires Java 11.
-It was only tested on Ubuntu 18.04 with openjdk 11.0.3 2019-04-16,
-so no other guarantees can be made.
+It was only tested on macOS Catalina and Arch Linux.
 
 The project is built with `gradle`, version 5.6.4. The provided `gradlew` wrapper automatically downloads and uses
 the correct gradle version.
