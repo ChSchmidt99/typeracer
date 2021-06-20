@@ -1,30 +1,27 @@
 package app.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 /**
- * Handles every transition related to start screen.
+ * Handles transition functionality for startscreen.
  */
 public class StartscreenController extends Controller {
 
-  private final static String FXMLPATH = "gui/startscreen.fxml";
+  private final static String FXMLPATH = "view/startscreen.fxml";
 
   /**
-   * Constructor for StartscreenController.
+   * Constructor for StartscreenController; creates a new Startscreen.
    */
   public StartscreenController(Stage stage) {
     super(stage, FXMLPATH);
   }
 
   @FXML
-  Button switchToMultiplayerLobby;
-
+  private void switchToServerBrowser() {
+    new ServerBrowserController(stage);
+  }
 
   @FXML
-  private void switchToMultiplayerLobby() throws Exception {
-
-
-  }
+  private void switchToSingleplayer() { new SingleplayerController(stage); }
 }

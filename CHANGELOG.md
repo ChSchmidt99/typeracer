@@ -9,4 +9,7 @@ and this project adheres to
 ## [Abgabe 1] - 2021-06-10
 ### Added
 - main method
-- basic startscreen
+- finished basic startscreen
+- finished server browser screen
+- all necessary controllers and fxml files
+- basic transition functionality
