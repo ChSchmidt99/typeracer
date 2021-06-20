@@ -52,10 +52,6 @@ dependencies {
   implementation "org.openjfx:javafx-media:11:mac"
 }
 
-application {
-    mainClass = 'app.Runner'
-}
-
 mainClassName = "app.Runner"
 
 javafx {
