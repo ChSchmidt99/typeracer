@@ -3,6 +3,7 @@ plugins {
   id "application"
   id "checkstyle"
   id "jacoco"
+  id 'org.openjfx.javafxplugin' version '0.0.10'
   id "com.github.spotbugs" version "4.2.3"
 }
 
@@ -17,7 +18,12 @@ dependencies {
 }
 
 application {
-    mainClass = 'client.Main'
+    mainClass = 'app.Main'
+}
+
+javafx {
+  version = "11.0.2"
+  modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 task clientJar(type: Jar) {
@@ -31,7 +37,7 @@ task clientJar(type: Jar) {
 
   manifest {
     attributes(
-      'Main-Class': 'client.Main'
+      'Main-Class': 'app.Main'
     )
   }
 }
@@ -47,7 +53,7 @@ task serverJar(type: Jar) {
 
   manifest {
     attributes(
-            'Main-Class': 'server.Main'
+      'Main-Class': 'app.Main'
     )
   }
 }

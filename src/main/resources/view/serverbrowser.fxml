@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+    <Label styleClass="title" text="Open Servers" />
+    <VBox alignment="TOP_CENTER" GridPane.rowIndex="1">
+        <ScrollPane styleClass="labelscrollpane">
+            <AnchorPane>
+                <VBox>
+                    <padding>
+                        <Insets left="20.0" top="20.0"/>
+                    </padding>
+                    <Label onMouseClicked="#joinGame" styleClass="serverlabel" text="Test">
+                        <graphic>
+                            <Label styleClass="serverstatus, green"/>
+                        </graphic>
+                    </Label>
+                    <Label onMouseClicked="#joinGame" styleClass="listlabel" text="Test">
+                        <graphic>
+                            <Label styleClass="serverstatus, red"/>
+                        </graphic>
+                    </Label>
+                </VBox>
+            </AnchorPane>
+        </ScrollPane>
+        <TextField fx:id="username" promptText="Username" styleClass="userdata">
+           <VBox.margin>
+               <Insets top="30.0"/>
+           </VBox.margin>
+        </TextField>
+        <Button fx:id="createButton" text="Create New Game" onAction="#switchToCreateScreen">
+           <VBox.margin>
+               <Insets top="20.0"/>
+           </VBox.margin>
+        </Button>
+    </VBox>
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="200.0" minHeight="140.0" prefHeight="200.0" />
+      <RowConstraints maxHeight="700.0" minHeight="300.0" prefHeight="600.0" valignment="CENTER" />
+   </rowConstraints>
+</GridPane>

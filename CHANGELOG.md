@@ -13,3 +13,12 @@ and this project adheres to
 - Runnable server that waits for socket connections and calls Api with corresponding requests
 - Client that provides an interface to make server requests
 - Factory classes for Request and Response
+## [Abgabe 1] - 2021-06-10
+### Added
+- main method
+- basic startscreen
+- server browser screen
+- create game screen
+- game lobby screen  
+- all necessary controllers and fxml files
+- basic transition functionality
