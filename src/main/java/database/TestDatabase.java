@@ -1,11 +1,8 @@
 package database;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class TestDatabase implements Database {
@@ -19,13 +16,15 @@ public class TestDatabase implements Database {
 
   @Override
   public String registerUser(String username) throws IOException {
-    URL path = this.getClass().getResource("database.txt");
-    Files.writeString(
-        Paths.get(String.valueOf(path)),
-        username,
-        StandardCharsets.UTF_8,
-        StandardOpenOption.APPEND);
-    return "Some ID";
+    Path path = Paths.get(String.valueOf(this.getClass().getResource("database.txt")));
+
+    //    Files.writeString(
+    //        Paths.get(String.valueOf(path)),
+    //
+    //        (username + System.lineSeparator())
+    //        StandardCharsets.UTF_8,
+    //        StandardOpenOption.APPEND);
+    return path.toString();
   }
 
   @Override
