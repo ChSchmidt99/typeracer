@@ -110,6 +110,7 @@ class Connection implements Closeable {
         break;
       case Request.Types.PLAYER_READY:
         api.setPlayerReady(id, request.isReady);
+        break;
       default:
         Logger.logError("Unknown Request type: " + request.type);
     }

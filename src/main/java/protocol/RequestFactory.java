@@ -45,18 +45,22 @@ public class RequestFactory {
 
   public static Request makeStartRaceRequest() {
     return new Request(Request.Types.START_RACE);
-
   }
 
   public static Request makeLeaveLobbyRequest() {
     return new Request(Request.Types.LEAVE_LOBBY);
-
   }
 
   public static Request makeGetOpenLobbiesRequest() {
     return new Request(Request.Types.GET_LOBBIES);
   }
 
+  /**
+   * Make a is ready {@link Request} used to set player to be ready or not.
+   *
+   * @param isReady whether or not user is ready
+   * @return {@link Request}
+   */
   public static Request makeIsReadyRequest(boolean isReady) {
     Request request = new Request(Request.Types.PLAYER_READY);
     request.isReady = isReady;

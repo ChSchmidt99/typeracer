@@ -17,13 +17,13 @@ import server.PushService;
 class Lobby {
 
   private final String lobbyId;
-  private final HashMap<String, Player> players;
+  private final HashMap<String, LobbyMember> members;
   private final PushService pushService;
   private final Database database;
   private Race race;
 
   Lobby(String lobbyId, PushService pushService) {
-    this.players = new HashMap<>();
+    this.members = new HashMap<>();
     this.lobbyId = lobbyId;
     this.pushService = pushService;
     // TODO: replace with real Database once ready
@@ -31,39 +31,47 @@ class Lobby {
   }
 
   void join(String connectionId, String userId) {
-    Player player = new Player(userId, this.database.getUsername(userId));
-    players.put(connectionId, player);
+    String username = this.database.getUsername(userId);
+    LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username);
+    members.put(connectionId, lobbyMember);
     broadcastLobbyUpdate();
   }
 
   void leave(String connectionId) {
     // TODO: Assign new host, if host leaves
-    players.remove(connectionId);
+    members.remove(connectionId);
     broadcastLobbyUpdate();
   }
 
-  void startGame() {
-    this.race = new Race(this.database, getReadyPlayers());
-    broadcast(ResponseFactory.makeRaceStartingResponse(this.race.getModel()));
+  void startGame(String connectionId) {
+    List<Player> readyPlayers = getReadyPlayers();
+    if (readyPlayers.size() == 0) {
+      // TODO: Central place for all error messages
+      Response error = ResponseFactory.makeErrorResponse("No players ready");
+      pushService.sendResponse(connectionId, error);
+      return;
+    }
+    this.race = new Race(this.database.getTextToType(), readyPlayers, pushService);
   }
 
   LobbyModel lobbyModel() {
     List<String> playerNames = new ArrayList<>();
-    for (Map.Entry<String, Player> entry : players.entrySet()) {
+    for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
       playerNames.add(entry.getValue().getName());
     }
     return new LobbyModel(lobbyId, playerNames, isRunning());
   }
 
   void setPlayerReady(String connectionId, boolean isReady) {
-    players.get(connectionId).setIsReady(isReady);
+    members.get(connectionId).setIsReady(isReady);
   }
 
-  private List<String> getReadyPlayers() {
-    List<String> readyPlayers = new ArrayList<>();
-    for (Map.Entry<String, Player> entry : players.entrySet()) {
+  private List<Player> getReadyPlayers() {
+    List<Player> readyPlayers = new ArrayList<>();
+    for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
       if (entry.getValue().getIsReady()) {
-        readyPlayers.add(entry.getValue().getName());
+        LobbyMember member = entry.getValue();
+        readyPlayers.add(member.toPlayer());
       }
     }
     return readyPlayers;
@@ -77,7 +85,7 @@ class Lobby {
   }
 
   private void broadcast(Response response) {
-    pushService.sendResponse(players.keySet(), response);
+    pushService.sendResponse(members.keySet(), response);
   }
 
   private void broadcastLobbyUpdate() {

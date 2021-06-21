@@ -1,31 +1,26 @@
 package backend;
 
-class Player {
+/**
+ * Used to represent a Player in an ongoing race.
+ */
+public class Player {
 
-  private boolean isReady;
   private final String userId;
   private final String name;
+  private final String connectionId;
 
-  Player(String userId, String name) {
-    this.isReady = false;
+  Player(String userId, String connectionId, String name) {
     this.userId = userId;
+    this.connectionId = connectionId;
     this.name = name;
   }
 
-  void setIsReady(boolean isReady) {
-    this.isReady = isReady;
-  }
-
-  String getUserId() {
-    return userId;
+  String getConnectionId() {
+    return connectionId;
   }
 
   String getName() {
     return name;
-  }
-
-  boolean getIsReady() {
-    return isReady;
   }
 
 }

@@ -24,9 +24,10 @@ public class Main implements ClientObserver {
       client.subscribe(m);
       client.registerUser("Cooler Mensch");
       client.requestLobbies();
-      client.newGame("some userId");
+      client.newLobby("some userId");
       client.requestLobbies();
-      client.startGame();
+      //client.setIsReady(true);
+      client.startRace();
     } catch (IOException e) {
       System.out.print(e.getMessage());
     }
@@ -49,17 +50,15 @@ public class Main implements ClientObserver {
 
   @Override
   public void receivedLobbyUpdate(LobbyModel lobby) {
-    System.out.println("Received Lobby update:");
-    System.out.println(lobby.players);
-    System.out.println(lobby.id);
+    System.out.println("Received Lobby update: " + lobby);
     System.out.println(lobby.isRunning);
+    System.out.println(lobby.id);
+    System.out.println(lobby.players);
   }
 
   @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {
-    System.out.println("Open lobbies:");
-    System.out.println(lobbies);
+    System.out.println("Open lobbies: " + lobbies);
   }
-
 
 }

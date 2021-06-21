@@ -51,7 +51,6 @@ class ResponseHandler implements Closeable {
     try {
       String line;
       while ((line = this.reader.readLine()) != null) {
-        System.out.println(line);
         Response response = gson.fromJson(line, Response.class);
         receivedResponse(response);
       }

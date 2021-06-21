@@ -44,7 +44,7 @@ class LobbyStore {
 
   void startGame(String connectionId) {
     Lobby lobby = getLobby(connectionId);
-    lobby.startGame();
+    lobby.startGame(connectionId);
   }
 
   List<LobbyModel> getOpenLobbies() {
