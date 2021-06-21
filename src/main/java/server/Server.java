@@ -51,6 +51,10 @@ public class Server implements Closeable, OnDisconnect {
 
   /**
    * Run the server on the specified port.
+   *
+   * @param port the port to run the server on
+   *
+   * @throws IOException when server cannot be started
    */
   public void run(int port) throws IOException {
     socket = new ServerSocket(port);

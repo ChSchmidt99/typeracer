@@ -12,6 +12,8 @@ public class StartscreenController extends Controller {
 
   /**
    * Constructor for StartscreenController; creates a new Startscreen.
+   *
+   * @param stage JavaFx stage to host the view in
    */
   public StartscreenController(Stage stage) {
     super(stage, FXMLPATH);

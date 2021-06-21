@@ -37,3 +37,5 @@ This jar can be executed with `java -jar build/libs/sample.jar`
 To run the application during development without any checks, run `./gradlew run` .
 
 To start the server, run `./gradlew runServer` .
+
+To run the provided jar releases use `java -jar server.jar` or `java -jar client.jar` 

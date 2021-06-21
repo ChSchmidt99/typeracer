@@ -129,6 +129,10 @@ test {
 // Maybe even track test report and JavaDoc-HTML in Repository?
 
 // TODO: (for students) Think about configuring the JavaDoc task used for generating JavaDoc HTML
+task javaDoc(type: Javadoc) {
+  source = sourceSets.main.allJava
+  classpath = sourceSets.main.runtimeClasspath
+}
 
 jacocoTestReport {
   dependsOn test // always run tests before generating new report
