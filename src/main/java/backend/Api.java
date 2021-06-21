@@ -17,4 +17,6 @@ public interface Api {
 
   void getLobbies(String connectionId);
 
+  void setPlayerReady(String connectionId, boolean isReady);
+
 }

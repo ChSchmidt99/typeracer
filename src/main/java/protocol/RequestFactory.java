@@ -57,4 +57,10 @@ public class RequestFactory {
     return new Request(Request.Types.GET_LOBBIES);
   }
 
+  public static Request makeIsReadyRequest(boolean isReady) {
+    Request request = new Request(Request.Types.PLAYER_READY);
+    request.isReady = isReady;
+    return request;
+  }
+
 }

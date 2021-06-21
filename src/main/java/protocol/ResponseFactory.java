@@ -34,12 +34,12 @@ public class ResponseFactory {
   /**
    * Make race starting response. Used to notify users when a race is about to start.
    *
-   * @param textToType text of the race
+   * @param model {@link RaceModel} of the started race
    * @return {@link Response}
    */
-  public static Response makeRaceStartingResponse(String textToType) {
+  public static Response makeRaceStartingResponse(RaceModel model) {
     Response response = new Response(Response.Types.GAME_STARTING);
-    response.race = new RaceModel(textToType);
+    response.race = model;
     return response;
   }
 

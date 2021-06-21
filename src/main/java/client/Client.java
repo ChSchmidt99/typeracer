@@ -33,6 +33,8 @@ public interface Client {
 
   void requestLobbies();
 
+  void setIsReady(boolean isReady);
+
   /**
    * Subscribe to receive responses.
    *

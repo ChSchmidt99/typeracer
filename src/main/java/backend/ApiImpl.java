@@ -64,4 +64,9 @@ public class ApiImpl implements Api {
     pushService.sendResponse(connectionId, response);
   }
 
+  @Override
+  public void setPlayerReady(String connectionId, boolean isReady) {
+    lobbyStore.setPlayerReady(connectionId, isReady);
+  }
+
 }

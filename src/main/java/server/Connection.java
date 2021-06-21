@@ -108,6 +108,8 @@ class Connection implements Closeable {
       case Request.Types.GET_LOBBIES:
         api.getLobbies(id);
         break;
+      case Request.Types.PLAYER_READY:
+        api.setPlayerReady(id, request.isReady);
       default:
         Logger.logError("Unknown Request type: " + request.type);
     }

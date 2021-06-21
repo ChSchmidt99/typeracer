@@ -17,24 +17,22 @@ import server.PushService;
 class Lobby {
 
   private final String lobbyId;
-  private boolean isRunning;
-  private final String hostConnectionId;
-  private final HashMap<String, String> players;
+  private final HashMap<String, Player> players;
   private final PushService pushService;
   private final Database database;
+  private Race race;
 
-  Lobby(String lobbyId, String hostConnectionId, PushService pushService) {
-    this.hostConnectionId = hostConnectionId;
+  Lobby(String lobbyId, PushService pushService) {
     this.players = new HashMap<>();
     this.lobbyId = lobbyId;
-    this.isRunning = false;
     this.pushService = pushService;
     // TODO: replace with real Database once ready
     this.database = new MockDatabase();
   }
 
   void join(String connectionId, String userId) {
-    players.put(connectionId, userId);
+    Player player = new Player(userId, this.database.getUsername(userId));
+    players.put(connectionId, player);
     broadcastLobbyUpdate();
   }
 
@@ -45,17 +43,37 @@ class Lobby {
   }
 
   void startGame() {
-    this.isRunning = true;
-    String text = database.getTextToType();
-    broadcast(ResponseFactory.makeRaceStartingResponse(text));
+    this.race = new Race(this.database, getReadyPlayers());
+    broadcast(ResponseFactory.makeRaceStartingResponse(this.race.getModel()));
   }
 
   LobbyModel lobbyModel() {
     List<String> playerNames = new ArrayList<>();
-    for (Map.Entry<String, String> entry : players.entrySet()) {
-      playerNames.add(database.getUsername(players.get(entry.getValue())));
+    for (Map.Entry<String, Player> entry : players.entrySet()) {
+      playerNames.add(entry.getValue().getName());
     }
-    return new LobbyModel(lobbyId, playerNames, isRunning);
+    return new LobbyModel(lobbyId, playerNames, isRunning());
+  }
+
+  void setPlayerReady(String connectionId, boolean isReady) {
+    players.get(connectionId).setIsReady(isReady);
+  }
+
+  private List<String> getReadyPlayers() {
+    List<String> readyPlayers = new ArrayList<>();
+    for (Map.Entry<String, Player> entry : players.entrySet()) {
+      if (entry.getValue().getIsReady()) {
+        readyPlayers.add(entry.getValue().getName());
+      }
+    }
+    return readyPlayers;
+  }
+
+  private boolean isRunning() {
+    if (this.race == null) {
+      return false;
+    }
+    return this.race.getIsRunning();
   }
 
   private void broadcast(Response response) {

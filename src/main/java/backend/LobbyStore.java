@@ -24,7 +24,7 @@ class LobbyStore {
 
   String createNewLobby(String connectionId, PushService pushService) {
     String lobbyId = generator.getId();
-    Lobby lobby = new Lobby(lobbyId, connectionId, pushService);
+    Lobby lobby = new Lobby(lobbyId, pushService);
     lobbies.put(lobbyId, lobby);
     return lobbyId;
   }
@@ -56,9 +56,15 @@ class LobbyStore {
     return openLobbies;
   }
 
+  void setPlayerReady(String connectionId, boolean isReady) {
+    Lobby lobby = getLobby(connectionId);
+    lobby.setPlayerReady(connectionId, isReady);
+
+  }
+
   private Lobby getLobby(String connectionId) {
-    String gameId = connectionIds.get(connectionId);
-    return lobbies.get(gameId);
+    String lobbyId = connectionIds.get(connectionId);
+    return lobbies.get(lobbyId);
   }
 
 }

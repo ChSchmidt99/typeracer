@@ -45,38 +45,37 @@ public class ClientImpl implements Closeable, Client {
 
   @Override
   public void registerUser(String userName) {
-    Request request = RequestFactory.makeRegisterRequest(userName);
-    sendRequest(request);
+    sendRequest(RequestFactory.makeRegisterRequest(userName));
   }
 
   @Override
   public void newGame(String userId) {
-    Request request = RequestFactory.makeNewLobbyRequest(userId);
-    sendRequest(request);
+    sendRequest(RequestFactory.makeNewLobbyRequest(userId));
   }
 
   @Override
   public void joinGame(String userId, String gameId) {
-    Request request = RequestFactory.makeJoinLobbyRequest(userId, gameId);
-    sendRequest(request);
+    sendRequest(RequestFactory.makeJoinLobbyRequest(userId, gameId));
   }
 
   @Override
   public void startGame() {
-    Request request = RequestFactory.makeStartRaceRequest();
-    sendRequest(request);
+    sendRequest(RequestFactory.makeStartRaceRequest());
   }
 
   @Override
   public void leaveGame() {
-    Request request = RequestFactory.makeLeaveLobbyRequest();
-    sendRequest(request);
+    sendRequest(RequestFactory.makeLeaveLobbyRequest());
   }
 
   @Override
   public void requestLobbies() {
-    Request request = RequestFactory.makeGetOpenLobbiesRequest();
-    sendRequest(request);
+    sendRequest(RequestFactory.makeGetOpenLobbiesRequest());
+  }
+
+  @Override
+  public void setIsReady(boolean isReady) {
+    sendRequest(RequestFactory.makeIsReadyRequest(isReady));
   }
 
   @Override
