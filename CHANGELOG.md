@@ -6,6 +6,13 @@ The format is based on
 and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
+## [Abgabe 2] - 2021-06-20
+### Added
+- server browser screen
+- create game screen
+- game lobby screen  
+- all necessary controllers and fxml files
+- basic transition functionality
 ## [Abgabe 1] 
 
 ## [0.0.2] - 2021-06-20
@@ -19,3 +26,7 @@ and this project adheres to
 - Runnable server that waits for socket connections and calls Api with corresponding requests
 - Client that provides an interface to make server requests
 - Factory classes for Request and Response
+## [Abgabe 1] - 2021-06-10
+### Added
+- main method
+- basic startscreen
