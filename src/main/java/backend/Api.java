@@ -1,5 +1,7 @@
 package backend;
 
+import protocol.ProgressSnapshot;
+
 /**
  * Provides an interface for all Backend operations.
  */
@@ -59,4 +61,11 @@ public interface Api {
    */
   void setPlayerReady(String connectionId, boolean isReady);
 
+  /**
+   * Call to update a players race progress.
+   *
+   * @param connectionId id of the server connection
+   * @param snapshot snapshot of the race progress
+   */
+  void updateProgress(String connectionId, ProgressSnapshot snapshot);
 }

@@ -16,6 +16,7 @@ public class Response {
     public static final String GAME_STARTING = "game starting";
     public static final String REGISTERED = "registered";
     public static final String OPEN_LOBBIES = "open lobbies";
+    public static final String RACE_UPDATE = "race update";
   }
 
   public final String type;
@@ -29,6 +30,8 @@ public class Response {
   public RaceModel race;
 
   public List<LobbyModel> lobbies;
+
+  public List<PlayerUpdate> playerUpdates;
 
   /**
    * Create a Request with given params.

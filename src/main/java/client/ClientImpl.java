@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+
+import protocol.ProgressSnapshot;
 import protocol.Request;
 import protocol.RequestFactory;
 
@@ -76,6 +78,11 @@ public class ClientImpl implements Closeable, Client {
   @Override
   public void setIsReady(boolean isReady) {
     sendRequest(RequestFactory.makeIsReadyRequest(isReady));
+  }
+
+  @Override
+  public void sendProgressUpdate(ProgressSnapshot snapshot) {
+    sendRequest(RequestFactory.makeProgressUpdateRequest(snapshot));
   }
 
   @Override

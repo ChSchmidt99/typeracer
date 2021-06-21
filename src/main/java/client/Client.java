@@ -1,5 +1,7 @@
 package client;
 
+import protocol.ProgressSnapshot;
+
 /**
  * Provides interface for all Server communication.
  */
@@ -48,6 +50,9 @@ public interface Client {
    * @param isReady whether or not the user is ready
    */
   void setIsReady(boolean isReady);
+
+
+  void sendProgressUpdate(ProgressSnapshot snapshot);
 
   /**
    * Subscribe to receive responses.

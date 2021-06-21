@@ -1,12 +1,8 @@
 package backend;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import protocol.RaceModel;
-import protocol.Response;
-import protocol.ResponseFactory;
+import java.util.*;
+
+import protocol.*;
 import server.PushService;
 
 /**
@@ -15,7 +11,7 @@ import server.PushService;
 class Race {
 
   private final String textToType;
-  private final List<Player> players;
+  private final Map<String, Player> players;
   private final PushService pushService;
   private boolean isRunning;
 
@@ -25,7 +21,7 @@ class Race {
    * @param textToType text that needs to be typed
    * @param players all players connected to the game
    */
-  Race(String textToType, List<Player> players, PushService pushService) {
+  Race(String textToType, Map<String, Player> players, PushService pushService) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
@@ -35,8 +31,8 @@ class Race {
 
   RaceModel getModel() {
     List<String> playerNames = new ArrayList<>();
-    for (Player player : players) {
-      playerNames.add(player.getName());
+    for (Map.Entry<String, Player> entry : players.entrySet()) {
+      playerNames.add(entry.getValue().getName());
     }
     return new RaceModel(this.textToType, playerNames);
   }
@@ -45,15 +41,28 @@ class Race {
     return isRunning;
   }
 
+  void updateProgress(String connectionId, ProgressSnapshot snapshot) {
+    Player player = players.get(connectionId);
+    player.updateProgress(snapshot);
+    // TODO: Only for testing, in the future send updates in interval
+    broadcastUpdate();
+  }
+
+  void broadcastUpdate() {
+    List<PlayerUpdate> updates = new ArrayList<>();
+    for(Map.Entry<String, Player> entry : players.entrySet()) {
+      updates.add(entry.getValue().getUpdate());
+    }
+    Response response = ResponseFactory.makeRaceUpdatesResponse(updates);
+    broadcast(response);
+  }
+
   private void broadCastGameStarting() {
     broadcast(ResponseFactory.makeRaceStartingResponse(getModel()));
   }
 
   private void broadcast(Response response) {
-    Set<String> connectionIds = new HashSet<>();
-    for (Player player : players) {
-      connectionIds.add(player.getConnectionId());
-    }
+    Set<String> connectionIds = players.keySet();
     pushService.sendResponse(connectionIds, response);
   }
 

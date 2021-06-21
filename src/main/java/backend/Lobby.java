@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import protocol.LobbyModel;
+import protocol.ProgressSnapshot;
 import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
@@ -44,7 +45,7 @@ class Lobby {
   }
 
   void startGame(String connectionId) {
-    List<Player> readyPlayers = getReadyPlayers();
+    Map<String, Player> readyPlayers = getReadyPlayers();
     if (readyPlayers.size() == 0) {
       // TODO: Central place for all error messages
       Response error = ResponseFactory.makeErrorResponse("No players ready");
@@ -66,22 +67,34 @@ class Lobby {
     members.get(connectionId).setIsReady(isReady);
   }
 
-  private List<Player> getReadyPlayers() {
-    List<Player> readyPlayers = new ArrayList<>();
-    for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      if (entry.getValue().getIsReady()) {
-        LobbyMember member = entry.getValue();
-        readyPlayers.add(member.toPlayer());
-      }
-    }
-    return readyPlayers;
-  }
-
-  private boolean isRunning() {
+  boolean isRunning() {
     if (this.race == null) {
       return false;
     }
     return this.race.getIsRunning();
+  }
+
+  Race getRace() {
+    return this.race;
+  }
+
+  String getLobbyId() {
+    return this.lobbyId;
+  }
+
+  boolean isEmpty() {
+    return this.members.isEmpty();
+  }
+
+  private Map<String, Player> getReadyPlayers() {
+    Map<String, Player> readyPlayers = new HashMap<>();
+    for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
+      if (entry.getValue().getIsReady()) {
+        LobbyMember member = entry.getValue();
+        readyPlayers.put(entry.getKey(), member.toPlayer());
+      }
+    }
+    return readyPlayers;
   }
 
   private void broadcast(Response response) {

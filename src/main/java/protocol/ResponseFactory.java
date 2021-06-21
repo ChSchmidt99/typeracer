@@ -67,4 +67,16 @@ public class ResponseFactory {
     return response;
   }
 
+  /**
+   * Make Player updates response. Used to send game updates to all clients.
+   *
+   * @param updates all updated players
+   * @return {@link Response}
+   */
+  public static Response makeRaceUpdatesResponse(List<PlayerUpdate> updates) {
+    Response response = new Response(Response.Types.RACE_UPDATE);
+    response.playerUpdates = updates;
+    return response;
+  }
+
 }

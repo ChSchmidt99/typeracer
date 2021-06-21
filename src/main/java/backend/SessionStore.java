@@ -5,18 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import protocol.LobbyModel;
+import protocol.ProgressSnapshot;
 import server.PushService;
 
 /**
- * Holds all currently running games and forwards calls to the correct instances.
+ * Holds all currently running lobbies and forwards calls to the correct instances.
  */
-class LobbyStore {
+class SessionStore {
 
   private final IdGenerator generator;
   private final HashMap<String, Lobby> lobbies;
   private final HashMap<String, String> connectionIds;
 
-  LobbyStore() {
+  SessionStore() {
     this.generator = new IdGenerator(0);
     this.lobbies = new HashMap<>();
     this.connectionIds = new HashMap<>();
@@ -39,7 +40,9 @@ class LobbyStore {
     Lobby lobby = getLobby(connectionId);
     lobby.leave(connectionId);
     connectionIds.remove(connectionId);
-    // TODO: remove lobby when empty
+    if (lobby.isEmpty()) {
+      lobbies.remove(lobby.getLobbyId());
+    }
   }
 
   void startGame(String connectionId) {
@@ -62,9 +65,17 @@ class LobbyStore {
 
   }
 
+  void updateProgress(String connectionId, ProgressSnapshot snapshot) {
+    Lobby lobby = getLobby(connectionId);
+    // TODO: Send or log error when no race running
+    if (lobby.isRunning()) {
+      Race race = lobby.getRace();
+      race.updateProgress(connectionId, snapshot);
+    }
+  }
+
   private Lobby getLobby(String connectionId) {
     String lobbyId = connectionIds.get(connectionId);
     return lobbies.get(lobbyId);
   }
-
 }

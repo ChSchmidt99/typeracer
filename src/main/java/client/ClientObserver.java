@@ -2,6 +2,7 @@ package client;
 
 import java.util.List;
 import protocol.LobbyModel;
+import protocol.PlayerUpdate;
 import protocol.RaceModel;
 
 /**
@@ -43,5 +44,12 @@ public interface ClientObserver {
    * @param lobbies list of open lobbies
    */
   void receivedOpenLobbies(List<LobbyModel> lobbies);
+
+  /**
+   * Called when the progress of players was updated.
+   *
+   * @param updates updated players
+   */
+  void receivedRaceUpdate(List<PlayerUpdate> updates);
 
 }

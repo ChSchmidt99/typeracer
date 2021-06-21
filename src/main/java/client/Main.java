@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 import protocol.LobbyModel;
+import protocol.PlayerUpdate;
+import protocol.ProgressSnapshot;
 import protocol.RaceModel;
 
 /**
@@ -26,8 +28,9 @@ public class Main implements ClientObserver {
       client.requestLobbies();
       client.newLobby("some userId");
       client.requestLobbies();
-      //client.setIsReady(true);
+      client.setIsReady(true);
       client.startRace();
+      client.sendProgressUpdate(new ProgressSnapshot(0,0,0,0));
     } catch (IOException e) {
       System.out.print(e.getMessage());
     }
@@ -51,14 +54,19 @@ public class Main implements ClientObserver {
   @Override
   public void receivedLobbyUpdate(LobbyModel lobby) {
     System.out.println("Received Lobby update: " + lobby);
-    System.out.println(lobby.isRunning);
-    System.out.println(lobby.id);
-    System.out.println(lobby.players);
+    //System.out.println(lobby.isRunning);
+    //System.out.println(lobby.id);
+    //System.out.println(lobby.players);
   }
 
   @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {
     System.out.println("Open lobbies: " + lobbies);
+  }
+
+  @Override
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
+    System.out.println("Race update: " + updates);
   }
 
 }

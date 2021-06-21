@@ -87,6 +87,11 @@ class ResponseHandler implements Closeable {
           observer.receivedOpenLobbies(response.lobbies);
         });
         break;
+      case Response.Types.RACE_UPDATE:
+        observers.forEach((observer) -> {
+          observer.receivedRaceUpdate(response.playerUpdates);
+        });
+        break;
       default:
         System.out.println("Received unknown ResponseType: " + response.type);
     }
