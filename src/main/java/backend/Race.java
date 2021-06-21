@@ -1,13 +1,17 @@
 package backend;
 
-import java.util.*;
-
-import protocol.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import protocol.PlayerUpdate;
+import protocol.ProgressSnapshot;
+import protocol.RaceModel;
+import protocol.Response;
+import protocol.ResponseFactory;
 import server.PushService;
 
-/**
- * Represents a single race.
- */
+/** Represents a single race. */
 class Race {
 
   private final String textToType;
@@ -43,14 +47,14 @@ class Race {
 
   void updateProgress(String connectionId, ProgressSnapshot snapshot) {
     Player player = players.get(connectionId);
-    player.updateProgress(snapshot);
+    player.updateProgress(snapshot, textToType.length());
     // TODO: Only for testing, in the future send updates in interval
     broadcastUpdate();
   }
 
   void broadcastUpdate() {
     List<PlayerUpdate> updates = new ArrayList<>();
-    for(Map.Entry<String, Player> entry : players.entrySet()) {
+    for (Map.Entry<String, Player> entry : players.entrySet()) {
       updates.add(entry.getValue().getUpdate());
     }
     Response response = ResponseFactory.makeRaceUpdatesResponse(updates);
@@ -65,5 +69,4 @@ class Race {
     Set<String> connectionIds = players.keySet();
     pushService.sendResponse(connectionIds, response);
   }
-
 }

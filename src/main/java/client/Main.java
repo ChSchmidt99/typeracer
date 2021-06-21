@@ -30,7 +30,7 @@ public class Main implements ClientObserver {
       client.requestLobbies();
       client.setIsReady(true);
       client.startRace();
-      client.sendProgressUpdate(new ProgressSnapshot(0,0,0,0));
+      client.sendProgressUpdate(new ProgressSnapshot(0, 60, 10, 0));
     } catch (IOException e) {
       System.out.print(e.getMessage());
     }
@@ -54,9 +54,9 @@ public class Main implements ClientObserver {
   @Override
   public void receivedLobbyUpdate(LobbyModel lobby) {
     System.out.println("Received Lobby update: " + lobby);
-    //System.out.println(lobby.isRunning);
-    //System.out.println(lobby.id);
-    //System.out.println(lobby.players);
+    System.out.println(lobby.isRunning);
+    System.out.println(lobby.id);
+    System.out.println(lobby.players);
   }
 
   @Override
@@ -67,6 +67,8 @@ public class Main implements ClientObserver {
   @Override
   public void receivedRaceUpdate(List<PlayerUpdate> updates) {
     System.out.println("Race update: " + updates);
+    System.out.println("Wpm: " + updates.get(0).wpm);
+    System.out.println("Wpm: " + updates.get(0).percentProgress);
   }
 
 }
