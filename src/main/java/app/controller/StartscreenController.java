@@ -1,7 +1,10 @@
 package app.controller;
 
+import client.ClientImpl;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+
+import java.net.InetAddress;
 
 /**
  * Handles transition functionality for startscreen.
@@ -21,7 +24,11 @@ public class StartscreenController extends Controller {
 
   @FXML
   private void switchToServerBrowser() {
-    new ServerBrowserController(stage);
+    try {
+      new ServerBrowserController(stage, new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML

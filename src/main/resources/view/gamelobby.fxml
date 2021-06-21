@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -18,15 +19,10 @@
             <VBox.margin>
                 <Insets top="30.0" />
             </VBox.margin>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                <VBox>
-                    <padding>
-                        <Insets left="20.0" />
-                    </padding>
-                    <Label styleClass="listlabel" text="Username1" />
-                    <Label styleClass="listlabel" text="Username2" />
-                    <Label styleClass="listlabel" text="Username3" />
-                </VBox>
+            <AnchorPane prefHeight="200.0" prefWidth="620.0">
+            <children>
+               <ListView fx:id="userlist" prefHeight="200.0" prefWidth="640.0" />
+            </children>
             </AnchorPane>
         </ScrollPane>
             <Button onAction="#startGame" text="Start Game" />
