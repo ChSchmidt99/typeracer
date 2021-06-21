@@ -151,7 +151,6 @@ jacocoTestCoverageVerification {
             }
         }
     }
-  }
 }
 
 apply plugin: "com.github.johnrengelman.shadow"
