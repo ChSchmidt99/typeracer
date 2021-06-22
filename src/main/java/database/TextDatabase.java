@@ -9,13 +9,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/** class to save texts from txt file into a array list. */
 public class TextDatabase {
 
   private ArrayList<String> dictionary;
 
+  /** constructor to initialize dictionary data structure. */
   public TextDatabase() throws IOException {
     dictionary = new ArrayList<String>();
     URL path = this.getClass().getClassLoader().getResource("dictionary.txt");
+    // URL path = this.getClass().getClassLoader().getResource("database.txt");
     if (path == null) {
       throw new FileNotFoundException();
     }
@@ -32,15 +35,22 @@ public class TextDatabase {
     s.close();
   }
 
+  /** getter to retrieve a dictionary. */
   public ArrayList<String> getDictionary() {
     return dictionary;
   }
 
+  /** getter to retrieve a random text from the dictionary. */
   public String getPhrase() {
     int guessedIndex = new Random().nextInt(dictionary.size());
     return dictionary.get(guessedIndex);
   }
 
+  /**
+   * testing method.
+   *
+   * @param args provides arguments as in usual main class.
+   */
   public static void main(String[] args) {
     try {
       TextDatabase t = new TextDatabase();
