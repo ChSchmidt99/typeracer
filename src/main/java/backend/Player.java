@@ -13,6 +13,7 @@ public class Player {
   private final String connectionId;
   private int wpm;
   private float progress;
+  private long raceDuration;
   //private int mistakes;
 
   Player(String userId, String connectionId, String name) {
@@ -21,6 +22,7 @@ public class Player {
     this.name = name;
     this.wpm = 0;
     this.progress = 0;
+    this.raceDuration = 0;
     //this.mistakes = 0;
   }
 
@@ -33,14 +35,17 @@ public class Player {
   }
 
   void updateProgress(ProgressSnapshot snapshot, int textLength) {
-    long durationSec = snapshot.timestamp - snapshot.raceStartTime;
-    this.wpm = wordsPerMinute(snapshot.progress, durationSec);
+    if (isFinished()) {
+      return;
+    }
+    this.raceDuration = snapshot.timestamp - snapshot.raceStartTime;
+    this.wpm = wordsPerMinute(snapshot.progress, raceDuration);
     this.progress = (float) snapshot.progress / textLength;
     //this.mistakes = snapshot.mistakes;
   }
 
   PlayerUpdate getUpdate() {
-    return new PlayerUpdate(this.userId, wpm, progress);
+    return new PlayerUpdate(this.userId, wpm, progress, isFinished(), raceDuration);
   }
 
   private int wordsPerMinute(int charsTyped, long durationInSec) {
@@ -48,6 +53,10 @@ public class Player {
     int wordsTyped = charsTyped / 5;
     System.out.println(wordsTyped + " / " + durationInMin);
     return (int) (wordsTyped / durationInMin);
+  }
+
+  private boolean isFinished() {
+    return this.progress == 1;
   }
 
 }

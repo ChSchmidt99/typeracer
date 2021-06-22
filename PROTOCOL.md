@@ -123,7 +123,9 @@ While a race is running, the server will send updates to all clients in some giv
       {
         "userId" : "<some userId>",
         "wpm" : "<number of words per minute>",
-        "percentProgress" : "<progress percentage in range [0,1]>"
+        "percentProgress" : "<progress percentage in range [0,1]>",
+        "isFinished" : "<boolean>",
+        "raceDuration" : "<duration of race as unix epoch long>"
       }
     ]
 }
