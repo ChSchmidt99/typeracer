@@ -62,7 +62,7 @@ public class Server implements Closeable, OnDisconnect {
     Logger.logInfo("Connection " + connection.getId() + " disconnected");
     closeables.remove(connection);
     connection.close();
-    // pushService.removeConnection((java.sql.Connection) connection);
+    pushService.removeConnection(connection);
   }
 
   private void awaitConnections() throws IOException {
@@ -72,7 +72,7 @@ public class Server implements Closeable, OnDisconnect {
       if (clientSocket != null) {
         Logger.logInfo("Accepted Connection, Socket: " + clientSocket);
         Connection connection = new Connection(clientSocket, this.api);
-        // pushService.addConnection((java.sql.Connection) connection);
+        pushService.addConnection(connection);
         closeables.add(connection);
         executorService.execute(
             () -> {

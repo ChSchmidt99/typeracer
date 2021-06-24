@@ -23,7 +23,6 @@ public class TestDatabase implements Database {
    */
   @Override
   public String registerUser(String username) throws IOException {
-    // String path = this.getClass().getClassLoader().getResource("dictionary.txt").getPath();
     String path = this.getClass().getClassLoader().getResource("database.txt").getPath();
 
     Files.writeString(
