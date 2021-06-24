@@ -36,7 +36,8 @@ public class RequestFactoryTest {
   void join_game_request() {
     String userId = UUID.randomUUID().toString();
     String gameId = UUID.randomUUID().toString();
-    String expected = String.format("{\"type\":\"join game\",\"userId\":\"%s\",\"gameId\":\"%s\"}",
+    String expected = String.format("{\"type\":\"join game\",
+    \"userId\":\"%s\",\"gameId\":\"%s\"}",
             userId, gameId);
     Request request = RequestFactory.makeJoinGameRequest(userId, gameId);
     String result = gson.toJson(request);

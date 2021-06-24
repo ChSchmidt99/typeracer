@@ -1,8 +1,20 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:5.2.0"
+    }
+}
+
 plugins {
     id "java"
     id "application"
     id "checkstyle"
     id "jacoco"
+    id 'org.openjfx.javafxplugin' version '0.0.10'
     id "com.github.spotbugs" version "4.2.3"
 }
 
@@ -11,58 +23,82 @@ repositories {
 }
 
 dependencies {
+    implementation 'junit:junit:4.13.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    implementation 'com.google.code.gson:gson:2.8.7'
+
+    implementation "org.openjfx:javafx-base:11:win"
+    implementation "org.openjfx:javafx-graphics:11:win"
+    implementation "org.openjfx:javafx-controls:11:win"
+    implementation "org.openjfx:javafx-fxml:11:win"
+    implementation "org.openjfx:javafx-web:11:win"
+    implementation "org.openjfx:javafx-swing:11:win"
+    implementation "org.openjfx:javafx-media:11:win"
+
+    implementation "org.openjfx:javafx-base:11:linux"
+    implementation "org.openjfx:javafx-graphics:11:linux"
+    implementation "org.openjfx:javafx-controls:11:linux"
+    implementation "org.openjfx:javafx-fxml:11:linux"
+    implementation "org.openjfx:javafx-web:11:linux"
+    implementation "org.openjfx:javafx-swing:11:linux"
+    implementation "org.openjfx:javafx-media:11:linux"
+
+    implementation "org.openjfx:javafx-base:11:mac"
+    implementation "org.openjfx:javafx-graphics:11:mac"
+    implementation "org.openjfx:javafx-controls:11:mac"
+    implementation "org.openjfx:javafx-fxml:11:mac"
+    implementation "org.openjfx:javafx-web:11:mac"
+    implementation "org.openjfx:javafx-swing:11:mac"
+    implementation "org.openjfx:javafx-media:11:mac"
 }
 
-application {
-    mainClass = 'de.lmu.ifi.sosylab.HelloWorld'
+mainClassName = "app.Runner"
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-task worldJar(type: Jar) {
+task clientJar(type: Jar) {
     dependsOn compileJava
 
-    archiveBaseName = "world"
-    from(sourceSets.main.output) {
+    archiveBaseName = "client"
+    from (sourceSets.main.output) {
         include "**"
-        exclude "**/HelloMars.class"  // not needed for HelloWorld
+        exclude "server/**"
     }
-
-    sourceSets {
-        main {
-            resources {
-                srcDirs "src/main/java/database/resources"
-            }
-        }
-    }
-
 
     manifest {
         attributes(
-                'Main-Class': 'de.lmu.ifi.sosylab.HelloWorld'
+                'Main-Class': 'app.Runner'
         )
     }
 }
 
-task marsJar(type: Jar) {
+task serverJar(type: Jar) {
     dependsOn compileJava
 
-    archiveBaseName = "mars"
-    from(sourceSets.main.output) {
+    archiveBaseName = "server"
+    from (sourceSets.main.output) {
         include "**"
-        exclude "**/HelloWorld.class"  // not needed for HelloMars
+        exclude "client/**"
     }
 
     manifest {
         attributes(
-                'Main-Class': 'de.lmu.ifi.sosylab.HelloMars'
+                'Main-Class': 'app.Main'
         )
     }
 }
-
 
 task jar(type: Jar, overwrite: true) {
-    dependsOn worldJar, marsJar
+    dependsOn clientJar, serverJar
     actions = []  // don't do anything besides calling the dependent jar tasks
+}
+
+task runServer(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'server.Main'
 }
 
 checkstyle {
@@ -93,6 +129,10 @@ test {
 // Maybe even track test report and JavaDoc-HTML in Repository?
 
 // TODO: (for students) Think about configuring the JavaDoc task used for generating JavaDoc HTML
+task javaDoc(type: Javadoc) {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.runtimeClasspath
+}
 
 jacocoTestReport {
     dependsOn test // always run tests before generating new report
@@ -112,3 +152,5 @@ jacocoTestCoverageVerification {
         }
     }
 }
+
+apply plugin: "com.github.johnrengelman.shadow"

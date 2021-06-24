@@ -1,7 +1,5 @@
 package server;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,9 +14,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-/**
- * Server tests.
- */
+import static org.junit.jupiter.api.Assertions.fail;
+
+/** Server tests. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServerTest {
 
@@ -29,14 +27,16 @@ public class ServerTest {
   @BeforeAll
   void startServer() {
     server = new Server();
-    //Logger.setLevel(Logger.LogLevel.ERROR);
-    new Thread(() -> {
-      try {
-        server.run(PORT);
-      } catch (IOException e) {
-        fail(e.getMessage());
-      }
-    }).start();
+    // Logger.setLevel(Logger.LogLevel.ERROR);
+    new Thread(
+            () -> {
+              try {
+                server.run(PORT);
+              } catch (IOException e) {
+                fail(e.getMessage());
+              }
+            })
+        .start();
   }
 
   @Test
@@ -59,21 +59,23 @@ public class ServerTest {
       PrintWriter writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
       writer.println("Hello");
 
-      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
-              StandardCharsets.UTF_8));
+      BufferedReader reader =
+          new BufferedReader(
+              new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 
-      TimerTask timeoutTask = new TimerTask() {
-        public void run() {
-          try {
-            if (!socket.isClosed()) {
-              socket.close();
+      TimerTask timeoutTask =
+          new TimerTask() {
+            public void run() {
+              try {
+                if (!socket.isClosed()) {
+                  socket.close();
+                }
+                fail("Timeout");
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
             }
-            fail("Timeout");
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-      };
+          };
       Timer t = new Timer();
       t.schedule(timeoutTask, TIMEOUT);
       reader.readLine();
@@ -92,5 +94,4 @@ public class ServerTest {
       fail(e.getMessage());
     }
   }
-
 }
