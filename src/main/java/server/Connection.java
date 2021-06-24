@@ -17,7 +17,7 @@
  import protocol.Response;
  import protocol.ResponseFactory;
 
-/ **
+/**
  * Representing a Connection to a Client.
  */
  class Connection implements Closeable {

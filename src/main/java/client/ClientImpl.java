@@ -11,7 +11,7 @@
  import protocol.Request;
  import protocol.RequestFactory;
 
-/ **
+/**
  * Client provides all communication with the server.
  */
  public class ClientImpl implements Closeable, Client {

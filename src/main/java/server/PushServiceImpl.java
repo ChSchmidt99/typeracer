@@ -1,6 +1,5 @@
 package server;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import protocol.Response;
 

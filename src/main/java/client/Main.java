@@ -3,7 +3,7 @@
  import java.io.IOException;
  import java.net.InetAddress;
 
-/ **
+/**
  * Temporary Client main for testing.
  */
  public class Main implements ClientObserver {

@@ -11,7 +11,7 @@
  import java.util.concurrent.ExecutorService;
  import java.util.concurrent.Executors;
 
-/ **
+/**
  * Main instance for Server.
  */
  public class Server implements Closeable, OnDisconnect {

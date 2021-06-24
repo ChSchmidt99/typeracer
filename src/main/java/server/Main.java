@@ -1,6 +1,6 @@
  package server;
 
-/ **
+/**
  * Server main, run Server.
  */
  public class Main {
