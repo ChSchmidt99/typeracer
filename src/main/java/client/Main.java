@@ -1,12 +1,10 @@
- package client;
+package client;
 
- import java.io.IOException;
- import java.net.InetAddress;
+import java.io.IOException;
+import java.net.InetAddress;
 
-/ **
- * Temporary Client main for testing.
- */
- public class Main implements ClientObserver {
+/** Temporary Client main for testing. */
+public class Main implements ClientObserver {
 
   /**
    * Send sample request to server.
@@ -31,4 +29,4 @@
   public void receivedError(String message) {
     System.out.println(message);
   }
- }
+}

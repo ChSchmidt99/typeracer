@@ -1,20 +1,18 @@
- package server;
+package server;
 
- import backend.Api;
- import backend.ApiImpl;
- import java.io.Closeable;
- import java.io.IOException;
- import java.net.ServerSocket;
- import java.net.Socket;
- import java.util.HashSet;
- import java.util.Set;
- import java.util.concurrent.ExecutorService;
- import java.util.concurrent.Executors;
+import backend.Api;
+import backend.ApiImpl;
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-/ **
- * Main instance for Server.
- */
- public class Server implements Closeable, OnDisconnect {
+/** Main instance for Server. */
+public class Server implements Closeable, OnDisconnect {
 
   private ServerSocket socket;
   private final Set<Closeable> closeables;
@@ -23,9 +21,7 @@
   private final Api api;
   private final PushServiceImpl pushService;
 
-  /**
-   * Constructor of Server.
-   */
+  /** Constructor of Server. */
   public Server() {
     isRunning = false;
     closeables = new HashSet<>();
@@ -49,9 +45,7 @@
     socket.close();
   }
 
-  /**
-   * Run the server on the specified port.
-   */
+  /** Run the server on the specified port. */
   public void run(int port) throws IOException {
     socket = new ServerSocket(port);
     isRunning = true;
@@ -68,7 +62,7 @@
     Logger.logInfo("Connection " + connection.getId() + " disconnected");
     closeables.remove(connection);
     connection.close();
-    pushService.removeConnection(connection);
+    // pushService.removeConnection((java.sql.Connection) connection);
   }
 
   private void awaitConnections() throws IOException {
@@ -78,13 +72,13 @@
       if (clientSocket != null) {
         Logger.logInfo("Accepted Connection, Socket: " + clientSocket);
         Connection connection = new Connection(clientSocket, this.api);
-        pushService.addConnection(connection);
+        // pushService.addConnection((java.sql.Connection) connection);
         closeables.add(connection);
-        executorService.execute(() -> {
-          connection.handleRequests(this);
-        });
+        executorService.execute(
+            () -> {
+              connection.handleRequests(this);
+            });
       }
-
     }
   }
- }
+}
