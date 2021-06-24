@@ -2,23 +2,33 @@ package model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Scanner;
+// import java.util.Scanner;
 
+/** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
 public class Typeracer {
 
-  private GameState state;
+  private final GameState state;
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-  Scanner sc = new Scanner(System.in);
+  private Typeracer(final String text) {
+    state = new GameState(text);
+  }
 
-  String input = sc.next();
+  // Scanner sc = new Scanner(System.in);  // User input
 
-  char ch[] = input.toCharArray();
+  // String input = sc.next();
 
-  char myChar = ch[0];
+  // char[] ch = input.toCharArray();
+
+  // char myChar = ch[0];
 
   public void addPropertyChangeListener(final PropertyChangeListener changeListener) {
     support.addPropertyChangeListener(changeListener);
+  }
+
+  public static Typeracer create() {
+    String randomText = "new WordDatabase().getWord()";
+    return new Typeracer(randomText);
   }
 
   private void notifyListeners() {
@@ -29,13 +39,21 @@ public class Typeracer {
     return state;
   }
 
+  /**
+   * Check the given character. This method can only be called on an active game. Otherwise, an
+   * IllegalStateException is thrown.
+   *
+   * @param guessedCharacter character to guess
+   * @return true if the check was successful. false otherwise.
+   * @throws IllegalStateException – if the current Typeracer game is not running
+   */
   public boolean check(char guessedCharacter) {
     if (state.getCurrentGamePhase() != GamePhase.RUNNING) {
       throw new IllegalStateException("Game not running.");
     }
 
     boolean isCharCorrect = state.getTypeChar().checkChar(guessedCharacter);
-    if(state.getTypeChar().checkFinish()){
+    if (state.getTypeChar().checkFinish()) {
       state.endGame();
     }
 
@@ -43,6 +61,12 @@ public class Typeracer {
     return isCharCorrect;
   }
 
+  /**
+   * Forfeit the current game. This method can only be called on an active game. Otherwise, an
+   * IllegalStateException is thrown.
+   *
+   * @throws IllegalStateException – if the current Typeracer game is not running
+   */
   public void forfeit() {
     state.endGame();
     notifyListeners();

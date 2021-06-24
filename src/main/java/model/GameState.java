@@ -1,32 +1,36 @@
 package model;
 
+/** Represents the internal state of the game. */
 public class GameState {
   private GamePhase currentGamePhase;
-  private Counter counter;
-  private TypeChar typeChar;
+  private final TextToType textToType;
 
   GameState(final String text) {
-    counter = new Counter();
-    typeChar = new TypeChar(text,counter);
+    Counter counter = new Counter();
+    textToType = new TextToType(text, counter);
 
     currentGamePhase = GamePhase.RUNNING;
   }
 
-  //void handleIncorrectGuess() {  fehlercheck
+  /** Updates the state to represent a finished/forfeited game. */
+  void endGame() {
+    currentGamePhase = GamePhase.FINISHED;
+  }
 
-
-  protected void setCurrentGamePhase(GamePhase currentGamePhase) {
+  /**
+   * Return the current phase of the game.
+   *
+   * @param currentGamePhase the current phase.
+   */
+  void setCurrentGamePhase(GamePhase currentGamePhase) {
     this.currentGamePhase = currentGamePhase;
   }
 
   public GamePhase getCurrentGamePhase() {
     return currentGamePhase;
   }
-  public TypeChar getTypeChar() {
-    return typeChar;
-  }
 
-  void endGame() {
-    currentGamePhase = GamePhase.FINISHED;
+  public TextToType getTypeChar() {
+    return textToType;
   }
 }
