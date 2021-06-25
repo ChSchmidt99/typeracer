@@ -79,6 +79,13 @@ public class ResponseFactory {
     return response;
   }
 
+  /**
+   * Make checkered flag response.
+   * Used to send raceStop time to all clients after first player finished.
+   *
+   * @param raceStop unix epoch time of race end in seconds
+   * @return {@link Response}
+   */
   public static Response makeCheckeredFlagResponse(long raceStop) {
     Response response = new Response(Response.Types.CHECKERED_FLAG);
     response.raceStop = raceStop;

@@ -34,7 +34,9 @@ public class Main implements ClientObserver {
       client.sendProgressUpdate(new ProgressSnapshot(0, 30, 5, 0));
       try {
         Thread.sleep(5000);
-      } catch (InterruptedException e){}
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
       client.sendProgressUpdate(new ProgressSnapshot(0, 60, 10, 0));
     } catch (IOException e) {
       System.out.print(e.getMessage());

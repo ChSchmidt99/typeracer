@@ -1,10 +1,12 @@
 package backend;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceModel;
@@ -83,7 +85,7 @@ class Race {
     long raceStop = Timestamp.currentTimestamp() + CHECKERED_FLAG_DURATION;
     broadcastCheckeredFlag(raceStop);
     ScheduledExecutorService s = Executors.newScheduledThreadPool(1);
-    s.schedule(this::finishRace, CHECKERED_FLAG_DURATION,TimeUnit.SECONDS);
+    s.schedule(this::finishRace, CHECKERED_FLAG_DURATION, TimeUnit.SECONDS);
     s.shutdown();
   }
 

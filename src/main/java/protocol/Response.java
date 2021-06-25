@@ -18,7 +18,6 @@ public class Response {
     public static final String OPEN_LOBBIES = "open lobbies";
     public static final String RACE_UPDATE = "race update";
     public static final String CHECKERED_FLAG = "checkered flag";
-    public static final String RACE_RESULT = "race result";
   }
 
   public final String type;
