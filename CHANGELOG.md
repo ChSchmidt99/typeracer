@@ -9,7 +9,8 @@ and this project adheres to
 ## [0.0.3] - 2021-06-22
 ### Added 
 - send player updates to server when a game is running
-- receive race updates after changes to the current race
+- receive race updates at a set interval
+### Changed
 - adjusted how users are managed in the backend to better suit our architecture
 
 ## [Abgabe 2] - 2021-06-20

@@ -9,6 +9,7 @@ class LobbyMember {
   private final String userId;
   private final String connectionId;
   private final String name;
+  private boolean inRace;
 
   /**
    * Create a new LobbyMember.
@@ -21,6 +22,7 @@ class LobbyMember {
     this.userId = userId;
     this.connectionId = connectionId;
     this.name = name;
+    this.inRace = false;
   }
 
   void setIsReady(boolean isReady) {
@@ -37,6 +39,14 @@ class LobbyMember {
 
   Player toPlayer() {
     return new Player(this.userId, this.connectionId, this.name);
+  }
+
+  boolean isInRace() {
+    return inRace;
+  }
+
+  void setInRace(boolean isInRace) {
+    this.inRace = isInRace;
   }
 
 }

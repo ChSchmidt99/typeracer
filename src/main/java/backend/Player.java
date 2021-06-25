@@ -13,7 +13,8 @@ public class Player {
   private final String connectionId;
   private int wpm;
   private float progress;
-  private long raceDuration;
+  private long raceStartTime;
+  private long lastUpdateTime;
   //private int mistakes;
 
   Player(String userId, String connectionId, String name) {
@@ -22,7 +23,8 @@ public class Player {
     this.name = name;
     this.wpm = 0;
     this.progress = 0;
-    this.raceDuration = 0;
+    this.raceStartTime = 0;
+    this.lastUpdateTime = 0;
     //this.mistakes = 0;
   }
 
@@ -38,14 +40,22 @@ public class Player {
     if (isFinished()) {
       return;
     }
-    this.raceDuration = snapshot.timestamp - snapshot.raceStartTime;
-    this.wpm = wordsPerMinute(snapshot.progress, raceDuration);
+    // Only set raceStartTime once
+    if (this.raceStartTime == 0) {
+      this.raceStartTime = snapshot.raceStartTime;
+    }
+    this.lastUpdateTime = snapshot.timestamp;
+    this.wpm = wordsPerMinute(snapshot.progress, this.raceDuration());
     this.progress = (float) snapshot.progress / textLength;
     //this.mistakes = snapshot.mistakes;
   }
 
   PlayerUpdate getUpdate() {
-    return new PlayerUpdate(this.userId, wpm, progress, isFinished(), raceDuration);
+    return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());
+  }
+
+  private long raceDuration() {
+    return this.lastUpdateTime - raceStartTime;
   }
 
   private int wordsPerMinute(int charsTyped, long durationInSec) {

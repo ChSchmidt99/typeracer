@@ -4,19 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceModel;
 import protocol.Response;
 import protocol.ResponseFactory;
+import server.Logger;
 import server.PushService;
 
 /** Represents a single race. */
 class Race {
 
+  private static final long UPDATE_INTERVAL = 1;
+
   private final String textToType;
   private final Map<String, Player> players;
   private final PushService pushService;
+  private ScheduledExecutorService scheduler;
   private boolean isRunning;
 
   /**
@@ -31,6 +39,7 @@ class Race {
     this.pushService = pushService;
     this.isRunning = true;
     broadCastGameStarting();
+    startUpdates();
   }
 
   RaceModel getModel() {
@@ -48,11 +57,29 @@ class Race {
   void updateProgress(String connectionId, ProgressSnapshot snapshot) {
     Player player = players.get(connectionId);
     player.updateProgress(snapshot, textToType.length());
-    // TODO: Only for testing, in the future send updates in interval
-    broadcastUpdate();
   }
 
-  void broadcastUpdate() {
+  void finishRace() {
+    stopUpdates();
+    this.isRunning = false;
+  }
+
+  void removePlayer(String connectionId) {
+    this.players.remove(connectionId);
+  }
+
+  private void startUpdates() {
+    scheduler = Executors.newScheduledThreadPool(1);
+    scheduler.scheduleAtFixedRate(this::broadcastUpdate, UPDATE_INTERVAL,0, TimeUnit.SECONDS);
+  }
+
+  private void stopUpdates() {
+    if (scheduler != null) {
+      scheduler.shutdown();
+    }
+  }
+
+  private void broadcastUpdate() {
     List<PlayerUpdate> updates = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
       updates.add(entry.getValue().getUpdate());

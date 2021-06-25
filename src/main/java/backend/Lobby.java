@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import protocol.LobbyModel;
-import protocol.ProgressSnapshot;
 import protocol.Response;
 import protocol.ResponseFactory;
+import server.Logger;
 import server.PushService;
 
 /**
@@ -40,11 +40,19 @@ class Lobby {
 
   void leave(String connectionId) {
     // TODO: Assign new host, if host leaves
+    if (!members.containsKey(connectionId)) {
+      Logger.logError("Called leave on non existing member");
+      return;
+    }
+    LobbyMember member = members.get(connectionId);
+    if (member.isInRace()) {
+      this.race.removePlayer(connectionId);
+    }
     members.remove(connectionId);
     broadcastLobbyUpdate();
   }
 
-  void startGame(String connectionId) {
+  void startRace(String connectionId) {
     Map<String, Player> readyPlayers = getReadyPlayers();
     if (readyPlayers.size() == 0) {
       // TODO: Central place for all error messages
