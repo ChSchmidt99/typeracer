@@ -52,4 +52,8 @@ public interface ClientObserver {
    */
   void receivedRaceUpdate(List<PlayerUpdate> updates);
 
+  void receivedCheckeredFlag(long raceStop);
+
+  void receivedRaceResult();
+
 }

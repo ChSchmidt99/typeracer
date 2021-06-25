@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.time.Instant;
 import java.util.List;
 import protocol.LobbyModel;
 import protocol.PlayerUpdate;
@@ -30,6 +31,10 @@ public class Main implements ClientObserver {
       client.requestLobbies();
       client.setIsReady(true);
       client.startRace();
+      client.sendProgressUpdate(new ProgressSnapshot(0, 30, 5, 0));
+      try {
+        Thread.sleep(5000);
+      } catch (InterruptedException e){}
       client.sendProgressUpdate(new ProgressSnapshot(0, 60, 10, 0));
     } catch (IOException e) {
       System.out.print(e.getMessage());
@@ -69,6 +74,16 @@ public class Main implements ClientObserver {
     System.out.println("Race update: " + updates);
     System.out.println("Wpm: " + updates.get(0).wpm);
     System.out.println("Wpm: " + updates.get(0).percentProgress);
+  }
+
+  @Override
+  public void receivedCheckeredFlag(long raceStop) {
+    System.out.println("Checkered Flag! Race stopped: " + Instant.ofEpochSecond(raceStop));
+  }
+
+  @Override
+  public void receivedRaceResult() {
+    System.out.println("Received race result");
   }
 
 }

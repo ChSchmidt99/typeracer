@@ -92,6 +92,16 @@ class ResponseHandler implements Closeable {
           observer.receivedRaceUpdate(response.playerUpdates);
         });
         break;
+      case Response.Types.CHECKERED_FLAG:
+        observers.forEach((observer) -> {
+          observer.receivedCheckeredFlag(response.raceStop);
+        });
+        break;
+      case Response.Types.RACE_RESULT:
+        observers.forEach((observer) -> {
+          observer.receivedRaceResult();
+        });
+        break;
       default:
         System.out.println("Received unknown ResponseType: " + response.type);
     }

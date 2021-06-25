@@ -61,7 +61,6 @@ public class Player {
   private int wordsPerMinute(int charsTyped, long durationInSec) {
     float durationInMin = (float) durationInSec / 60;
     int wordsTyped = charsTyped / 5;
-    System.out.println(wordsTyped + " / " + durationInMin);
     return (int) (wordsTyped / durationInMin);
   }
 

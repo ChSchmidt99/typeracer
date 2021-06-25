@@ -79,4 +79,10 @@ public class ResponseFactory {
     return response;
   }
 
+  public static Response makeCheckeredFlagResponse(long raceStop) {
+    Response response = new Response(Response.Types.CHECKERED_FLAG);
+    response.raceStop = raceStop;
+    return response;
+  }
+
 }

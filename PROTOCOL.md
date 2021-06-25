@@ -130,6 +130,15 @@ While a race is running, the server will send updates to all clients in some giv
     ]
 }
 ```
+### Checkered Flag
+After the first player reached the finish line, the server will send a Checkered Flag response to all clients. This response includes the server time of the race finish. After that time, no more updates will be received or sent by the server.   
+```json
+{
+    "type" : "checkered flag",
+    "raceStop" : "<timestamp of last update as unix epoch long>"
+}
+```
+
 ## Error Handling
 ### Error Response
 In case there is something wrong with the request, or an internal server error occures.
