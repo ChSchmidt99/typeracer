@@ -1,18 +1,20 @@
-package client;
+ package client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import protocol.Request;
-import protocol.RequestFactory;
+ import com.google.gson.Gson;
+ import com.google.gson.GsonBuilder;
+ import java.io.Closeable;
+ import java.io.IOException;
+ import java.io.PrintWriter;
+ import java.net.InetAddress;
+ import java.net.Socket;
+ import java.nio.charset.StandardCharsets;
+ import protocol.Request;
+ import protocol.RequestFactory;
 
-/** Client provides all communication with the server. */
-public class ClientImpl implements Closeable, Client {
+/**
+ * Client provides all communication with the server.
+ */
+ public class ClientImpl implements Closeable, Client {
 
   private final Socket socket;
   private final PrintWriter writer;
@@ -20,11 +22,11 @@ public class ClientImpl implements Closeable, Client {
   private final ResponseHandler responseHandler;
 
   /**
-   * Tries to connect to the server and starts listening for responses when successful. Subscribe
-   * observer to receive responses.
+   * Tries to connect to the server and starts listening for responses when successful.
+   * Subscribe observer to receive responses.
    *
    * @param serverAddress address to server
-   * @param port port the server listens to
+   * @param port          port the server listens to
    * @throws IOException if connection attempt fails
    */
   public ClientImpl(InetAddress serverAddress, int port) throws IOException {
@@ -72,4 +74,5 @@ public class ClientImpl implements Closeable, Client {
   private void writeToServer(String message) {
     this.writer.println(message);
   }
-}
+
+ }

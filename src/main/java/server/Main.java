@@ -1,7 +1,9 @@
-package server;
+ package server;
 
-/** Server main, run Server. */
-public class Main {
+/**
+ * Server main, run Server.
+ */
+ public class Main {
   // TODO: Maybe add parameters to a server config file or read options
   private static final int PORT = 8080;
 
@@ -18,4 +20,5 @@ public class Main {
       System.out.println(exp.getMessage());
     }
   }
-}
+
+ }

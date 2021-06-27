@@ -1,18 +1,20 @@
-package server;
+ package server;
 
-import backend.Api;
-import backend.ApiImpl;
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+ import backend.Api;
+ import backend.ApiImpl;
+ import java.io.Closeable;
+ import java.io.IOException;
+ import java.net.ServerSocket;
+ import java.net.Socket;
+ import java.util.HashSet;
+ import java.util.Set;
+ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
 
-/** Main instance for Server. */
-public class Server implements Closeable, OnDisconnect {
+/**
+ * Main instance for Server.
+ */
+ public class Server implements Closeable, OnDisconnect {
 
   private ServerSocket socket;
   private final Set<Closeable> closeables;
@@ -21,7 +23,9 @@ public class Server implements Closeable, OnDisconnect {
   private final Api api;
   private final PushServiceImpl pushService;
 
-  /** Constructor of Server. */
+  /**
+   * Constructor of Server.
+   */
   public Server() {
     isRunning = false;
     closeables = new HashSet<>();
@@ -45,7 +49,9 @@ public class Server implements Closeable, OnDisconnect {
     socket.close();
   }
 
-  /** Run the server on the specified port. */
+  /**
+   * Run the server on the specified port.
+   */
   public void run(int port) throws IOException {
     socket = new ServerSocket(port);
     isRunning = true;
@@ -74,11 +80,11 @@ public class Server implements Closeable, OnDisconnect {
         Connection connection = new Connection(clientSocket, this.api);
         pushService.addConnection(connection);
         closeables.add(connection);
-        executorService.execute(
-            () -> {
-              connection.handleRequests(this);
-            });
+        executorService.execute(() -> {
+          connection.handleRequests(this);
+        });
       }
+
     }
   }
-}
+ }

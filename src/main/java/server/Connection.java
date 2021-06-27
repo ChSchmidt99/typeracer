@@ -1,24 +1,26 @@
-package server;
+ package server;
 
-import backend.Api;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-import protocol.Request;
-import protocol.RequestTypes;
-import protocol.Response;
-import protocol.ResponseFactory;
+ import backend.Api;
+ import com.google.gson.Gson;
+ import com.google.gson.GsonBuilder;
+ import com.google.gson.JsonSyntaxException;
+ import java.io.BufferedReader;
+ import java.io.Closeable;
+ import java.io.IOException;
+ import java.io.InputStreamReader;
+ import java.io.PrintWriter;
+ import java.net.Socket;
+ import java.nio.charset.StandardCharsets;
+ import java.util.UUID;
+ import protocol.Request;
+ import protocol.RequestTypes;
+ import protocol.Response;
+ import protocol.ResponseFactory;
 
-/** Representing a Connection to a Client. */
-class Connection implements Closeable {
+/**
+ * Representing a Connection to a Client.
+ */
+ class Connection implements Closeable {
 
   private final Socket socket;
   private final BufferedReader reader;
@@ -35,8 +37,8 @@ class Connection implements Closeable {
    */
   Connection(Socket socket, Api api) throws IOException {
     this.socket = socket;
-    this.reader =
-        new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+    this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
+            StandardCharsets.UTF_8));
     this.writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
     GsonBuilder builder = new GsonBuilder();
     this.gson = builder.create();
@@ -44,7 +46,9 @@ class Connection implements Closeable {
     this.id = UUID.randomUUID().toString();
   }
 
-  /** Closes socket specified when creating Connection. */
+  /**
+   * Closes socket specified when creating Connection.
+   */
   @Override
   public void close() {
     try {
@@ -55,7 +59,9 @@ class Connection implements Closeable {
     }
   }
 
-  /** Listens on socket and forwards all received messages. */
+  /**
+   * Listens on socket and forwards all received messages.
+   */
   void handleRequests(OnDisconnect onDisconnect) {
     try {
       String line;
@@ -98,4 +104,4 @@ class Connection implements Closeable {
         Logger.logError("Unknown Request type: " + request.type);
     }
   }
-}
+ }
