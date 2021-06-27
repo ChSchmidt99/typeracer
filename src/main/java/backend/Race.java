@@ -19,9 +19,7 @@ import util.Timestamp;
 /** Represents a single race. */
 class Race {
 
-  // Durations in second
-  private static final long UPDATE_INTERVAL = 1;
-  private static final long CHECKERED_FLAG_DURATION = 5;
+  private final RaceSettings settings;
   private final String textToType;
   private final Map<String, Player> players;
   private final PushService pushService;
@@ -40,11 +38,12 @@ class Race {
    * @param textToType text that needs to be typed
    * @param players all players connected to the game
    */
-  Race(String textToType, Map<String, Player> players, PushService pushService) {
+  Race(RaceSettings settings, String textToType, Map<String, Player> players, PushService pushService) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
     this.state = RaceState.RUNNING;
+    this.settings = settings;
     broadcastGameStarting();
     startUpdates();
   }
@@ -82,10 +81,10 @@ class Race {
       Logger.logError("Race already in checkered flag state");
       return;
     }
-    long raceStop = Timestamp.currentTimestamp() + CHECKERED_FLAG_DURATION;
+    long raceStop = Timestamp.currentTimestamp() + settings.checkeredFlagDuration;
     broadcastCheckeredFlag(raceStop);
     ScheduledExecutorService s = Executors.newScheduledThreadPool(1);
-    s.schedule(this::finishRace, CHECKERED_FLAG_DURATION, TimeUnit.SECONDS);
+    s.schedule(this::finishRace, settings.checkeredFlagDuration, TimeUnit.SECONDS);
     s.shutdown();
   }
 
@@ -100,7 +99,7 @@ class Race {
 
   private void startUpdates() {
     scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.scheduleAtFixedRate(this::broadcastUpdate, 0, UPDATE_INTERVAL, TimeUnit.SECONDS);
+    scheduler.scheduleAtFixedRate(this::broadcastUpdate, 0, settings.updateInterval, TimeUnit.SECONDS);
   }
 
   private void stopUpdates() {

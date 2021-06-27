@@ -45,9 +45,9 @@ class SessionStore {
     }
   }
 
-  void startGame(String connectionId) {
+  void startGame(String connectionId, RaceSettings raceSettings) {
     Lobby lobby = getLobby(connectionId);
-    lobby.startRace(connectionId);
+    lobby.startRace(connectionId, raceSettings);
   }
 
   List<LobbyModel> getOpenLobbies() {

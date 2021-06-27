@@ -18,6 +18,7 @@ public class ApiImpl implements Api {
   private final PushService pushService;
   private final SessionStore sessionStore;
   private final Database database;
+  private final RaceSettings raceSettings;
 
   /**
    * Create an instance implementing the Api interface.
@@ -28,6 +29,7 @@ public class ApiImpl implements Api {
     this.pushService = pushService;
     this.sessionStore = new SessionStore();
     this.database = new MockDatabase();
+    this.raceSettings = new RaceSettings(5, 1);
   }
 
   @Override
@@ -55,7 +57,7 @@ public class ApiImpl implements Api {
 
   @Override
   public void startRace(String connectionId) {
-    sessionStore.startGame(connectionId);
+    sessionStore.startGame(connectionId, raceSettings);
   }
 
   @Override

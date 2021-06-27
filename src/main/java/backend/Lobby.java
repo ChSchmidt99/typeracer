@@ -52,7 +52,7 @@ class Lobby {
     broadcastLobbyUpdate();
   }
 
-  void startRace(String connectionId) {
+  void startRace(String connectionId, RaceSettings settings) {
     Map<String, Player> readyPlayers = getReadyPlayers();
     if (readyPlayers.size() == 0) {
       // TODO: Central place for all error messages
@@ -60,7 +60,8 @@ class Lobby {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(this.database.getTextToType(), readyPlayers, pushService);
+    this.race = new Race(settings, this.database.getTextToType(),
+            readyPlayers, pushService);
   }
 
   LobbyModel lobbyModel() {
