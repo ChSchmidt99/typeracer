@@ -83,9 +83,4 @@ public class Main implements ClientObserver {
     System.out.println("Checkered Flag! Race stopped: " + Instant.ofEpochSecond(raceStop));
   }
 
-  @Override
-  public void receivedRaceResult() {
-    System.out.println("Received race result");
-  }
-
 }
