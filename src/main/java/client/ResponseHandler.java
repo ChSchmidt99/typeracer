@@ -51,7 +51,6 @@ class ResponseHandler implements Closeable {
     try {
       String line;
       while ((line = this.reader.readLine()) != null) {
-        System.out.println(line);
         Response response = gson.fromJson(line, Response.class);
         receivedResponse(response);
       }
@@ -86,6 +85,16 @@ class ResponseHandler implements Closeable {
       case Response.Types.OPEN_LOBBIES:
         observers.forEach((observer) -> {
           observer.receivedOpenLobbies(response.lobbies);
+        });
+        break;
+      case Response.Types.RACE_UPDATE:
+        observers.forEach((observer) -> {
+          observer.receivedRaceUpdate(response.playerUpdates);
+        });
+        break;
+      case Response.Types.CHECKERED_FLAG:
+        observers.forEach((observer) -> {
+          observer.receivedCheckeredFlag(response.raceStop);
         });
         break;
       default:

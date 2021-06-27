@@ -3,6 +3,7 @@ package server;
 /**
  * Server main, run Server.
  */
+// TODO: Rename Main
 public class Main {
   // TODO: Maybe add parameters to a server config file or read options
   private static final int PORT = 8080;

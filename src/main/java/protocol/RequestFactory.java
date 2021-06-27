@@ -45,16 +45,38 @@ public class RequestFactory {
 
   public static Request makeStartRaceRequest() {
     return new Request(Request.Types.START_RACE);
-
   }
 
   public static Request makeLeaveLobbyRequest() {
     return new Request(Request.Types.LEAVE_LOBBY);
-
   }
 
   public static Request makeGetOpenLobbiesRequest() {
     return new Request(Request.Types.GET_LOBBIES);
+  }
+
+  /**
+   * Make a is ready {@link Request} used to set player to be ready or not.
+   *
+   * @param isReady whether or not user is ready
+   * @return {@link Request}
+   */
+  public static Request makeIsReadyRequest(boolean isReady) {
+    Request request = new Request(Request.Types.PLAYER_READY);
+    request.isReady = isReady;
+    return request;
+  }
+
+  /**
+   * Make progress update {@link Request} used to send current progress to server.
+   *
+   * @param snapshot current race progress snapshot
+   * @return {@link Request}
+   */
+  public static Request makeProgressUpdateRequest(ProgressSnapshot snapshot) {
+    Request request = new Request(Request.Types.UPDATE_PROGRESS);
+    request.snapshot = snapshot;
+    return request;
   }
 
 }

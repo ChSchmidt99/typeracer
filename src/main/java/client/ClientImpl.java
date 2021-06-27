@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import protocol.ProgressSnapshot;
 import protocol.Request;
 import protocol.RequestFactory;
 
@@ -45,38 +46,42 @@ public class ClientImpl implements Closeable, Client {
 
   @Override
   public void registerUser(String userName) {
-    Request request = RequestFactory.makeRegisterRequest(userName);
-    sendRequest(request);
+    sendRequest(RequestFactory.makeRegisterRequest(userName));
   }
 
   @Override
-  public void newGame(String userId) {
-    Request request = RequestFactory.makeNewLobbyRequest(userId);
-    sendRequest(request);
+  public void newLobby(String userId) {
+    sendRequest(RequestFactory.makeNewLobbyRequest(userId));
   }
 
   @Override
-  public void joinGame(String userId, String gameId) {
-    Request request = RequestFactory.makeJoinLobbyRequest(userId, gameId);
-    sendRequest(request);
+  public void joinLobby(String userId, String gameId) {
+    sendRequest(RequestFactory.makeJoinLobbyRequest(userId, gameId));
   }
 
   @Override
-  public void startGame() {
-    Request request = RequestFactory.makeStartRaceRequest();
-    sendRequest(request);
+  public void startRace() {
+    sendRequest(RequestFactory.makeStartRaceRequest());
   }
 
   @Override
-  public void leaveGame() {
-    Request request = RequestFactory.makeLeaveLobbyRequest();
-    sendRequest(request);
+  public void leaveLobby() {
+    sendRequest(RequestFactory.makeLeaveLobbyRequest());
   }
 
   @Override
   public void requestLobbies() {
-    Request request = RequestFactory.makeGetOpenLobbiesRequest();
-    sendRequest(request);
+    sendRequest(RequestFactory.makeGetOpenLobbiesRequest());
+  }
+
+  @Override
+  public void setIsReady(boolean isReady) {
+    sendRequest(RequestFactory.makeIsReadyRequest(isReady));
+  }
+
+  @Override
+  public void sendProgressUpdate(ProgressSnapshot snapshot) {
+    sendRequest(RequestFactory.makeProgressUpdateRequest(snapshot));
   }
 
   @Override
