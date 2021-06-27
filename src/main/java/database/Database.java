@@ -22,5 +22,5 @@ public interface Database {
    * @param userId name of user
    * @return userId
    */
-  String getUsername(String userId);
+  String getUsername(String userId) throws IOException;
 }
