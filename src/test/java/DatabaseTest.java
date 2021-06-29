@@ -3,14 +3,17 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Database unit tests.
+ */
 public class DatabaseTest {
   @Test
-  void getValidUserID() throws IOException {
+  void getValidUserId() throws IOException {
     TestDatabase t = new TestDatabase();
 
     String name = "dude";
-    String userID = t.registerUser(name);
-    String username = t.getUsername(userID);
+    String userId = t.registerUser(name);
+    String username = t.getUsername(userId);
     Assertions.assertEquals(username, name);
   }
 }

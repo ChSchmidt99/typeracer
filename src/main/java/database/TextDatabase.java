@@ -46,18 +46,4 @@ public class TextDatabase {
     return dictionary.get(guessedIndex);
   }
 
-  /**
-   * testing method.
-   *
-   * @param args provides arguments as in usual main class.
-   */
-  public static void main(String[] args) {
-    try {
-      TextDatabase t = new TextDatabase();
-      // System.out.println(t.getDictionary());
-      System.out.println(t.getPhrase());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 }

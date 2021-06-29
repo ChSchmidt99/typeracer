@@ -41,9 +41,21 @@ public class TestDatabase implements Database {
         StandardCharsets.UTF_8,
         StandardOpenOption.APPEND);
 
-    URL paths = this.getClass().getClassLoader().getResource("database.txt");
-    File f = new File(paths.getPath());
+    return uuidAsString;
+  }
 
+  /**
+   * Retrieves username by id.
+   *
+   * @param userId name of user
+   * @return userId
+   */
+  @Override
+  public String getUsername(String userId) throws IOException {
+
+    URL paths = this.getClass().getClassLoader().getResource("database.txt");
+
+    File f = new File(paths.getPath());
     Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
 
     while (scanner.hasNextLine()) {
@@ -55,46 +67,10 @@ public class TestDatabase implements Database {
     for (Map.Entry<String, String> item : map.entrySet()) {
       String key = item.getKey();
       String value = item.getValue();
-      if (value.equals(username)) {
-        output = key;
-      }
-    }
-
-    return output;
-  }
-
-  /**
-   * Retrieves username by id.
-   *
-   * @param userId name of user
-   * @return userId
-   */
-  @Override
-  public String getUsername(String userId) {
-
-    String output = "";
-
-    for (Map.Entry<String, String> item : map.entrySet()) {
-      String key = item.getKey();
-      String value = item.getValue();
       if (key.equals(userId)) {
         output = value;
       }
     }
     return output;
-  }
-
-  /**
-   * testing method.
-   *
-   * @param args provides arguments as in usual main class.
-   */
-  public static void main(String[] args) throws IOException {
-    TestDatabase m = new TestDatabase();
-    System.out.println(m.registerUser("somebody"));
-    System.out.println(m.registerUser("dude"));
-    System.out.println(m.registerUser("random"));
-    System.out.println(m.getUsername("24323818-a4f7-44a1-aeea-f3c0a299ca2f"));
-    System.out.println(m.getUsername("1763146a-b69a-4eed-9193-5e5878fa886a"));
   }
 }
