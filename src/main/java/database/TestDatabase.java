@@ -41,7 +41,26 @@ public class TestDatabase implements Database {
         StandardCharsets.UTF_8,
         StandardOpenOption.APPEND);
 
-    return path;
+    URL paths = this.getClass().getClassLoader().getResource("database.txt");
+    File f = new File(paths.getPath());
+
+    Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
+
+    while (scanner.hasNextLine()) {
+      String[] columns = scanner.nextLine().split(" ");
+      map.put(columns[columns.length - 1], columns[0]);
+    }
+
+    String output = "";
+    for (Map.Entry<String, String> item : map.entrySet()) {
+      String key = item.getKey();
+      String value = item.getValue();
+      if (value.equals(username)) {
+        output = key;
+      }
+    }
+
+    return output;
   }
 
   /**
@@ -51,17 +70,7 @@ public class TestDatabase implements Database {
    * @return userId
    */
   @Override
-  public String getUsername(String userId) throws IOException {
-    URL path = this.getClass().getClassLoader().getResource("database.txt");
-    File f = new File(path.getPath());
-
-    Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
-
-    while (scanner.hasNextLine()) {
-      String[] columns = scanner.nextLine().split(" ");
-      int l = columns.length;
-      map.put(columns[columns.length - 1], columns[0]);
-    }
+  public String getUsername(String userId) {
 
     String output = "";
 
@@ -83,7 +92,9 @@ public class TestDatabase implements Database {
   public static void main(String[] args) throws IOException {
     TestDatabase m = new TestDatabase();
     System.out.println(m.registerUser("somebody"));
-    System.out.println(m.registerUser("whoever"));
+    System.out.println(m.registerUser("dude"));
     System.out.println(m.registerUser("random"));
+    System.out.println(m.getUsername("24323818-a4f7-44a1-aeea-f3c0a299ca2f"));
+    System.out.println(m.getUsername("1763146a-b69a-4eed-9193-5e5878fa886a"));
   }
 }

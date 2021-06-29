@@ -52,6 +52,11 @@ dependencies {
     implementation "org.openjfx:javafx-media:11:mac"
 }
 
+
+test {
+    useJUnitPlatform()
+}
+
 mainClassName = "app.Runner"
 
 javafx {
