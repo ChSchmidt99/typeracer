@@ -12,8 +12,8 @@ import protocol.ProgressSnapshot;
 import protocol.RaceModel;
 import protocol.Response;
 import protocol.ResponseFactory;
-import server.Logger;
 import server.PushService;
+import util.Logger;
 import util.Timestamp;
 
 /** Represents a single race. */

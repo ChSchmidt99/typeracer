@@ -2,6 +2,7 @@ package backend;
 
 import database.Database;
 import database.MockDatabase;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.Map;
 import protocol.LobbyModel;
 import protocol.Response;
 import protocol.ResponseFactory;
-import server.Logger;
 import server.PushService;
+import util.Logger;
 
 /**
  * Represents one game currently managed by the server.
@@ -32,10 +33,14 @@ class Lobby {
   }
 
   void join(String connectionId, String userId) {
-    String username = this.database.getUsername(userId);
-    LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username);
-    members.put(connectionId, lobbyMember);
-    broadcastLobbyUpdate();
+    try {
+      String username = this.database.getUsername(userId);
+      LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username);
+      members.put(connectionId, lobbyMember);
+      broadcastLobbyUpdate();
+    } catch (IOException e) {
+      Logger.logError(e.getMessage());
+    }
   }
 
   void leave(String connectionId) {

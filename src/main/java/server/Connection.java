@@ -15,6 +15,7 @@ import java.util.UUID;
 import protocol.Request;
 import protocol.Response;
 import protocol.ResponseFactory;
+import util.Logger;
 
 /**
  * Representing a Connection to a Client.

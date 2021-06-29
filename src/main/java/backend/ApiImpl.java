@@ -2,12 +2,14 @@ package backend;
 
 import database.Database;
 import database.MockDatabase;
+import java.io.IOException;
 import java.util.List;
 import protocol.LobbyModel;
 import protocol.ProgressSnapshot;
 import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
+import util.Logger;
 
 
 /**
@@ -34,9 +36,13 @@ public class ApiImpl implements Api {
 
   @Override
   public void registerPlayer(String connectionId, String name) {
-    String userId = database.registerUser(name);
-    Response response = ResponseFactory.makeRegisteredResponse(userId);
-    pushService.sendResponse(connectionId, response);
+    try {
+      String userId = database.registerUser(name);
+      Response response = ResponseFactory.makeRegisteredResponse(userId);
+      pushService.sendResponse(connectionId, response);
+    } catch (IOException e) {
+      Logger.logError(e.getMessage());
+    }
   }
 
   @Override
