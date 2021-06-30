@@ -1,12 +1,11 @@
 package app.controller;
 
 import client.Client;
-import client.ClientImpl;
 import client.ClientObserver;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
+import protocol.PlayerUpdate;
 import protocol.RaceModel;
 
 import java.util.List;
@@ -25,7 +24,7 @@ class CreateController extends Controller implements ClientObserver {
   @FXML
   void switchToGameLobby() {
       new GameLobbyController(stage, client);
-      client.newGame("Test");
+      client.newLobby("Test");
   }
 
   @Override
@@ -49,6 +48,16 @@ class CreateController extends Controller implements ClientObserver {
 
   @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {
+
+  }
+
+  @Override
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
+
+  }
+
+  @Override
+  public void receivedCheckeredFlag(long raceStop) {
 
   }
 }

@@ -15,7 +15,9 @@ abstract class Controller {
 
   /**
    * Constructor for controllers,
-   * takes current @param stage and @param fxmlpath and switches to next view upon creation.
+   * takes current
+   * @param stage and
+   * @param fxmlpath and switches to next view upon creation.
    */
   Controller(Stage stage, String fxmlpath) {
     try {

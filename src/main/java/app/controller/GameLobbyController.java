@@ -3,13 +3,13 @@ package app.controller;
 import client.Client;
 import client.ClientObserver;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import model.Typeracer;
 import protocol.LobbyModel;
+import protocol.PlayerUpdate;
 import protocol.RaceModel;
 
 import java.util.List;
@@ -18,7 +18,7 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/gamelobby.fxml";
   private static final String CHECKBOX_ERROR = "Please check 'ready' box.";
-
+  private final Client client;
 
   @FXML
   CheckBox lobbyCheckbox;
@@ -28,13 +28,14 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   GameLobbyController(Stage stage, Client client) {
     super(stage, FXMLPATH);
+    this.client = client;
     client.subscribe(this);
   }
 
   @FXML
   void startGame() {
     if (lobbyCheckbox.isSelected()) {
-      new MultiplayerController(stage);
+      client.startRace();
     } else {
       displayError(CHECKBOX_ERROR);
     }
@@ -52,17 +53,28 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   @Override
   public void gameStarting(RaceModel race) {
-
+    Platform.runLater(() ->
+    new MultiplayerController(stage, new Typeracer(race.textToType))
+    );
   }
 
   @Override
   public void receivedLobbyUpdate(LobbyModel lobby) {
-      Platform.runLater(() ->
-      userlist.getItems().addAll(lobby.players));
+    Platform.runLater(() ->
+            userlist.getItems().addAll(lobby.players));
+  }
+  @Override
+  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
+
   }
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
+
+  }
+
+  @Override
+  public void receivedCheckeredFlag(long raceStop) {
 
   }
 }

@@ -32,4 +32,8 @@ public class TextToType {
   boolean checkFinish() {
     return checkedCharacters[completeText.length() - 1] != null;
   }
+
+  public String getCompleteText() {
+    return completeText;
+  }
 }

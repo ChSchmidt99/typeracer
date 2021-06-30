@@ -10,7 +10,7 @@ public class Typeracer {
   private final GameState state;
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-  private Typeracer(final String text) {
+  public Typeracer(final String text) {
     state = new GameState(text);
   }
 
