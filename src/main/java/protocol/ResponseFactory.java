@@ -34,12 +34,12 @@ public class ResponseFactory {
   /**
    * Make race starting response. Used to notify users when a race is about to start.
    *
-   * @param textToType text of the race
+   * @param model {@link RaceModel} of the started race
    * @return {@link Response}
    */
-  public static Response makeRaceStartingResponse(String textToType) {
+  public static Response makeRaceStartingResponse(RaceModel model) {
     Response response = new Response(Response.Types.GAME_STARTING);
-    response.race = new RaceModel(textToType);
+    response.race = model;
     return response;
   }
 
@@ -64,6 +64,31 @@ public class ResponseFactory {
   public static Response makeLobbiesResponse(List<LobbyModel> lobbies) {
     Response response = new Response(Response.Types.OPEN_LOBBIES);
     response.lobbies = lobbies;
+    return response;
+  }
+
+  /**
+   * Make Player updates response. Used to send game updates to all clients.
+   *
+   * @param updates all updated players
+   * @return {@link Response}
+   */
+  public static Response makeRaceUpdatesResponse(List<PlayerUpdate> updates) {
+    Response response = new Response(Response.Types.RACE_UPDATE);
+    response.playerUpdates = updates;
+    return response;
+  }
+
+  /**
+   * Make checkered flag response.
+   * Used to send raceStop time to all clients after first player finished.
+   *
+   * @param raceStop unix epoch time of race end in seconds
+   * @return {@link Response}
+   */
+  public static Response makeCheckeredFlagResponse(long raceStop) {
+    Response response = new Response(Response.Types.CHECKERED_FLAG);
+    response.raceStop = raceStop;
     return response;
   }
 

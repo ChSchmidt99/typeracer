@@ -15,6 +15,7 @@ import java.util.UUID;
 import protocol.Request;
 import protocol.Response;
 import protocol.ResponseFactory;
+import util.Logger;
 
 /**
  * Representing a Connection to a Client.
@@ -107,6 +108,12 @@ class Connection implements Closeable {
         break;
       case Request.Types.GET_LOBBIES:
         api.getLobbies(id);
+        break;
+      case Request.Types.PLAYER_READY:
+        api.setPlayerReady(id, request.isReady);
+        break;
+      case Request.Types.UPDATE_PROGRESS:
+        api.updateProgress(id, request.snapshot);
         break;
       default:
         Logger.logError("Unknown Request type: " + request.type);

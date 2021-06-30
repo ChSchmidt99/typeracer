@@ -2,11 +2,9 @@ package backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
+import mocks.MockDatabase;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,7 +24,7 @@ public class ApiTest implements PushService {
 
   @BeforeAll
   void init() {
-    this.api = new ApiImpl(this);
+    this.api = new ApiImpl(this, new MockDatabase());
   }
 
   @Test

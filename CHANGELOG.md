@@ -6,6 +6,13 @@ The format is based on
 and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
+## [0.0.3] - 2021-06-22
+### Added 
+- send player updates to server when a game is running
+- receive race updates at a set interval
+### Changed
+- adjusted how users are managed in the backend to better suit our architecture
+
 ## [Abgabe 2] - 2021-06-20
 ### Added
 - server browser screen

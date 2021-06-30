@@ -1,5 +1,7 @@
 package client;
 
+import protocol.ProgressSnapshot;
+
 /**
  * Provides interface for all Server communication.
  */
@@ -13,25 +15,44 @@ public interface Client {
   void registerUser(String userName);
 
   /**
-   * Start a new game.
+   * Start a new lobby.
    *
    * @param userId of host
    */
-  void newGame(String userId);
+  void newLobby(String userId);
 
   /**
-   * Join an ongoing game.
+   * Join an ongoing lobby.
    *
    * @param userId of player
    * @param gameId of game
    */
-  void joinGame(String userId, String gameId);
+  void joinLobby(String userId, String gameId);
 
-  void startGame();
+  /**
+   * Start a race in the current lobby.
+   */
+  void startRace();
 
-  void leaveGame();
+  /**
+   * Leave the current lobby.
+   */
+  void leaveLobby();
 
+  /**
+   * Request a list of all open lobbies.
+   */
   void requestLobbies();
+
+  /**
+   * Set ready or not. If ready, client will join the next race.
+   *
+   * @param isReady whether or not the user is ready
+   */
+  void setIsReady(boolean isReady);
+
+
+  void sendProgressUpdate(ProgressSnapshot snapshot);
 
   /**
    * Subscribe to receive responses.
