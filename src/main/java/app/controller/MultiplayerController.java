@@ -1,7 +1,9 @@
 package app.controller;
 
+import backend.Player;
 import client.Client;
 import client.ClientObserver;
+import java.util.HashMap;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
 import model.TextToType;
 import model.Typeracer;
 import protocol.LobbyModel;
+import protocol.PlayerModel;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceModel;
@@ -32,7 +35,8 @@ class MultiplayerController extends Controller implements ClientObserver {
   Client client;
   long raceStart;
   int notifyCounter = 0;
-  List<String> players;
+  List<PlayerModel> players;
+  HashMap<String, ProgressBar> userProgress;
 
   @FXML
   TextFlow textToType;
@@ -65,7 +69,7 @@ class MultiplayerController extends Controller implements ClientObserver {
     stage.getScene().addEventHandler(
         KeyEvent.KEY_TYPED,
         event -> {
-            enteredText.getChildren().add(charLabel(game.check(event.getCharacter().charAt(0)), event.getCharacter()));
+            enteredText.getChildren().add(charLabelCreator(game.check(event.getCharacter().charAt(0)), event.getCharacter()));
             notifyInterval();
           }
     );
@@ -74,7 +78,7 @@ class MultiplayerController extends Controller implements ClientObserver {
   /**
    * Creates labels for user input which will be added to hbox enteredText.
    */
-  private Label charLabel(boolean charCorrect, String letter) {
+  private Label charLabelCreator(boolean charCorrect, String letter) {
     Label label = new Label(letter);
     if (charCorrect) {
       label.setTextFill(Color.GREEN);
@@ -104,16 +108,28 @@ class MultiplayerController extends Controller implements ClientObserver {
    */
   private void setUsers() {
     System.out.println(players);
-    for (String player : players) {
-      userlist.getChildren().add(userLabel(player));
-      userlist.getChildren().add(new ProgressBar());
+    for (PlayerModel player : players) {
+      userlist.getChildren().add(userLabelCreator(player.name));
+      progressBarCreator(player.userId);
+      userlist.getChildren().add(userProgress.get(player.userId));
     }
   }
 
-  private Label userLabel(String user) {
+  private Label userLabelCreator(String user) {
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
     return label;
+  }
+
+  private void progressBarCreator(String userID) {
+    ProgressBar progressBar = new ProgressBar();
+    userProgress.put(userID, progressBar);
+  }
+
+  private void progressBarUpdate(List<PlayerUpdate> updates) {
+    for (PlayerUpdate update : updates) {
+      userProgress.get(update.userId).setProgress(update.percentProgress);
+    }
   }
 
   @Override
@@ -143,7 +159,7 @@ class MultiplayerController extends Controller implements ClientObserver {
 
   @Override
   public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-
+    progressBarUpdate(updates);
   }
 
   @Override
