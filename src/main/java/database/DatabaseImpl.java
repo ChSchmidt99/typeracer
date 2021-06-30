@@ -21,7 +21,7 @@ public class DatabaseImpl implements Database {
   }
 
   @Override
-  public String registerUser(String username) throws IOException {
+  public String registerUser(String username) throws Exception {
     return this.testDatabase.registerUser(username);
   }
 

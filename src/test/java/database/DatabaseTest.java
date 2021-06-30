@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  */
 public class DatabaseTest {
   @Test
-  void getValidUserId() throws IOException {
+  void getValidUserId() throws Exception {
     TestDatabase t = new TestDatabase();
 
     String name = "dude";

@@ -34,23 +34,18 @@ public class TestDatabase implements Database {
    * @return userId
    */
   @Override
-  public String registerUser(String username) throws IOException {
-    try {
-      URI uri = this.getClass().getClassLoader().getResource("database.txt").toURI();
-      String path = Paths.get(uri).toString();
-      UUID uuid = UUID.randomUUID();
-      String uuidAsString = uuid.toString();
-      Files.writeString(
-              Paths.get(path),
-              (username + " " + uuidAsString + System.lineSeparator()),
-              StandardCharsets.UTF_8,
-              StandardOpenOption.APPEND);
+  public String registerUser(String username) throws Exception {
+    URI uri = this.getClass().getClassLoader().getResource("database.txt").toURI();
+    String path = Paths.get(uri).toString();
+    UUID uuid = UUID.randomUUID();
+    String uuidAsString = uuid.toString();
+    Files.writeString(
+            Paths.get(path),
+            (username + " " + uuidAsString + System.lineSeparator()),
+            StandardCharsets.UTF_8,
+            StandardOpenOption.APPEND);
 
-      return uuidAsString;
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
-      return "";
-    }
+    return uuidAsString;
   }
 
   /**

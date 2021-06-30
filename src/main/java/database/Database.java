@@ -14,7 +14,7 @@ public interface Database {
    * @param username name of user
    * @return userId
    */
-  String registerUser(String username) throws IOException;
+  String registerUser(String username) throws Exception;
 
   /**
    * Retrieves username by id.

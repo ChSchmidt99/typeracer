@@ -39,7 +39,7 @@ public class ApiImpl implements Api {
       String userId = database.registerUser(name);
       Response response = ResponseFactory.makeRegisteredResponse(userId);
       pushService.sendResponse(connectionId, response);
-    } catch (IOException e) {
+    } catch (Exception e) {
       Logger.logError(e.getMessage());
     }
   }
