@@ -12,9 +12,9 @@
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="Game creation" />
     <VBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-        <TextField fx:id="servername" promptText="Servername" styleClass="userdata">
+        <TextField fx:id="username" promptText="Username" styleClass="userdata">
             <VBox.margin>
-                <Insets top="30.0"/>
+                <Insets top="30.0" />
             </VBox.margin>
         </TextField>
         <Button fx:id="createButton" text="New Game" onAction="#switchToGameLobby">

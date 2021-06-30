@@ -18,13 +18,15 @@ class ServerBrowserController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/serverbrowser.fxml";
   private final Client client;
+  private String userId;
 
   @FXML
   ListView<String> lobbylist;
 
-  ServerBrowserController(Stage stage, Client client) {
+  ServerBrowserController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
+    this.userId = userId;
     client.subscribe(this);
     client.requestLobbies();
     initActions();
@@ -32,12 +34,12 @@ class ServerBrowserController extends Controller implements ClientObserver {
 
   @FXML
   private void switchToCreateScreen() {
-      new CreateController(stage, client);
+      new CreateController(stage, client, userId);
   }
 
   private void joinGame(String gameId) {
-      new GameLobbyController(stage, client);
-      client.joinLobby("Test", gameId);
+    client.registerUser(userId);
+    client.joinLobby(userId, gameId);
   }
 
   private void addLobbiesToList(List<LobbyModel> idList) {
@@ -49,7 +51,7 @@ class ServerBrowserController extends Controller implements ClientObserver {
 
   @Override
   public void registered(String userId) {
-
+    new GameLobbyController(stage, client, userId);
   }
 
   @Override

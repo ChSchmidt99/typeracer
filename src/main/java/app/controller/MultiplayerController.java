@@ -131,10 +131,8 @@ class MultiplayerController extends Controller implements ClientObserver {
     userProgress.put(userID, slider);
   }
 
-  private void sliderUpdate(List<PlayerUpdate> updates) {
-    for (PlayerUpdate update : updates) {
+  private void sliderUpdate(PlayerUpdate update) {
       userProgress.get(update.userId).setValue(update.percentProgress);
-    }
   }
 
   @Override
@@ -164,9 +162,14 @@ class MultiplayerController extends Controller implements ClientObserver {
 
   @Override
   public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-    Platform.runLater(() ->
-      sliderUpdate(updates));
-  }
+    for (PlayerUpdate update : updates) {
+      Platform.runLater(
+          () -> {
+            System.out.println(update.userId);
+            sliderUpdate(update);
+          });
+    }
+    }
 
 
   @Override

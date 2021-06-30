@@ -39,6 +39,10 @@ abstract class Controller {
     alert.showAndWait();
   }
 
+  public void print(String message) {
+    System.out.println(message);
+  }
+
   /*
    * Displays current stage.
    */
