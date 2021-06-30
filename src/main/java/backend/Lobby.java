@@ -1,7 +1,6 @@
 package backend;
 
 import database.Database;
-import database.MockDatabase;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +23,11 @@ class Lobby {
   private final Database database;
   private Race race;
 
-  Lobby(String lobbyId, PushService pushService) {
+  Lobby(String lobbyId, Database database, PushService pushService) {
     this.members = new HashMap<>();
     this.lobbyId = lobbyId;
     this.pushService = pushService;
-    // TODO: replace with real Database once ready
-    this.database = new MockDatabase();
+    this.database = database;
   }
 
   void join(String connectionId, String userId) {

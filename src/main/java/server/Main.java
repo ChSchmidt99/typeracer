@@ -1,5 +1,8 @@
 package server;
 
+import database.Database;
+import database.DatabaseImpl;
+
 /**
  * Server main, run Server.
  */
@@ -14,8 +17,9 @@ public class Main {
    * @param args no arguments used
    */
   public static void main(String[] args) {
-    Server server = new Server();
     try {
+      Database database = new DatabaseImpl();
+      Server server = new Server(database);
       server.run(PORT);
     } catch (Exception exp) {
       System.out.println(exp.getMessage());

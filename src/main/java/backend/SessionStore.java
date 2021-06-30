@@ -1,5 +1,6 @@
 package backend;
 
+import database.Database;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,16 +17,18 @@ class SessionStore {
   private final IdGenerator generator;
   private final HashMap<String, Lobby> lobbies;
   private final HashMap<String, String> connectionIds;
+  private final Database database;
 
-  SessionStore() {
+  SessionStore(Database database) {
     this.generator = new IdGenerator(0);
     this.lobbies = new HashMap<>();
     this.connectionIds = new HashMap<>();
+    this.database = database;
   }
 
   String createNewLobby(String connectionId, PushService pushService) {
     String lobbyId = generator.getId();
-    Lobby lobby = new Lobby(lobbyId, pushService);
+    Lobby lobby = new Lobby(lobbyId, database, pushService);
     lobbies.put(lobbyId, lobby);
     return lobbyId;
   }

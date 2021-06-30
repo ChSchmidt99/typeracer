@@ -2,6 +2,7 @@ package server;
 
 import backend.Api;
 import backend.ApiImpl;
+import database.Database;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -27,12 +28,12 @@ public class Server implements Closeable, OnDisconnect {
   /**
    * Constructor of Server.
    */
-  public Server() {
+  public Server(Database database) {
     isRunning = false;
     closeables = new HashSet<>();
     executorService = Executors.newCachedThreadPool();
     this.pushService = new PushServiceImpl();
-    this.api = new ApiImpl(pushService);
+    this.api = new ApiImpl(pushService, database);
   }
 
   /**

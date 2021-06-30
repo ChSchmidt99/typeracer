@@ -1,7 +1,6 @@
 package backend;
 
 import database.Database;
-import database.MockDatabase;
 import java.io.IOException;
 import java.util.List;
 import protocol.LobbyModel;
@@ -27,10 +26,10 @@ public class ApiImpl implements Api {
    *
    * @param pushService service where responses are sent to
    */
-  public ApiImpl(PushService pushService) {
+  public ApiImpl(PushService pushService, Database database) {
     this.pushService = pushService;
-    this.sessionStore = new SessionStore();
-    this.database = new MockDatabase();
+    this.database = database;
+    this.sessionStore = new SessionStore(this.database);
     this.raceSettings = new RaceSettings(5, 1);
   }
 
