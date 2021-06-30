@@ -20,6 +20,13 @@ import java.util.UUID;
 public class TestDatabase implements Database {
 
   Map<String, String> map = new HashMap<>();
+  private final String path;
+
+  TestDatabase() throws URISyntaxException {
+    URI uri = this.getClass().getClassLoader().getResource("database.txt").toURI();
+    this.path = Paths.get(uri).toString();
+  }
+
 
   /** select random piece of text from dictionary and use it in the game. */
   @Override
@@ -34,9 +41,7 @@ public class TestDatabase implements Database {
    * @return userId
    */
   @Override
-  public String registerUser(String username) throws Exception {
-    URI uri = this.getClass().getClassLoader().getResource("database.txt").toURI();
-    String path = Paths.get(uri).toString();
+  public String registerUser(String username) throws IOException {
     UUID uuid = UUID.randomUUID();
     String uuidAsString = uuid.toString();
     Files.writeString(
@@ -56,10 +61,7 @@ public class TestDatabase implements Database {
    */
   @Override
   public String getUsername(String userId) throws IOException {
-
-    URL paths = this.getClass().getClassLoader().getResource("database.txt");
-
-    File f = new File(paths.getPath());
+    File f = new File(path);
     Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
 
     while (scanner.hasNextLine()) {
