@@ -38,7 +38,7 @@ class ServerBrowserController extends Controller implements ClientObserver {
   }
 
   private void joinGame(String gameId) {
-    client.registerUser(userId);
+    new GameLobbyController(stage, client, userId);
     client.joinLobby(userId, gameId);
   }
 
@@ -51,7 +51,6 @@ class ServerBrowserController extends Controller implements ClientObserver {
 
   @Override
   public void registered(String userId) {
-    new GameLobbyController(stage, client, userId);
   }
 
   @Override

@@ -4,6 +4,7 @@ import client.Client;
 import client.ClientImpl;
 import client.ClientObserver;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,6 +38,7 @@ public class StartscreenController extends Controller implements ClientObserver 
   private void switchToServerBrowser() {
     try {
       this.client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
+      client.subscribe(this);
       client.registerUser(username.getText());
     } catch (Exception e) {
       e.printStackTrace();
@@ -50,7 +52,9 @@ public class StartscreenController extends Controller implements ClientObserver 
 
   @Override
   public void registered(String userId) {
-    new ServerBrowserController(stage, client, userId);
+    Platform.runLater(() -> {
+      new ServerBrowserController(stage, client, userId);
+    });
   }
 
   @Override

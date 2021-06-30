@@ -34,12 +34,8 @@ class CreateController extends Controller implements ClientObserver {
 
   @FXML
   void switchToGameLobby() {
-    if (username.getText().equals("")) {
-      displayError(USERNAME_ERROR);
-    } else {
-      new GameLobbyController(stage, client, userId);
-      client.newLobby(userId);
-      }
+    new GameLobbyController(stage, client, userId);
+    client.newLobby(userId);
   }
 
   @Override
