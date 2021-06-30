@@ -165,7 +165,6 @@ class MultiplayerController extends Controller implements ClientObserver {
     for (PlayerUpdate update : updates) {
       Platform.runLater(
           () -> {
-            System.out.println(update.userId);
             sliderUpdate(update);
           });
     }

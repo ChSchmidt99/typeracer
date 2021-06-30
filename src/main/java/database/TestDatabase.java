@@ -1,7 +1,11 @@
 package database;
 
+import util.Logger;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -31,17 +35,22 @@ public class TestDatabase implements Database {
    */
   @Override
   public String registerUser(String username) throws IOException {
-    String path = this.getClass().getClassLoader().getResource("database.txt").getPath();
+    try {
+      URI uri = this.getClass().getClassLoader().getResource("database.txt").toURI();
+      String path = Paths.get(uri).toString();
+      UUID uuid = UUID.randomUUID();
+      String uuidAsString = uuid.toString();
+      Files.writeString(
+              Paths.get(path),
+              (username + " " + uuidAsString + System.lineSeparator()),
+              StandardCharsets.UTF_8,
+              StandardOpenOption.APPEND);
 
-    UUID uuid = UUID.randomUUID();
-    String uuidAsString = uuid.toString();
-    Files.writeString(
-        Paths.get(path),
-        (username + " " + uuidAsString + System.lineSeparator()),
-        StandardCharsets.UTF_8,
-        StandardOpenOption.APPEND);
-
-    return uuidAsString;
+      return uuidAsString;
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+      return "";
+    }
   }
 
   /**
