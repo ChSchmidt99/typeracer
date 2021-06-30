@@ -14,6 +14,8 @@ import protocol.RaceModel;
  */
 public class Main implements ClientObserver {
 
+  static String text = "Hello";
+
   /**
    * Send sample request to server.
    *
@@ -37,7 +39,7 @@ public class Main implements ClientObserver {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      client.sendProgressUpdate(new ProgressSnapshot(0, 60, 10, 0));
+      client.sendProgressUpdate(new ProgressSnapshot(0, 60, text.length(), 0));
     } catch (IOException e) {
       System.out.print(e.getMessage());
     }
@@ -55,7 +57,9 @@ public class Main implements ClientObserver {
 
   @Override
   public void gameStarting(RaceModel race) {
+    text = race.textToType;
     System.out.println("Game starting with text: " + race.textToType);
+    System.out.println("Game starting with players: " + race.players.get(0).userId);
   }
 
   @Override

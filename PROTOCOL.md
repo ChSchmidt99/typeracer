@@ -96,7 +96,10 @@ If the game is started successfully, a game starting response is broadcast to al
     "type" : "race starting",
     "race" : {
       "textToType" : "<string to type>",
-      "players" : "<string list of all joined player names>"
+      "players" : [{ 
+        "name" : "<some name>",
+        "userId" : "<some userId>"
+      }]
     }
 }
 ```

@@ -32,6 +32,10 @@ public class Player {
     return connectionId;
   }
 
+  String getUserId() {
+    return userId;
+  }
+
   String getName() {
     return name;
   }

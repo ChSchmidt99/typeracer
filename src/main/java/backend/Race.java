@@ -7,11 +7,8 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import protocol.PlayerUpdate;
-import protocol.ProgressSnapshot;
-import protocol.RaceModel;
-import protocol.Response;
-import protocol.ResponseFactory;
+
+import protocol.*;
 import server.PushService;
 import util.Logger;
 import util.Timestamp;
@@ -50,11 +47,11 @@ class Race {
   }
 
   RaceModel getModel() {
-    List<String> playerNames = new ArrayList<>();
+    List<PlayerModel> out = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
-      playerNames.add(entry.getValue().getName());
+      out.add(new PlayerModel(entry.getValue().getUserId(), entry.getValue().getName()));
     }
-    return new RaceModel(this.textToType, playerNames);
+    return new RaceModel(this.textToType, out);
   }
 
   boolean getIsRunning() {
