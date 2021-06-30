@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
+import mocks.MockDatabase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class ServerTest {
 
   @BeforeAll
   void startServer() {
-    server = new Server();
+    server = new Server(new MockDatabase());
     new Thread(() -> {
       try {
         server.run(PORT);
