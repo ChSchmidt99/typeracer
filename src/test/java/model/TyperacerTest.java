@@ -1,27 +1,28 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /** Unit tests for Typeracer class. */
 class TyperacerTest {
 
   @Test
   void testCreate() {
-    Typeracer tp = new Typeracer("");
+    Typeracer tp;
     String expectation = "new WordDatabase().getWord()";
-    tp = tp.create();
+    tp = Typeracer.create();
     String actual = tp.getState().getTypeChar().getCompleteText();
     assertEquals(expectation, actual);
   }
 
   @Test
   void testCheck() {
-    boolean expectation = true;
     Typeracer tp = new Typeracer("test");
     boolean actual = tp.check('t');
-    assertEquals(expectation, actual);
+    assertTrue(actual);
   }
 
   @Test

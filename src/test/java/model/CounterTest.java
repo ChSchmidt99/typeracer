@@ -1,21 +1,22 @@
 package model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+
 
 /** Unit tests for Counter class. */
 class CounterTest {
 
   @Test
   void testIncreaseTwiceThenDecrease() {
-    int expectation = 1;
     Counter counter = new Counter();
     counter.increase();
     counter.increase();
     counter.decrease();
     int actual = counter.getCurrentValue();
+    int expectation = 1;
     assertEquals(expectation, actual);
   }
 
@@ -32,21 +33,21 @@ class CounterTest {
 
   @Test
   void testIncrease() {
-    int expectation = 1;
     Counter counter = new Counter();
     counter.increase();
     int actual = counter.getCurrentValue();
+    int expectation = 1;
     assertEquals(expectation, actual);
   }
 
   @Test
   void testSetToZero() {
-    int expectation = 0;
     Counter counter = new Counter();
     counter.increase();
     counter.increase();
     counter.setToZero();
     int actual = counter.getCurrentValue();
+    int expectation = 0;
     assertEquals(expectation, actual);
   }
 }
