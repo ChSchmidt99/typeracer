@@ -18,7 +18,7 @@ class ServerBrowserController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/serverbrowser.fxml";
   private final Client client;
-  private String userId;
+  private final String userId;
 
   @FXML
   ListView<String> lobbylist;
