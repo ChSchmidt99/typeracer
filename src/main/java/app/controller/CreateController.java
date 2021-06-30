@@ -10,6 +10,9 @@ import protocol.RaceModel;
 
 import java.util.List;
 
+/*
+ * Handles all gui functionality for game creation.
+ */
 class CreateController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/createscreen.fxml";

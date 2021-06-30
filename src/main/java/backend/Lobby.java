@@ -33,6 +33,9 @@ class Lobby {
   void join(String connectionId, String userId) {
     try {
       String username = this.database.getUsername(userId);
+      if (username.equals("")) {
+        username = "User not found";
+      }
       LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username);
       members.put(connectionId, lobbyMember);
       broadcastLobbyUpdate();

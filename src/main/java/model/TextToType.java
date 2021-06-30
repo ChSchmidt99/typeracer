@@ -5,6 +5,7 @@ public class TextToType {
 
   private final String completeText;
   private final Counter counter;
+  private int mistakeCounter = 0;
 
   CorrectionStates[] checkedCharacters;
 
@@ -23,8 +24,10 @@ public class TextToType {
     if (userInput == a) {
       guessed = true;
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.CORRECT;
+      counter.increase();
     } else {
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.INCORRECT;
+      mistakeCounter++;
     }
     return guessed;
   }
@@ -36,4 +39,8 @@ public class TextToType {
   public String getCompleteText() {
     return completeText;
   }
+
+  public int getCounter() {return counter.getCurrentValue();}
+
+  public int getMistakeCounter() {return mistakeCounter;}
 }

@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import model.Typeracer;
 import protocol.LobbyModel;
 import protocol.PlayerUpdate;
 import protocol.RaceModel;
@@ -32,9 +31,11 @@ class GameLobbyController extends Controller implements ClientObserver {
     client.subscribe(this);
   }
 
+   //TODO checkbox error handling
   @FXML
   void startGame() {
     if (lobbyCheckbox.isSelected()) {
+      client.setIsReady(true);
       client.startRace();
     } else {
       displayError(CHECKBOX_ERROR);
@@ -48,13 +49,16 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   @Override
   public void receivedError(String message) {
-
+    Platform.runLater(
+        () -> {
+          displayError(message);
+        });
   }
 
   @Override
   public void gameStarting(RaceModel race) {
     Platform.runLater(() ->
-    new MultiplayerController(stage, new Typeracer(race.textToType))
+    new MultiplayerController(stage, race, client)
     );
   }
 

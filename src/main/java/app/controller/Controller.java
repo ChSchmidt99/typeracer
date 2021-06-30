@@ -13,12 +13,6 @@ abstract class Controller {
   private static final String ERROR = "Failed to load .fxml file";
   private static final String ALERT_HEADER = "Error";
 
-  /**
-   * Constructor for controllers,
-   * takes current
-   * @param stage and
-   * @param fxmlpath and switches to next view upon creation.
-   */
   Controller(Stage stage, String fxmlpath) {
     try {
       this.stage = stage;
@@ -45,6 +39,9 @@ abstract class Controller {
     alert.showAndWait();
   }
 
+  /*
+   * Displays current stage.
+   */
   public void show() {
     stage.show();
   }
