@@ -20,6 +20,7 @@ import protocol.RaceModel;
 public class StartscreenController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/startscreen.fxml";
+  private static final String USERNAME_ERROR = "Please choose a username";
   private Client client = null;
 
   @FXML
@@ -37,9 +38,13 @@ public class StartscreenController extends Controller implements ClientObserver 
   @FXML
   private void switchToServerBrowser() {
     try {
-      this.client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
-      client.subscribe(this);
-      client.registerUser(username.getText());
+      if (username.getText().equals("")) {
+        displayError(USERNAME_ERROR);
+      } else {
+        this.client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
+        client.subscribe(this);
+        client.registerUser(username.getText());
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }

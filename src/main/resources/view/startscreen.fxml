@@ -15,7 +15,7 @@
     <VBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <Button styleClass="button" onAction="#switchToSingleplayer" text="Singleplayer" />
         <Button styleClass="button" onAction="#switchToServerBrowser" text="Multiplayer" />
-      <TextField fx:id="username" promptText="Username" styleClass="userdata">
+      <TextField fx:id="username" promptText="Username" styleClass="inputfield">
         <VBox.margin>
           <Insets top="30.0" />
         </VBox.margin>
