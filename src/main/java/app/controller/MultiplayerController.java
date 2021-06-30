@@ -5,9 +5,11 @@ import client.Client;
 import client.ClientObserver;
 import java.util.HashMap;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -36,7 +38,7 @@ class MultiplayerController extends Controller implements ClientObserver {
   long raceStart;
   int notifyCounter = 0;
   List<PlayerModel> players;
-  HashMap<String, ProgressBar> userProgress;
+  HashMap<String, Slider> userProgress = new HashMap<>();
 
   @FXML
   TextFlow textToType;
@@ -110,7 +112,7 @@ class MultiplayerController extends Controller implements ClientObserver {
     System.out.println(players);
     for (PlayerModel player : players) {
       userlist.getChildren().add(userLabelCreator(player.name));
-      progressBarCreator(player.userId);
+      sliderCreator(player.userId);
       userlist.getChildren().add(userProgress.get(player.userId));
     }
   }
@@ -121,14 +123,17 @@ class MultiplayerController extends Controller implements ClientObserver {
     return label;
   }
 
-  private void progressBarCreator(String userID) {
-    ProgressBar progressBar = new ProgressBar();
-    userProgress.put(userID, progressBar);
+  private void sliderCreator(String userID) {
+    Slider slider = new Slider();
+    slider.setMin(0);
+    slider.setMax(1);
+    slider.setValue(0);
+    userProgress.put(userID, slider);
   }
 
-  private void progressBarUpdate(List<PlayerUpdate> updates) {
+  private void sliderUpdate(List<PlayerUpdate> updates) {
     for (PlayerUpdate update : updates) {
-      userProgress.get(update.userId).setProgress(update.percentProgress);
+      userProgress.get(update.userId).setValue(update.percentProgress);
     }
   }
 
@@ -159,8 +164,10 @@ class MultiplayerController extends Controller implements ClientObserver {
 
   @Override
   public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-    progressBarUpdate(updates);
+    Platform.runLater(() ->
+      sliderUpdate(updates));
   }
+
 
   @Override
   public void receivedCheckeredFlag(long raceStop) {

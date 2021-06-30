@@ -64,9 +64,12 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   @Override
   public void receivedLobbyUpdate(LobbyModel lobby) {
-    Platform.runLater(() ->
-            userlist.getItems().addAll(lobby.players));
+    Platform.runLater(() -> {
+            userlist.getItems().clear();
+            userlist.getItems().addAll(lobby.players);
+    });
   }
+
   @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {
 
