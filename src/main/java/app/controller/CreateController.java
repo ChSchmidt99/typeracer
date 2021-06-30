@@ -18,12 +18,9 @@ import java.util.List;
 class CreateController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/createscreen.fxml";
-  private static final String USERNAME_ERROR = "Please choose a username.";
   private final Client client;
   private String userId;
 
-  @FXML
-  TextField username;
 
   CreateController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
