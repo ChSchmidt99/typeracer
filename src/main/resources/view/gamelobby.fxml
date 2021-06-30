@@ -25,8 +25,8 @@
             </children>
             </AnchorPane>
         </ScrollPane>
-            <Button onAction="#startGame" text="Start Game" />
-            <CheckBox fx:id="lobbyCheckbox" styleClass="checkbox" text="Ready" />
+            <Button fx:id="startButton" onAction="#startGame" text="Start Game" />
+            <CheckBox fx:id="lobbyCheckbox" onAction="#checkedReady" styleClass="checkbox" text="Ready" />
     </VBox>
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />

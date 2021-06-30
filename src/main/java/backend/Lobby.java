@@ -68,6 +68,7 @@ class Lobby {
     }
     this.race = new Race(settings, this.database.getTextToType(),
             readyPlayers, pushService);
+    broadcastLobbyUpdate();
   }
 
   LobbyModel lobbyModel() {

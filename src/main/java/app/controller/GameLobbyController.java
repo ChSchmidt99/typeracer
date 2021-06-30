@@ -4,6 +4,7 @@ import client.Client;
 import client.ClientObserver;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -23,6 +24,9 @@ class GameLobbyController extends Controller implements ClientObserver {
   CheckBox lobbyCheckbox;
 
   @FXML
+  Button startButton;
+
+  @FXML
   ListView<String> userlist;
 
   GameLobbyController(Stage stage, Client client) {
@@ -31,11 +35,14 @@ class GameLobbyController extends Controller implements ClientObserver {
     client.subscribe(this);
   }
 
-   //TODO checkbox error handling
+  @FXML
+  void checkedReady() {
+    client.setIsReady(lobbyCheckbox.isSelected());
+  }
+
   @FXML
   void startGame() {
     if (lobbyCheckbox.isSelected()) {
-      client.setIsReady(true);
       client.startRace();
     } else {
       displayError(CHECKBOX_ERROR);
@@ -67,6 +74,7 @@ class GameLobbyController extends Controller implements ClientObserver {
     Platform.runLater(() -> {
             userlist.getItems().clear();
             userlist.getItems().addAll(lobby.players);
+            this.startButton.setDisable(lobby.isRunning);
     });
   }
 
