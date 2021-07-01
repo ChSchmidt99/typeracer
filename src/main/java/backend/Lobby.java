@@ -21,13 +21,15 @@ class Lobby {
   private final HashMap<String, LobbyMember> members;
   private final PushService pushService;
   private final Database database;
+  private final String name;
   private Race race;
 
-  Lobby(String lobbyId, Database database, PushService pushService) {
+  Lobby(String lobbyId, String name, Database database, PushService pushService) {
     this.members = new HashMap<>();
     this.lobbyId = lobbyId;
     this.pushService = pushService;
     this.database = database;
+    this.name = name;
   }
 
   void join(String connectionId, String userId) {
@@ -76,7 +78,7 @@ class Lobby {
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
       playerNames.add(entry.getValue().getName());
     }
-    return new LobbyModel(lobbyId, playerNames, isRunning());
+    return new LobbyModel(lobbyId, playerNames, name, isRunning());
   }
 
   void setPlayerReady(String connectionId, boolean isReady) {

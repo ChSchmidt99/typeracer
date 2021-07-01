@@ -6,6 +6,13 @@ The format is based on
 and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
+## [0.0.4] - 2021-07-01
+### Added
+- Names to stored lobbies on server
+- Custom lobby list view cells containing name 
+### Changed
+- List View Actions to Interface callback on cell button click
+
 ## [0.0.3] - 2021-06-22
 ### Added 
 - send player updates to server when a game is running

@@ -2,7 +2,6 @@ package app.controller;
 
 import client.Client;
 import client.ClientObserver;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -18,9 +17,12 @@ import java.util.List;
 class CreateController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/createscreen.fxml";
+  private static final String LOBBY_NAME_ERROR = "Please enter lobby name";
   private final Client client;
   private String userId;
 
+  @FXML
+  TextField lobbyname;
 
   CreateController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -31,8 +33,12 @@ class CreateController extends Controller implements ClientObserver {
 
   @FXML
   void switchToGameLobby() {
-    new GameLobbyController(stage, client, userId);
-    client.newLobby(userId);
+    if (lobbyname.getText().equals("")){
+      displayError(LOBBY_NAME_ERROR);
+    } else {
+      new GameLobbyController(stage, client, userId);
+      client.newLobby(userId, lobbyname.getText());
+    }
   }
 
   @Override

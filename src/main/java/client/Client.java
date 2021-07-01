@@ -19,7 +19,7 @@ public interface Client {
    *
    * @param userId of host
    */
-  void newLobby(String userId);
+  void newLobby(String userId, String lobbyName);
 
   /**
    * Join an ongoing lobby.

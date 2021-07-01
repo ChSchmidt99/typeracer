@@ -40,7 +40,11 @@ public class TextToType {
     return completeText;
   }
 
-  public int getCounter() {return counter.getCurrentValue();}
+  public int getCounter() {
+    return counter.getCurrentValue();
+  }
 
-  public int getMistakeCounter() {return mistakeCounter;}
+  public int getMistakeCounter() {
+    return mistakeCounter;
+  }
 }

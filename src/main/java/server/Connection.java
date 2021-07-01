@@ -82,7 +82,8 @@ class Connection implements Closeable {
    * @param response some Response
    */
   void sendResponse(Response response) {
-    writer.println(gson.toJson(response));
+    String json = gson.toJson(response);
+    writer.println(json);
   }
 
   String getId() {
@@ -95,7 +96,7 @@ class Connection implements Closeable {
         api.registerPlayer(id, request.playerName);
         break;
       case Request.Types.NEW_LOBBY:
-        api.createNewLobby(id, request.userId);
+        api.createNewLobby(id, request.userId, request.lobbyName);
         break;
       case Request.Types.JOIN_LOBBY:
         api.joinLobby(request.lobbyId, id, request.userId);

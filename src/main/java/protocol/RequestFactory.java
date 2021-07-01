@@ -23,9 +23,10 @@ public class RequestFactory {
    * @param userId of initial player
    * @return {@link Request}
    */
-  public static Request makeNewLobbyRequest(String userId) {
+  public static Request makeNewLobbyRequest(String userId, String lobbyName) {
     Request request = new Request(Request.Types.NEW_LOBBY);
     request.userId = userId;
+    request.lobbyName = lobbyName;
     return request;
   }
 

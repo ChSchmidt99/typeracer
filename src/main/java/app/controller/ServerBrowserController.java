@@ -1,12 +1,12 @@
 package app.controller;
 
+import app.elements.JoinHandler;
+import app.elements.LobbyListCell;
 import client.Client;
 import client.ClientObserver;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
 import protocol.PlayerUpdate;
@@ -14,14 +14,14 @@ import protocol.RaceModel;
 
 import java.util.List;
 
-class ServerBrowserController extends Controller implements ClientObserver {
+class ServerBrowserController extends Controller implements ClientObserver, JoinHandler {
 
   private static final String FXMLPATH = "view/serverbrowser.fxml";
   private final Client client;
   private final String userId;
 
   @FXML
-  ListView<String> lobbylist;
+  ListView<LobbyModel> lobbylist;
 
   ServerBrowserController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -37,16 +37,15 @@ class ServerBrowserController extends Controller implements ClientObserver {
       new CreateController(stage, client, userId);
   }
 
-  private void joinGame(String gameId) {
+  private void joinLobby(String lobbyId) {
     new GameLobbyController(stage, client, userId);
-    client.joinLobby(userId, gameId);
+    client.joinLobby(userId, lobbyId);
   }
 
   private void addLobbiesToList(List<LobbyModel> idList) {
     for (int i = 0; i<idList.size(); i++) {
-      lobbylist.getItems().add(i, idList.get(i).id);
+      lobbylist.getItems().add(i, idList.get(i));
     }
-
   }
 
   @Override
@@ -83,12 +82,12 @@ class ServerBrowserController extends Controller implements ClientObserver {
 
   }
 
-  public void initActions(){
-    lobbylist.setOnMouseClicked(new EventHandler<MouseEvent>(){
-      @Override
-      public void handle(MouseEvent arg0) {
-        joinGame(lobbylist.getSelectionModel().getSelectedItems().get(0));
-      }
-    });
+  void initActions(){
+    lobbylist.setCellFactory(lobbyListView -> new LobbyListCell(this));
+  }
+
+  @Override
+  public void clickedJoin(String lobbyId) {
+    joinLobby(lobbyId);
   }
 }

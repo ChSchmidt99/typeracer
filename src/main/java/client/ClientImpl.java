@@ -50,8 +50,8 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
-  public void newLobby(String userId) {
-    sendRequest(RequestFactory.makeNewLobbyRequest(userId));
+  public void newLobby(String userId, String lobbyName) {
+    sendRequest(RequestFactory.makeNewLobbyRequest(userId, lobbyName));
   }
 
   @Override

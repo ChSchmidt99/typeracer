@@ -29,7 +29,7 @@ public class Main implements ClientObserver {
       client.subscribe(m);
       client.registerUser("Cooler Mensch");
       client.requestLobbies();
-      client.newLobby("some userId");
+      client.newLobby("some userId", "some lobby name");
       client.requestLobbies();
       client.setIsReady(true);
       client.startRace();

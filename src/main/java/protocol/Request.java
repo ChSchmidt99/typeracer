@@ -27,6 +27,8 @@ public class Request {
 
   public String lobbyId;
 
+  public String lobbyName;
+
   public Boolean isReady;
 
   public ProgressSnapshot snapshot;

@@ -21,7 +21,7 @@ public interface Api {
    * @param connectionId id of the server connection
    * @param userId id of the user
    */
-  void createNewLobby(String connectionId, String userId);
+  void createNewLobby(String connectionId, String userId, String lobbyName);
 
   /**
    * Call to join an existing lobby.

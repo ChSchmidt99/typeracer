@@ -26,9 +26,9 @@ class SessionStore {
     this.database = database;
   }
 
-  String createNewLobby(String connectionId, PushService pushService) {
+  String createNewLobby(String connectionId, String name, PushService pushService) {
     String lobbyId = generator.getId();
-    Lobby lobby = new Lobby(lobbyId, database, pushService);
+    Lobby lobby = new Lobby(lobbyId, name, database, pushService);
     lobbies.put(lobbyId, lobby);
     return lobbyId;
   }

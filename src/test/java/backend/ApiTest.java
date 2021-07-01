@@ -31,11 +31,13 @@ public class ApiTest implements PushService {
   void create_new_lobby() {
     String connectionId = "some id";
     String userId = "some user id";
+    String lobbyName = "some name";
     this.api.getLobbies(connectionId);
     assertEquals(lobbyResponse.size(), 0);
-    this.api.createNewLobby(connectionId, userId);
+    this.api.createNewLobby(connectionId, userId, lobbyName);
     this.api.getLobbies(connectionId);
     assertEquals(lobbyResponse.size(), 1);
+    assertEquals(lobbyResponse.get(0).name, lobbyName);
   }
 
   /**

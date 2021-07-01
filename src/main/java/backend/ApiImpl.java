@@ -1,7 +1,6 @@
 package backend;
 
 import database.Database;
-import java.io.IOException;
 import java.util.List;
 import protocol.LobbyModel;
 import protocol.ProgressSnapshot;
@@ -9,7 +8,6 @@ import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
 import util.Logger;
-
 
 /**
  * Currently just an experimental Api implementation.
@@ -45,8 +43,8 @@ public class ApiImpl implements Api {
   }
 
   @Override
-  public void createNewLobby(String connectionId, String userId) {
-    String lobbyId = sessionStore.createNewLobby(connectionId, pushService);
+  public void createNewLobby(String connectionId, String userId, String lobbyName) {
+    String lobbyId = sessionStore.createNewLobby(connectionId, lobbyName, pushService);
     sessionStore.joinLobby(lobbyId, connectionId, userId);
   }
 
