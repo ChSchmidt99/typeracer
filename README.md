@@ -38,3 +38,7 @@ To run the application during development without any checks, run `./gradlew run
 To start the server, run `./gradlew runServer` .
 
 To run the provided jar releases use `java -jar server.jar` or `java -jar client.jar` 
+
+## Code Formatting 
+
+Run `./gradlew goJF` to automatically reformat all .java files to be Google style guide conform. 

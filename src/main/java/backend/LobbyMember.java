@@ -1,8 +1,6 @@
 package backend;
 
-/**
- * Used to represent a User connected to a lobby.
- */
+/** Used to represent a User connected to a lobby. */
 class LobbyMember {
 
   private boolean isReady;
@@ -17,7 +15,7 @@ class LobbyMember {
    * @param userId id of user
    * @param name name of user
    */
-  LobbyMember(String userId, String connectionId,  String name) {
+  LobbyMember(String userId, String connectionId, String name) {
     this.isReady = false;
     this.userId = userId;
     this.connectionId = connectionId;
@@ -48,5 +46,4 @@ class LobbyMember {
   void setInRace(boolean isInRace) {
     this.inRace = isInRace;
   }
-
 }

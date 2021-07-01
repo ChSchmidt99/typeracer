@@ -9,9 +9,7 @@ import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceModel;
 
-/**
- * Temporary Client main for testing.
- */
+/** Temporary Client main for testing. */
 public class Main implements ClientObserver {
 
   static String text = "Hello";
@@ -86,5 +84,4 @@ public class Main implements ClientObserver {
   public void receivedCheckeredFlag(long raceStop) {
     System.out.println("Checkered Flag! Race stopped: " + Instant.ofEpochSecond(raceStop));
   }
-
 }

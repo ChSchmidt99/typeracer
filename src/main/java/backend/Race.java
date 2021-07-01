@@ -7,8 +7,12 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import protocol.*;
+import protocol.PlayerModel;
+import protocol.PlayerUpdate;
+import protocol.ProgressSnapshot;
+import protocol.RaceModel;
+import protocol.Response;
+import protocol.ResponseFactory;
 import server.PushService;
 import util.Logger;
 import util.Timestamp;
@@ -35,8 +39,11 @@ class Race {
    * @param textToType text that needs to be typed
    * @param players all players connected to the game
    */
-  Race(RaceSettings settings, String textToType, Map<String, Player> players,
-       PushService pushService) {
+  Race(
+      RaceSettings settings,
+      String textToType,
+      Map<String, Player> players,
+      PushService pushService) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
@@ -97,8 +104,8 @@ class Race {
 
   private void startUpdates() {
     scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.scheduleAtFixedRate(this::broadcastUpdate, 0, settings.updateInterval,
-            TimeUnit.SECONDS);
+    scheduler.scheduleAtFixedRate(
+        this::broadcastUpdate, 0, settings.updateInterval, TimeUnit.SECONDS);
   }
 
   private void stopUpdates() {

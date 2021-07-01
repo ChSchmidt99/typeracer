@@ -1,6 +1,5 @@
 package app.controller;
 
-import backend.Player;
 import client.Client;
 import client.ClientObserver;
 import java.util.HashMap;
@@ -8,7 +7,6 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -26,9 +24,7 @@ import protocol.ProgressSnapshot;
 import protocol.RaceModel;
 import util.Timestamp;
 
-/**
- * Handles all gui functionality associated with gameplay.
- */
+/** Handles all gui functionality associated with gameplay. */
 class MultiplayerController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/multiplayer.fxml";
@@ -40,14 +36,11 @@ class MultiplayerController extends Controller implements ClientObserver {
   List<PlayerModel> players;
   HashMap<String, Slider> userProgress = new HashMap<>();
 
-  @FXML
-  TextFlow textToType;
+  @FXML TextFlow textToType;
 
-  @FXML
-  HBox enteredText;
+  @FXML HBox enteredText;
 
-  @FXML
-  VBox userlist;
+  @FXML VBox userlist;
 
   public MultiplayerController(Stage stage, RaceModel race, Client client) {
     super(stage, FXMLPATH);
@@ -64,22 +57,25 @@ class MultiplayerController extends Controller implements ClientObserver {
   }
 
   /**
-   * Keylistener for user input.
-   * Checks input, colors text green if correct, red if not in method charLabel.
+   * Keylistener for user input. Checks input, colors text green if correct, red if not in method
+   * charLabel.
    */
   private void handleCharInput() {
-    stage.getScene().addEventHandler(
-        KeyEvent.KEY_TYPED,
-        event -> {
-            enteredText.getChildren().add(charLabelCreator(game.check(event.getCharacter().charAt(0)), event.getCharacter()));
-            notifyInterval();
-          }
-    );
+    stage
+        .getScene()
+        .addEventHandler(
+            KeyEvent.KEY_TYPED,
+            event -> {
+              enteredText
+                  .getChildren()
+                  .add(
+                      charLabelCreator(
+                          game.check(event.getCharacter().charAt(0)), event.getCharacter()));
+              notifyInterval();
+            });
   }
 
-  /**
-   * Creates labels for user input which will be added to hbox enteredText.
-   */
+  /** Creates labels for user input which will be added to hbox enteredText. */
   private Label charLabelCreator(boolean charCorrect, String letter) {
     Label label = new Label(letter);
     if (charCorrect) {
@@ -102,7 +98,12 @@ class MultiplayerController extends Controller implements ClientObserver {
   }
 
   private void notifyServer() {
-    client.sendProgressUpdate(new ProgressSnapshot(raceStart, Timestamp.currentTimestamp(), textToType2.getCounter(), textToType2.getMistakeCounter()));
+    client.sendProgressUpdate(
+        new ProgressSnapshot(
+            raceStart,
+            Timestamp.currentTimestamp(),
+            textToType2.getCounter(),
+            textToType2.getMistakeCounter()));
   }
 
   /*
@@ -123,42 +124,32 @@ class MultiplayerController extends Controller implements ClientObserver {
     return label;
   }
 
-  private void sliderCreator(String userID) {
+  private void sliderCreator(String userId) {
     Slider slider = new Slider();
     slider.setMin(0);
     slider.setMax(1);
     slider.setValue(0);
-    userProgress.put(userID, slider);
+    userProgress.put(userId, slider);
   }
 
   private void sliderUpdate(PlayerUpdate update) {
-      userProgress.get(update.userId).setValue(update.percentProgress);
+    userProgress.get(update.userId).setValue(update.percentProgress);
   }
 
   @Override
-  public void registered(String userId) {
-
-  }
+  public void registered(String userId) {}
 
   @Override
-  public void receivedError(String message) {
-
-  }
+  public void receivedError(String message) {}
 
   @Override
-  public void gameStarting(RaceModel race) {
-
-  }
+  public void gameStarting(RaceModel race) {}
 
   @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {
-
-  }
+  public void receivedLobbyUpdate(LobbyModel lobby) {}
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
-
-  }
+  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
 
   @Override
   public void receivedRaceUpdate(List<PlayerUpdate> updates) {
@@ -168,11 +159,8 @@ class MultiplayerController extends Controller implements ClientObserver {
             sliderUpdate(update);
           });
     }
-    }
-
+  }
 
   @Override
-  public void receivedCheckeredFlag(long raceStop) {
-
-  }
+  public void receivedCheckeredFlag(long raceStop) {}
 }

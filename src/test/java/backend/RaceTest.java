@@ -12,9 +12,7 @@ import protocol.ProgressSnapshot;
 import protocol.Response;
 import server.PushService;
 
-/**
- * Tests for Race class.
- */
+/** Tests for Race class. */
 public class RaceTest implements PushService {
 
   @Test
@@ -38,12 +36,8 @@ public class RaceTest implements PushService {
   }
 
   @Override
-  public void sendResponse(String connectionId, Response response) {
-
-  }
+  public void sendResponse(String connectionId, Response response) {}
 
   @Override
-  public void sendResponse(Set<String> connectionIds, Response response) {
-
-  }
+  public void sendResponse(Set<String> connectionIds, Response response) {}
 }

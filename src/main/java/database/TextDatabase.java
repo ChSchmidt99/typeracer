@@ -45,5 +45,4 @@ public class TextDatabase {
     int guessedIndex = new Random().nextInt(dictionary.size());
     return dictionary.get(guessedIndex);
   }
-
 }

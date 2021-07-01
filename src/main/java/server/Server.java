@@ -13,9 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import util.Logger;
 
-/**
- * Main instance for Server.
- */
+/** Main instance for Server. */
 public class Server implements Closeable, OnDisconnect {
 
   private ServerSocket socket;
@@ -25,9 +23,7 @@ public class Server implements Closeable, OnDisconnect {
   private final Api api;
   private final PushServiceImpl pushService;
 
-  /**
-   * Constructor of Server.
-   */
+  /** Constructor of Server. */
   public Server(Database database) {
     isRunning = false;
     closeables = new HashSet<>();
@@ -55,7 +51,6 @@ public class Server implements Closeable, OnDisconnect {
    * Run the server on the specified port.
    *
    * @param port the port to run the server on
-   *
    * @throws IOException when server cannot be started
    */
   public void run(int port) throws IOException {
@@ -86,11 +81,11 @@ public class Server implements Closeable, OnDisconnect {
         Connection connection = new Connection(clientSocket, this.api);
         pushService.addConnection(connection);
         closeables.add(connection);
-        executorService.execute(() -> {
-          connection.handleRequests(this);
-        });
+        executorService.execute(
+            () -> {
+              connection.handleRequests(this);
+            });
       }
-
     }
   }
 }

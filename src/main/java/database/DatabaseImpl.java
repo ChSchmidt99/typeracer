@@ -2,9 +2,7 @@ package database;
 
 import java.io.IOException;
 
-/**
- * Implementation of {@link Database} Interface, connects all Database classes.
- */
+/** Implementation of {@link Database} Interface, connects all Database classes. */
 public class DatabaseImpl implements Database {
 
   private final TextDatabase textDatabase;
@@ -29,5 +27,4 @@ public class DatabaseImpl implements Database {
   public String getUsername(String userId) throws IOException {
     return this.testDatabase.getUsername(userId);
   }
-
 }

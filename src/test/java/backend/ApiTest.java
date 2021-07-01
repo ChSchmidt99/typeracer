@@ -12,9 +12,7 @@ import protocol.LobbyModel;
 import protocol.Response;
 import server.PushService;
 
-/**
- * Api Factory Tests.
- */
+/** Api Factory Tests. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest implements PushService {
 
@@ -40,9 +38,7 @@ public class ApiTest implements PushService {
     assertEquals(lobbyResponse.get(0).name, lobbyName);
   }
 
-  /**
-   * PushService interface implementation. Store response in test class.
-   */
+  /** PushService interface implementation. Store response in test class. */
   public void sendResponse(String connectionId, Response response) {
     if (response.type == Response.Types.OPEN_LOBBIES) {
       lobbyResponse = response.lobbies;
@@ -50,5 +46,4 @@ public class ApiTest implements PushService {
   }
 
   public void sendResponse(Set<String> connectionIds, Response response) {}
-
 }

@@ -1,38 +1,24 @@
 package util;
 
-/**
- * Use as static class to log information with a corresponding log level.
- */
+/** Use as static class to log information with a corresponding log level. */
 public abstract class Logger {
 
-  /**
-   * Use LogLevel to change the amount of information that is logged.
-   */
+  /** Use LogLevel to change the amount of information that is logged. */
   enum LogLevel {
-    /**
-     * Includes INFO, ERROR and additional DEBUG information.
-     */
+    /** Includes INFO, ERROR and additional DEBUG information. */
     DEBUG,
 
-    /**
-     * Includes ERROR and INFO information.
-     */
+    /** Includes ERROR and INFO information. */
     INFO,
 
-    /**
-     * Just outputs Errors.
-     */
+    /** Just outputs Errors. */
     ERROR,
 
-    /**
-     * Log nothing.
-     */
+    /** Log nothing. */
     OFF
   }
 
-  /**
-   * Set how much information is logged.
-   */
+  /** Set how much information is logged. */
   static void setLevel(LogLevel level) {
     Logger.level = level;
   }
@@ -51,10 +37,7 @@ public abstract class Logger {
     log(LogLevel.ERROR, message);
   }
 
-
-  /**
-   * Log a message to standard out, it will only be displayed, if it has the appropriate level.
-   */
+  /** Log a message to standard out, it will only be displayed, if it has the appropriate level. */
   static void log(LogLevel level, String message) {
     switch (Logger.level) {
       case OFF:

@@ -23,7 +23,8 @@ Send request to create a new lobby and join as host.
 ```json
 {
     "type" : "new lobby",
-    "userId" : "<some userId>"
+    "userId" : "<some userId>",
+    "lobbyName" : "<some name>"
 }
 ```
 After successfully creating a new lobby, the specified user is added as host with equivalent behavior to the following join lobby request.
@@ -43,6 +44,7 @@ If lobby was joined successfully, a response with information about the created 
     "type" : "lobby update",
     "lobby" : {
       "id" : "<some lobbyId>",
+      "name" : "<some name>",
       "players" : ["<string list of player names>"],
       "isRunning" : "<boolean>"
     }

@@ -16,8 +16,10 @@ abstract class Controller {
   Controller(Stage stage, String fxmlpath) {
     try {
       this.stage = stage;
-      FXMLLoader loader = new FXMLLoader((Objects.requireNonNull(getClass().getProtectionDomain()
-              .getClassLoader().getResource(fxmlpath))));
+      FXMLLoader loader =
+          new FXMLLoader(
+              (Objects.requireNonNull(
+                  getClass().getProtectionDomain().getClassLoader().getResource(fxmlpath))));
       loader.setController(this);
       Parent root = loader.load();
       stage.setScene(new Scene(root, 1280, 720));

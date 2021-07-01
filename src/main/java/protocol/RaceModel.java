@@ -2,9 +2,7 @@ package protocol;
 
 import java.util.List;
 
-/**
- * Json model including all race information.
- */
+/** Json model including all race information. */
 public class RaceModel {
 
   public final String textToType;
@@ -20,5 +18,4 @@ public class RaceModel {
     this.textToType = textToType;
     this.players = players;
   }
-
 }

@@ -2,9 +2,7 @@ package client;
 
 import protocol.ProgressSnapshot;
 
-/**
- * Provides interface for all Server communication.
- */
+/** Provides interface for all Server communication. */
 public interface Client {
 
   /**
@@ -29,19 +27,13 @@ public interface Client {
    */
   void joinLobby(String userId, String gameId);
 
-  /**
-   * Start a race in the current lobby.
-   */
+  /** Start a race in the current lobby. */
   void startRace();
 
-  /**
-   * Leave the current lobby.
-   */
+  /** Leave the current lobby. */
   void leaveLobby();
 
-  /**
-   * Request a list of all open lobbies.
-   */
+  /** Request a list of all open lobbies. */
   void requestLobbies();
 
   /**
@@ -50,7 +42,6 @@ public interface Client {
    * @param isReady whether or not the user is ready
    */
   void setIsReady(boolean isReady);
-
 
   void sendProgressUpdate(ProgressSnapshot snapshot);
 
@@ -67,5 +58,4 @@ public interface Client {
    * @param observer {@link ClientObserver}
    */
   void unsubscribe(ClientObserver observer);
-
 }

@@ -10,5 +10,4 @@ class RaceSettings {
     this.checkeredFlagDuration = checkeredFlagDuration;
     this.updateInterval = updateInterval;
   }
-
 }

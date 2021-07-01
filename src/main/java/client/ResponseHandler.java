@@ -20,8 +20,8 @@ class ResponseHandler implements Closeable {
   private final HashSet<ClientObserver> observers;
 
   ResponseHandler(Socket socket, Gson gson) throws IOException {
-    this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
-            StandardCharsets.UTF_8));
+    this.reader =
+        new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
     this.gson = gson;
     this.observers = new HashSet<>();
     executorService = Executors.newFixedThreadPool(1);
@@ -63,39 +63,46 @@ class ResponseHandler implements Closeable {
   private void receivedResponse(Response response) {
     switch (response.type) {
       case Response.Types.REGISTERED:
-        observers.forEach((observer) -> {
-          observer.registered(response.userId);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.registered(response.userId);
+            });
         break;
       case Response.Types.ERROR:
-        observers.forEach((observer) -> {
-          observer.receivedError(response.message);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.receivedError(response.message);
+            });
         break;
       case Response.Types.GAME_STARTING:
-        observers.forEach((observer) -> {
-          observer.gameStarting(response.race);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.gameStarting(response.race);
+            });
         break;
       case Response.Types.LOBBY_UPDATE:
-        observers.forEach((observer) -> {
-          observer.receivedLobbyUpdate(response.lobby);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.receivedLobbyUpdate(response.lobby);
+            });
         break;
       case Response.Types.OPEN_LOBBIES:
-        observers.forEach((observer) -> {
-          observer.receivedOpenLobbies(response.lobbies);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.receivedOpenLobbies(response.lobbies);
+            });
         break;
       case Response.Types.RACE_UPDATE:
-        observers.forEach((observer) -> {
-          observer.receivedRaceUpdate(response.playerUpdates);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.receivedRaceUpdate(response.playerUpdates);
+            });
         break;
       case Response.Types.CHECKERED_FLAG:
-        observers.forEach((observer) -> {
-          observer.receivedCheckeredFlag(response.raceStop);
-        });
+        observers.forEach(
+            (observer) -> {
+              observer.receivedCheckeredFlag(response.raceStop);
+            });
         break;
       default:
         System.out.println("Received unknown ResponseType: " + response.type);

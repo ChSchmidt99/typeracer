@@ -17,9 +17,7 @@ import protocol.Response;
 import protocol.ResponseFactory;
 import util.Logger;
 
-/**
- * Representing a Connection to a Client.
- */
+/** Representing a Connection to a Client. */
 class Connection implements Closeable {
 
   private final Socket socket;
@@ -37,8 +35,8 @@ class Connection implements Closeable {
    */
   Connection(Socket socket, Api api) throws IOException {
     this.socket = socket;
-    this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream(),
-            StandardCharsets.UTF_8));
+    this.reader =
+        new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
     this.writer = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8);
     GsonBuilder builder = new GsonBuilder();
     this.gson = builder.create();
@@ -46,9 +44,7 @@ class Connection implements Closeable {
     this.id = UUID.randomUUID().toString();
   }
 
-  /**
-   * Closes socket specified when creating Connection.
-   */
+  /** Closes socket specified when creating Connection. */
   @Override
   public void close() {
     try {
@@ -59,9 +55,7 @@ class Connection implements Closeable {
     }
   }
 
-  /**
-   * Listens on socket and forwards all received messages.
-   */
+  /** Listens on socket and forwards all received messages. */
   void handleRequests(OnDisconnect onDisconnect) {
     try {
       String line;

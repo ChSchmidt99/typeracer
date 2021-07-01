@@ -3,9 +3,7 @@ package backend;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 
-/**
- * Used to represent a Player in an ongoing race.
- */
+/** Used to represent a Player in an ongoing race. */
 public class Player {
 
   private final String userId;
@@ -15,7 +13,7 @@ public class Player {
   private float progress;
   private long raceStartTime;
   private long lastUpdateTime;
-  //private int mistakes;
+  // private int mistakes;
 
   Player(String userId, String connectionId, String name) {
     this.userId = userId;
@@ -25,7 +23,7 @@ public class Player {
     this.progress = 0;
     this.raceStartTime = 0;
     this.lastUpdateTime = 0;
-    //this.mistakes = 0;
+    // this.mistakes = 0;
   }
 
   String getConnectionId() {
@@ -51,7 +49,7 @@ public class Player {
     this.lastUpdateTime = snapshot.timestamp;
     this.wpm = wordsPerMinute(snapshot.progress, this.raceDuration());
     this.progress = (float) snapshot.progress / textLength;
-    //this.mistakes = snapshot.mistakes;
+    // this.mistakes = snapshot.mistakes;
   }
 
   PlayerUpdate getUpdate() {
@@ -71,5 +69,4 @@ public class Player {
   private boolean isFinished() {
     return this.progress == 1;
   }
-
 }

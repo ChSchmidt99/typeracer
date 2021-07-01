@@ -2,14 +2,13 @@ package app.controller;
 
 import client.Client;
 import client.ClientObserver;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
 import protocol.PlayerUpdate;
 import protocol.RaceModel;
-
-import java.util.List;
 
 /*
  * Handles all gui functionality for game creation.
@@ -21,8 +20,7 @@ class CreateController extends Controller implements ClientObserver {
   private final Client client;
   private String userId;
 
-  @FXML
-  TextField lobbyname;
+  @FXML TextField lobbyname;
 
   CreateController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -33,7 +31,7 @@ class CreateController extends Controller implements ClientObserver {
 
   @FXML
   void switchToGameLobby() {
-    if (lobbyname.getText().equals("")){
+    if (lobbyname.getText().equals("")) {
       displayError(LOBBY_NAME_ERROR);
     } else {
       new GameLobbyController(stage, client, userId);
@@ -42,35 +40,23 @@ class CreateController extends Controller implements ClientObserver {
   }
 
   @Override
-  public void registered(String userId) {
-  }
+  public void registered(String userId) {}
 
   @Override
-  public void receivedError(String message) {
-
-  }
+  public void receivedError(String message) {}
 
   @Override
-  public void gameStarting(RaceModel race) {
-
-  }
+  public void gameStarting(RaceModel race) {}
 
   @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {
-  }
+  public void receivedLobbyUpdate(LobbyModel lobby) {}
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
-
-  }
+  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
 
   @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-
-  }
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
 
   @Override
-  public void receivedCheckeredFlag(long raceStop) {
-
-  }
+  public void receivedCheckeredFlag(long raceStop) {}
 }

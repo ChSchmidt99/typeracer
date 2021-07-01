@@ -4,15 +4,14 @@ import app.elements.JoinHandler;
 import app.elements.LobbyListCell;
 import client.Client;
 import client.ClientObserver;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
 import protocol.PlayerUpdate;
 import protocol.RaceModel;
-
-import java.util.List;
 
 class ServerBrowserController extends Controller implements ClientObserver, JoinHandler {
 
@@ -20,8 +19,7 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   private final Client client;
   private final String userId;
 
-  @FXML
-  ListView<LobbyModel> lobbylist;
+  @FXML ListView<LobbyModel> lobbylist;
 
   ServerBrowserController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -34,7 +32,7 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
 
   @FXML
   private void switchToCreateScreen() {
-      new CreateController(stage, client, userId);
+    new CreateController(stage, client, userId);
   }
 
   private void joinLobby(String lobbyId) {
@@ -43,29 +41,22 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   }
 
   private void addLobbiesToList(List<LobbyModel> idList) {
-    for (int i = 0; i<idList.size(); i++) {
+    for (int i = 0; i < idList.size(); i++) {
       lobbylist.getItems().add(i, idList.get(i));
     }
   }
 
   @Override
-  public void registered(String userId) {
-  }
+  public void registered(String userId) {}
 
   @Override
-  public void receivedError(String message) {
-
-  }
+  public void receivedError(String message) {}
 
   @Override
-  public void gameStarting(RaceModel race) {
-
-  }
+  public void gameStarting(RaceModel race) {}
 
   @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {
-
-  }
+  public void receivedLobbyUpdate(LobbyModel lobby) {}
 
   @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {
@@ -73,16 +64,12 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   }
 
   @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-
-  }
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
 
   @Override
-  public void receivedCheckeredFlag(long raceStop) {
+  public void receivedCheckeredFlag(long raceStop) {}
 
-  }
-
-  void initActions(){
+  void initActions() {
     lobbylist.setCellFactory(lobbyListView -> new LobbyListCell(this));
   }
 

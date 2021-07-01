@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Mock Database that can be used for testing, only holds Data in RAM.
- */
+/** Mock Database that can be used for testing, only holds Data in RAM. */
 public class MockDatabase implements Database {
 
   private final Map<String, String> names;

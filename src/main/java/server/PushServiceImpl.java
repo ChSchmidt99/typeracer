@@ -49,5 +49,4 @@ class PushServiceImpl implements PushService {
     }
     connection.sendResponse(response);
   }
-
 }

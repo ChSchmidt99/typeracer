@@ -2,6 +2,7 @@ package app.controller;
 
 import client.Client;
 import client.ClientObserver;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,8 +13,6 @@ import protocol.LobbyModel;
 import protocol.PlayerUpdate;
 import protocol.RaceModel;
 
-import java.util.List;
-
 class GameLobbyController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/gamelobby.fxml";
@@ -21,14 +20,11 @@ class GameLobbyController extends Controller implements ClientObserver {
   private final Client client;
   private String userId;
 
-  @FXML
-  CheckBox lobbyCheckbox;
+  @FXML CheckBox lobbyCheckbox;
 
-  @FXML
-  Button startButton;
+  @FXML Button startButton;
 
-  @FXML
-  ListView<String> userlist;
+  @FXML ListView<String> userlist;
 
   GameLobbyController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -52,9 +48,7 @@ class GameLobbyController extends Controller implements ClientObserver {
   }
 
   @Override
-  public void registered(String userId) {
-
-  }
+  public void registered(String userId) {}
 
   @Override
   public void receivedError(String message) {
@@ -66,32 +60,25 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   @Override
   public void gameStarting(RaceModel race) {
-    Platform.runLater(() ->
-    new MultiplayerController(stage, race, client)
-    );
+    Platform.runLater(() -> new MultiplayerController(stage, race, client));
   }
 
   @Override
   public void receivedLobbyUpdate(LobbyModel lobby) {
-    Platform.runLater(() -> {
-            userlist.getItems().clear();
-            userlist.getItems().addAll(lobby.players);
-            this.startButton.setDisable(lobby.isRunning);
-    });
+    Platform.runLater(
+        () -> {
+          userlist.getItems().clear();
+          userlist.getItems().addAll(lobby.players);
+          this.startButton.setDisable(lobby.isRunning);
+        });
   }
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
-
-  }
+  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
 
   @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-
-  }
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
 
   @Override
-  public void receivedCheckeredFlag(long raceStop) {
-
-  }
+  public void receivedCheckeredFlag(long raceStop) {}
 }

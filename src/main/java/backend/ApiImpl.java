@@ -9,9 +9,7 @@ import protocol.ResponseFactory;
 import server.PushService;
 import util.Logger;
 
-/**
- * Currently just an experimental Api implementation.
- */
+/** Currently just an experimental Api implementation. */
 public class ApiImpl implements Api {
 
   private final PushService pushService;
@@ -79,5 +77,4 @@ public class ApiImpl implements Api {
   public void updateProgress(String connectionId, ProgressSnapshot snapshot) {
     sessionStore.updateProgress(connectionId, snapshot);
   }
-
 }

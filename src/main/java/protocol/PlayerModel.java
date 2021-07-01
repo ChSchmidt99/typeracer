@@ -1,5 +1,6 @@
 package protocol;
 
+/** Representing JSON Model of a Player. */
 public class PlayerModel {
 
   public final String name;
@@ -10,5 +11,4 @@ public class PlayerModel {
     this.name = name;
     this.userId = userId;
   }
-
 }

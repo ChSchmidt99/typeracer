@@ -1,8 +1,6 @@
 package util;
 
-/**
- * Contains static method for getting unix epoch timestamp.
- */
+/** Contains static method for getting unix epoch timestamp. */
 public class Timestamp {
 
   /**

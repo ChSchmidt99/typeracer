@@ -3,28 +3,24 @@ package app.controller;
 import client.Client;
 import client.ClientImpl;
 import client.ClientObserver;
+import java.net.InetAddress;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.net.InetAddress;
 import protocol.LobbyModel;
 import protocol.PlayerUpdate;
 import protocol.RaceModel;
 
-/**
- * Handles transition functionality for startscreen.
- */
+/** Handles transition functionality for startscreen. */
 public class StartscreenController extends Controller implements ClientObserver {
 
   private static final String FXMLPATH = "view/startscreen.fxml";
   private static final String USERNAME_ERROR = "Please choose a username";
   private Client client = null;
 
-  @FXML
-  TextField username;
+  @FXML TextField username;
 
   /**
    * Constructor for StartscreenController; creates a new Startscreen.
@@ -57,38 +53,27 @@ public class StartscreenController extends Controller implements ClientObserver 
 
   @Override
   public void registered(String userId) {
-    Platform.runLater(() -> {
-      new ServerBrowserController(stage, client, userId);
-    });
+    Platform.runLater(
+        () -> {
+          new ServerBrowserController(stage, client, userId);
+        });
   }
 
   @Override
-  public void receivedError(String message) {
-
-  }
+  public void receivedError(String message) {}
 
   @Override
-  public void gameStarting(RaceModel race) {
-
-  }
+  public void gameStarting(RaceModel race) {}
 
   @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {
-
-  }
+  public void receivedLobbyUpdate(LobbyModel lobby) {}
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
-
-  }
+  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
 
   @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-
-  }
+  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
 
   @Override
-  public void receivedCheckeredFlag(long raceStop) {
-
-  }
+  public void receivedCheckeredFlag(long raceStop) {}
 }

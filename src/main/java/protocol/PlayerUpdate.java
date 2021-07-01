@@ -1,8 +1,6 @@
 package protocol;
 
-/**
- * Used to create a JSON containing player updates.
- */
+/** Used to create a JSON containing player updates. */
 public class PlayerUpdate {
 
   public final String userId;
@@ -15,7 +13,7 @@ public class PlayerUpdate {
 
   public final long raceDuration;
 
-  //TODO: pass in player instead of user ID?
+  // TODO: pass in player instead of user ID?
   /**
    * Create PlayerUpdate.
    *
@@ -23,8 +21,8 @@ public class PlayerUpdate {
    * @param wpm words per minute
    * @param percentProgress progress in range [0,1]
    */
-  public PlayerUpdate(String userId, int wpm, float percentProgress, boolean isFinished,
-                      long duration) {
+  public PlayerUpdate(
+      String userId, int wpm, float percentProgress, boolean isFinished, long duration) {
     this.userId = userId;
     this.wpm = wpm;
     this.percentProgress = percentProgress;

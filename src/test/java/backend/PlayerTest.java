@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 
-/**
- * Tests for Player class.
- */
+/** Tests for Player class. */
 public class PlayerTest {
 
   @Test
@@ -27,5 +25,4 @@ public class PlayerTest {
     PlayerUpdate update3 = player.getUpdate();
     assertEquals(wpm, update3.wpm);
   }
-
 }

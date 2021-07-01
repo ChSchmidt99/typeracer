@@ -1,13 +1,9 @@
 package database;
 
-import database.TestDatabase;
-import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Database unit tests.
- */
+/** Database unit tests. */
 public class DatabaseTest {
   @Test
   void getValidUserId() throws Exception {

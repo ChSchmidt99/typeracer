@@ -2,14 +2,10 @@ package protocol;
 
 import java.util.List;
 
-/**
- * Represents a Json Response.
- */
+/** Represents a Json Response. */
 public class Response {
 
-  /**
-   * All possible Response types.
-   */
+  /** All possible Response types. */
   public static class Types {
     public static final String ERROR = "error";
     public static final String LOBBY_UPDATE = "lobby update";

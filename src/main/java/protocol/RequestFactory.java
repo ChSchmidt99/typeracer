@@ -1,8 +1,6 @@
 package protocol;
 
-/**
- * Factory for creating {@link Request} instances.
- */
+/** Factory for creating {@link Request} instances. */
 public class RequestFactory {
 
   /**
@@ -79,5 +77,4 @@ public class RequestFactory {
     request.snapshot = snapshot;
     return request;
   }
-
 }

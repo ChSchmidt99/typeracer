@@ -12,9 +12,7 @@ import protocol.ProgressSnapshot;
 import protocol.Request;
 import protocol.RequestFactory;
 
-/**
- * Client provides all communication with the server.
- */
+/** Client provides all communication with the server. */
 public class ClientImpl implements Closeable, Client {
 
   private final Socket socket;
@@ -23,11 +21,11 @@ public class ClientImpl implements Closeable, Client {
   private final ResponseHandler responseHandler;
 
   /**
-   * Tries to connect to the server and starts listening for responses when successful.
-   * Subscribe observer to receive responses.
+   * Tries to connect to the server and starts listening for responses when successful. Subscribe
+   * observer to receive responses.
    *
    * @param serverAddress address to server
-   * @param port          port the server listens to
+   * @param port port the server listens to
    * @throws IOException if connection attempt fails
    */
   public ClientImpl(InetAddress serverAddress, int port) throws IOException {
@@ -97,5 +95,4 @@ public class ClientImpl implements Closeable, Client {
   private void sendRequest(Request request) {
     this.writer.println(gson.toJson(request));
   }
-
 }

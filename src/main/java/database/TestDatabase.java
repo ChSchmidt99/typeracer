@@ -1,12 +1,9 @@
 package database;
 
-import util.Logger;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +24,6 @@ public class TestDatabase implements Database {
     this.path = Paths.get(uri).toString();
   }
 
-
   /** select random piece of text from dictionary and use it in the game. */
   @Override
   public String getTextToType() {
@@ -45,10 +41,10 @@ public class TestDatabase implements Database {
     UUID uuid = UUID.randomUUID();
     String uuidAsString = uuid.toString();
     Files.writeString(
-            Paths.get(path),
-            (username + " " + uuidAsString + System.lineSeparator()),
-            StandardCharsets.UTF_8,
-            StandardOpenOption.APPEND);
+        Paths.get(path),
+        (username + " " + uuidAsString + System.lineSeparator()),
+        StandardCharsets.UTF_8,
+        StandardOpenOption.APPEND);
 
     return uuidAsString;
   }

@@ -9,9 +9,7 @@ import protocol.LobbyModel;
 import protocol.ProgressSnapshot;
 import server.PushService;
 
-/**
- * Holds all currently running lobbies and forwards calls to the correct instances.
- */
+/** Holds all currently running lobbies and forwards calls to the correct instances. */
 class SessionStore {
 
   private final IdGenerator generator;
@@ -65,7 +63,6 @@ class SessionStore {
   void setPlayerReady(String connectionId, boolean isReady) {
     Lobby lobby = getLobby(connectionId);
     lobby.setPlayerReady(connectionId, isReady);
-
   }
 
   void updateProgress(String connectionId, ProgressSnapshot snapshot) {

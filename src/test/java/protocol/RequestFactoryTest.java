@@ -9,9 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-/**
- * Request Factory Tests.
- */
+/** Request Factory Tests. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RequestFactoryTest {
 
@@ -26,8 +24,11 @@ public class RequestFactoryTest {
   @Test
   void new_game_request() {
     String userId = UUID.randomUUID().toString();
-    Request request = RequestFactory.makeNewLobbyRequest(userId);
-    String expected = String.format("{\"type\":\"new lobby\",\"userId\":\"%s\"}", userId);
+    String lobbyName = "Some name";
+    Request request = RequestFactory.makeNewLobbyRequest(userId, lobbyName);
+    String expected =
+        String.format(
+            "{\"type\":\"new lobby\",\"userId\":\"%s\",\"lobbyName\":\"%s\"}", userId, lobbyName);
     String result = gson.toJson(request);
     assertEquals(expected, result);
   }
@@ -37,8 +38,8 @@ public class RequestFactoryTest {
     String userId = UUID.randomUUID().toString();
     String gameId = UUID.randomUUID().toString();
     String expected =
-        String.format("{\"type\":\"join lobby\",\"userId\":\"%s\",\"lobbyId\":\"%s\"}",
-        userId, gameId);
+        String.format(
+            "{\"type\":\"join lobby\",\"userId\":\"%s\",\"lobbyId\":\"%s\"}", userId, gameId);
     Request request = RequestFactory.makeJoinLobbyRequest(userId, gameId);
     String result = gson.toJson(request);
     assertEquals(expected, result);
@@ -52,5 +53,4 @@ public class RequestFactoryTest {
     String result = gson.toJson(request);
     assertEquals(expected, result);
   }
-
 }

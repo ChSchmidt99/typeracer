@@ -2,9 +2,7 @@ package protocol;
 
 import java.util.List;
 
-/**
- * Factory used for creating {@link Response} instances.
- */
+/** Factory used for creating {@link Response} instances. */
 public class ResponseFactory {
 
   /**
@@ -80,8 +78,8 @@ public class ResponseFactory {
   }
 
   /**
-   * Make checkered flag response.
-   * Used to send raceStop time to all clients after first player finished.
+   * Make checkered flag response. Used to send raceStop time to all clients after first player
+   * finished.
    *
    * @param raceStop unix epoch time of race end in seconds
    * @return {@link Response}
@@ -91,5 +89,4 @@ public class ResponseFactory {
     response.raceStop = raceStop;
     return response;
   }
-
 }

@@ -12,9 +12,7 @@ import protocol.ResponseFactory;
 import server.PushService;
 import util.Logger;
 
-/**
- * Represents one game currently managed by the server.
- */
+/** Represents one game currently managed by the server. */
 class Lobby {
 
   private final String lobbyId;
@@ -68,8 +66,7 @@ class Lobby {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(settings, this.database.getTextToType(),
-            readyPlayers, pushService);
+    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService);
     broadcastLobbyUpdate();
   }
 
@@ -123,5 +120,4 @@ class Lobby {
     Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());
     broadcast(response);
   }
-
 }

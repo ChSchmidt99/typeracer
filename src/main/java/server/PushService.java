@@ -3,9 +3,7 @@ package server;
 import java.util.Set;
 import protocol.Response;
 
-/**
- * Service used to send responses to clients.
- */
+/** Service used to send responses to clients. */
 public interface PushService {
 
   /**
@@ -24,5 +22,4 @@ public interface PushService {
    * @param response some {@link Response}
    */
   void sendResponse(Set<String> connectionIds, Response response);
-
 }

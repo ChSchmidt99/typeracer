@@ -1,8 +1,6 @@
 package backend;
 
-/**
- * Used to get consecutive IDs.
- */
+/** Used to get consecutive IDs. */
 class IdGenerator {
 
   private int current;

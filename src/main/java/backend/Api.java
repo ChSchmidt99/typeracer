@@ -2,9 +2,7 @@ package backend;
 
 import protocol.ProgressSnapshot;
 
-/**
- * Provides an interface for all Backend operations.
- */
+/** Provides an interface for all Backend operations. */
 public interface Api {
 
   /**

@@ -1,13 +1,9 @@
 package protocol;
 
-/**
- * Represents a Json Request.
- */
+/** Represents a Json Request. */
 public class Request {
 
-  /**
-   * All possible Request types.
-   */
+  /** All possible Request types. */
   public static class Types {
     public static final String REGISTER = "register";
     public static final String NEW_LOBBY = "new lobby";

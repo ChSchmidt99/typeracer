@@ -2,9 +2,7 @@ package protocol;
 
 import java.util.List;
 
-/**
- * Json model for all lobby information.
- */
+/** Json model for all lobby information. */
 public class LobbyModel {
 
   public String id;
