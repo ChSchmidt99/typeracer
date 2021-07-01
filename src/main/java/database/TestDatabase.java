@@ -2,6 +2,7 @@ package database;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -9,18 +10,22 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.UUID;
 
+
+
 /** implements test for the database interface. */
-public class TestDatabase implements Database {
+public class TestDatabase {
 
   Map<String, String> map = new HashMap<>();
 
-  /** select random piece of text from dictionary and use it in the game. */
-  @Override
-  public String getTextToType() {
-    return "Hallo Welt";
+  private final String path;
+
+  TestDatabase() throws URISyntaxException {
+    URL url = Objects.requireNonNull(this.getClass().getClassLoader().getResource("database.txt"));
+    this.path = Paths.get(url.toURI()).toString();
   }
 
   /**
@@ -29,10 +34,7 @@ public class TestDatabase implements Database {
    * @param username name of user
    * @return userId
    */
-  @Override
-  public String registerUser(String username) throws IOException {
-    String path = this.getClass().getClassLoader().getResource("database.txt").getPath();
-
+  String registerUser(String username) throws IOException {
     UUID uuid = UUID.randomUUID();
     String uuidAsString = uuid.toString();
     Files.writeString(
@@ -50,12 +52,9 @@ public class TestDatabase implements Database {
    * @param userId name of user
    * @return userId
    */
-  @Override
-  public String getUsername(String userId) throws IOException {
+  String getUsername(String userId) throws IOException {
 
-    URL paths = this.getClass().getClassLoader().getResource("database.txt");
-
-    File f = new File(paths.getPath());
+    File f = new File(path);
     Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
 
     while (scanner.hasNextLine()) {
