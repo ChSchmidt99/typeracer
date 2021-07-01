@@ -10,7 +10,7 @@ public class DatabaseImpl implements Database {
   private final TextDatabase textDatabase;
   private final TestDatabase testDatabase;
 
-  public DatabaseImpl() throws IOException {
+  public DatabaseImpl() throws Exception {
     this.testDatabase = new TestDatabase();
     this.textDatabase = new TextDatabase();
   }
