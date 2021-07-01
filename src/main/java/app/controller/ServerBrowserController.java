@@ -36,7 +36,7 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   }
 
   private void joinLobby(String lobbyId) {
-    new GameLobbyController(stage, client, userId);
+    new GameLobbyController(stage, client);
     client.joinLobby(userId, lobbyId);
   }
 

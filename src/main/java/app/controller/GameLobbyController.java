@@ -18,7 +18,6 @@ class GameLobbyController extends Controller implements ClientObserver {
   private static final String FXMLPATH = "view/gamelobby.fxml";
   private static final String CHECKBOX_ERROR = "Please check 'ready' box.";
   private final Client client;
-  private String userId;
 
   @FXML CheckBox lobbyCheckbox;
 
@@ -26,10 +25,9 @@ class GameLobbyController extends Controller implements ClientObserver {
 
   @FXML ListView<String> userlist;
 
-  GameLobbyController(Stage stage, Client client, String userId) {
+  GameLobbyController(Stage stage, Client client) {
     super(stage, FXMLPATH);
     this.client = client;
-    this.userId = userId;
     client.subscribe(this);
   }
 

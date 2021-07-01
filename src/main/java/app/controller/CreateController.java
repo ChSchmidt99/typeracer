@@ -34,7 +34,7 @@ class CreateController extends Controller implements ClientObserver {
     if (lobbyname.getText().equals("")) {
       displayError(LOBBY_NAME_ERROR);
     } else {
-      new GameLobbyController(stage, client, userId);
+      new GameLobbyController(stage, client);
       client.newLobby(userId, lobbyname.getText());
     }
   }

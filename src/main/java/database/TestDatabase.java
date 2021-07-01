@@ -2,14 +2,15 @@ package database;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -20,8 +21,8 @@ public class TestDatabase implements Database {
   private final String path;
 
   TestDatabase() throws URISyntaxException {
-    URI uri = this.getClass().getClassLoader().getResource("database.txt").toURI();
-    this.path = Paths.get(uri).toString();
+    URL url = Objects.requireNonNull(this.getClass().getClassLoader().getResource("database.txt"));
+    this.path = Paths.get(url.toURI()).toString();
   }
 
   /** select random piece of text from dictionary and use it in the game. */
@@ -72,6 +73,11 @@ public class TestDatabase implements Database {
       if (key.equals(userId)) {
         output = value;
       }
+    }
+
+    // TODO: Maybe find a nicer solution
+    if (output.equals("")) {
+      output = "unknown";
     }
     return output;
   }
