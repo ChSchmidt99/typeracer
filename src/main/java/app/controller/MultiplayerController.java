@@ -1,7 +1,7 @@
 package app.controller;
 
 import client.Client;
-import client.ClientObserver;
+import client.RaceObserver;
 import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
@@ -17,7 +17,6 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import model.TextToType;
 import model.Typeracer;
-import protocol.LobbyModel;
 import protocol.PlayerModel;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
@@ -25,7 +24,7 @@ import protocol.RaceModel;
 import util.Timestamp;
 
 /** Handles all gui functionality associated with gameplay. */
-class MultiplayerController extends Controller implements ClientObserver {
+class MultiplayerController extends Controller implements RaceObserver {
 
   private static final String FXMLPATH = "view/multiplayer.fxml";
   Typeracer game;
@@ -45,7 +44,7 @@ class MultiplayerController extends Controller implements ClientObserver {
   public MultiplayerController(Stage stage, RaceModel race, Client client) {
     super(stage, FXMLPATH);
     this.client = client;
-    client.subscribe(this);
+    client.subscribeRaceUpdates(this);
     this.game = new Typeracer(race.textToType);
     this.players = race.players;
     this.textToType2 = game.getState().getTypeChar();
@@ -135,21 +134,6 @@ class MultiplayerController extends Controller implements ClientObserver {
   private void sliderUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).setValue(update.percentProgress);
   }
-
-  @Override
-  public void registered(String userId) {}
-
-  @Override
-  public void receivedError(String message) {}
-
-  @Override
-  public void gameStarting(RaceModel race) {}
-
-  @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {}
-
-  @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
 
   @Override
   public void receivedRaceUpdate(List<PlayerUpdate> updates) {

@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
-import protocol.PlayerUpdate;
-import protocol.RaceModel;
 
 /*
  * Handles all gui functionality for game creation.
@@ -43,20 +41,5 @@ class CreateController extends Controller implements ClientObserver {
   public void registered(String userId) {}
 
   @Override
-  public void receivedError(String message) {}
-
-  @Override
-  public void gameStarting(RaceModel race) {}
-
-  @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {}
-
-  @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
-
-  @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
-
-  @Override
-  public void receivedCheckeredFlag(long raceStop) {}
 }

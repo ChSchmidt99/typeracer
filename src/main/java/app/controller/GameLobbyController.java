@@ -1,8 +1,8 @@
 package app.controller;
 
 import client.Client;
-import client.ClientObserver;
-import java.util.List;
+import client.ErrorObserver;
+import client.LobbyObserver;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,10 +10,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
-import protocol.PlayerUpdate;
 import protocol.RaceModel;
 
-class GameLobbyController extends Controller implements ClientObserver {
+class GameLobbyController extends Controller implements LobbyObserver, ErrorObserver {
 
   private static final String FXMLPATH = "view/gamelobby.fxml";
   private static final String CHECKBOX_ERROR = "Please check 'ready' box.";
@@ -28,7 +27,8 @@ class GameLobbyController extends Controller implements ClientObserver {
   GameLobbyController(Stage stage, Client client) {
     super(stage, FXMLPATH);
     this.client = client;
-    client.subscribe(this);
+    client.subscribeLobbyUpdates(this);
+    client.subscribeErrors(this);
   }
 
   @FXML
@@ -44,9 +44,6 @@ class GameLobbyController extends Controller implements ClientObserver {
       displayError(CHECKBOX_ERROR);
     }
   }
-
-  @Override
-  public void registered(String userId) {}
 
   @Override
   public void receivedError(String message) {
@@ -70,13 +67,4 @@ class GameLobbyController extends Controller implements ClientObserver {
           this.startButton.setDisable(lobby.isRunning);
         });
   }
-
-  @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
-
-  @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
-
-  @Override
-  public void receivedCheckeredFlag(long raceStop) {}
 }

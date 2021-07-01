@@ -10,8 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
-import protocol.PlayerUpdate;
-import protocol.RaceModel;
 
 class ServerBrowserController extends Controller implements ClientObserver, JoinHandler {
 
@@ -50,24 +48,9 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   public void registered(String userId) {}
 
   @Override
-  public void receivedError(String message) {}
-
-  @Override
-  public void gameStarting(RaceModel race) {}
-
-  @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {}
-
-  @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {
     Platform.runLater(() -> addLobbiesToList(lobbies));
   }
-
-  @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {}
-
-  @Override
-  public void receivedCheckeredFlag(long raceStop) {}
 
   void initActions() {
     lobbylist.setCellFactory(lobbyListView -> new LobbyListCell(this));

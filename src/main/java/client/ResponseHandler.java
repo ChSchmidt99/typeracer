@@ -18,12 +18,18 @@ class ResponseHandler implements Closeable {
   private final Gson gson;
   private final ExecutorService executorService;
   private final HashSet<ClientObserver> observers;
+  private final HashSet<RaceObserver> raceObservers;
+  private final HashSet<LobbyObserver> lobbyObservers;
+  private final HashSet<ErrorObserver> errorObservers;
 
   ResponseHandler(Socket socket, Gson gson) throws IOException {
     this.reader =
         new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
     this.gson = gson;
     this.observers = new HashSet<>();
+    this.lobbyObservers = new HashSet<>();
+    this.raceObservers = new HashSet<>();
+    this.errorObservers = new HashSet<>();
     executorService = Executors.newFixedThreadPool(1);
     executorService.execute(this::startListening);
   }
@@ -45,6 +51,30 @@ class ResponseHandler implements Closeable {
 
   void unsubscribe(ClientObserver observer) {
     observers.remove(observer);
+  }
+
+  void subscribeRaceUpdates(RaceObserver observer) {
+    raceObservers.add(observer);
+  }
+
+  void unsubscribeRaceUpdates(RaceObserver observer) {
+    raceObservers.remove(observer);
+  }
+
+  void subscribeLobbyUpdates(LobbyObserver observer) {
+    lobbyObservers.add(observer);
+  }
+
+  void unsubscribeLobbyUpdates(LobbyObserver observer) {
+    lobbyObservers.remove(observer);
+  }
+
+  void subscribeErrors(ErrorObserver observer) {
+    errorObservers.add(observer);
+  }
+
+  void unsubscribeErrors(ErrorObserver observer) {
+    errorObservers.remove(observer);
   }
 
   private void startListening() {
@@ -69,19 +99,19 @@ class ResponseHandler implements Closeable {
             });
         break;
       case Response.Types.ERROR:
-        observers.forEach(
+        errorObservers.forEach(
             (observer) -> {
               observer.receivedError(response.message);
             });
         break;
       case Response.Types.GAME_STARTING:
-        observers.forEach(
+        lobbyObservers.forEach(
             (observer) -> {
               observer.gameStarting(response.race);
             });
         break;
       case Response.Types.LOBBY_UPDATE:
-        observers.forEach(
+        lobbyObservers.forEach(
             (observer) -> {
               observer.receivedLobbyUpdate(response.lobby);
             });
@@ -93,13 +123,13 @@ class ResponseHandler implements Closeable {
             });
         break;
       case Response.Types.RACE_UPDATE:
-        observers.forEach(
+        raceObservers.forEach(
             (observer) -> {
               observer.receivedRaceUpdate(response.playerUpdates);
             });
         break;
       case Response.Types.CHECKERED_FLAG:
-        observers.forEach(
+        raceObservers.forEach(
             (observer) -> {
               observer.receivedCheckeredFlag(response.raceStop);
             });

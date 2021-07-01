@@ -2,8 +2,8 @@ package client;
 
 import protocol.ProgressSnapshot;
 
-/** Provides interface for all Server communication. */
-public interface Client {
+/** Provides interface for all Server requests. */
+public interface Client extends ObserverHandler {
 
   /**
    * Register a new user.
@@ -44,18 +44,4 @@ public interface Client {
   void setIsReady(boolean isReady);
 
   void sendProgressUpdate(ProgressSnapshot snapshot);
-
-  /**
-   * Subscribe to receive responses.
-   *
-   * @param observer {@link ClientObserver}
-   */
-  void subscribe(ClientObserver observer);
-
-  /**
-   * Unsubscribe from responses.
-   *
-   * @param observer {@link ClientObserver}
-   */
-  void unsubscribe(ClientObserver observer);
 }

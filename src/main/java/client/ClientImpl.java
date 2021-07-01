@@ -92,6 +92,36 @@ public class ClientImpl implements Closeable, Client {
     responseHandler.unsubscribe(observer);
   }
 
+  @Override
+  public void subscribeRaceUpdates(RaceObserver observer) {
+    responseHandler.subscribeRaceUpdates(observer);
+  }
+
+  @Override
+  public void unsubscribeRaceUpdates(RaceObserver observer) {
+    responseHandler.unsubscribeRaceUpdates(observer);
+  }
+
+  @Override
+  public void subscribeLobbyUpdates(LobbyObserver observer) {
+    responseHandler.subscribeLobbyUpdates(observer);
+  }
+
+  @Override
+  public void unsubscribeLobbyUpdates(LobbyObserver observer) {
+    responseHandler.unsubscribeLobbyUpdates(observer);
+  }
+
+  @Override
+  public void subscribeErrors(ErrorObserver observer) {
+    responseHandler.subscribeErrors(observer);
+  }
+
+  @Override
+  public void unsubscribeErrors(ErrorObserver observer) {
+    responseHandler.unsubscribeErrors(observer);
+  }
+
   private void sendRequest(Request request) {
     this.writer.println(gson.toJson(request));
   }
