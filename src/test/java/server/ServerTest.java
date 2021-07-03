@@ -21,7 +21,7 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServerTest {
 
-  private static final int PORT = 8080;
+  private static final int PORT = 8081;
   private static final int TIMEOUT = 1000;
   private Server server;
 
@@ -89,7 +89,9 @@ public class ServerTest {
   @AfterAll
   void tearDown() {
     try {
-      server.close();
+      if (server != null) {
+        server.close();
+      }
     } catch (IOException e) {
       fail(e.getMessage());
     }

@@ -2,6 +2,8 @@ package app.controller;
 
 import client.Client;
 import client.RaceObserver;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
@@ -15,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import model.GamePhase;
 import model.TextToType;
 import model.Typeracer;
 import protocol.PlayerModel;
@@ -41,6 +44,8 @@ class MultiplayerController extends Controller implements RaceObserver {
 
   @FXML VBox userlist;
 
+  @FXML Label checkeredFlagLabel;
+
   public MultiplayerController(Stage stage, RaceModel race, Client client) {
     super(stage, FXMLPATH);
     this.client = client;
@@ -50,7 +55,7 @@ class MultiplayerController extends Controller implements RaceObserver {
     this.textToType2 = game.getState().getTypeChar();
     Text text = new Text(game.getState().getTypeChar().getCompleteText());
     textToType.getChildren().addAll(text);
-    handleCharInput();
+    setupKeyHandler();
     this.raceStart = Timestamp.currentTimestamp();
     setUsers();
   }
@@ -59,17 +64,17 @@ class MultiplayerController extends Controller implements RaceObserver {
    * Keylistener for user input. Checks input, colors text green if correct, red if not in method
    * charLabel.
    */
-  private void handleCharInput() {
+  private void setupKeyHandler() {
     stage
         .getScene()
         .addEventHandler(
             KeyEvent.KEY_TYPED,
             event -> {
-              enteredText
-                  .getChildren()
-                  .add(
-                      charLabelCreator(
-                          game.check(event.getCharacter().charAt(0)), event.getCharacter()));
+              if (game.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
+                return;
+              }
+              String typed = event.getCharacter();
+              enteredText.getChildren().add(charLabelCreator(game.check(typed.charAt(0)), typed));
               notifyInterval();
             });
   }
@@ -89,6 +94,10 @@ class MultiplayerController extends Controller implements RaceObserver {
    * Limits the interval, in which the server gets notified about changes.
    */
   private void notifyInterval() {
+    if (game.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
+      notifyServer();
+      return;
+    }
     notifyCounter++;
     if (notifyCounter == 5) {
       notifyServer();
@@ -146,5 +155,14 @@ class MultiplayerController extends Controller implements RaceObserver {
   }
 
   @Override
-  public void receivedCheckeredFlag(long raceStop) {}
+  public void receivedCheckeredFlag(long raceStop) {
+    Platform.runLater(
+        () -> {
+          SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+          Date end = Timestamp.timestampToDate(raceStop);
+          String stopTime = format.format(end);
+          checkeredFlagLabel.setDisable(false);
+          checkeredFlagLabel.setText("Race Ending: " + stopTime);
+        });
+  }
 }

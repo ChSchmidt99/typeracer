@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionStore.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">SessionStore.java</span></div><h1>SessionStore.java</h1><pre class="source lang-java linenums">package backend;
+
+import database.Database;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import protocol.LobbyModel;
+import protocol.ProgressSnapshot;
+import server.PushService;
+
+/** Holds all currently running lobbies and forwards calls to the correct instances. */
+class SessionStore {
+
+  private final IdGenerator generator;
+  private final HashMap&lt;String, Lobby&gt; lobbies;
+  private final HashMap&lt;String, String&gt; connectionIds;
+  private final Database database;
+
+<span class="fc" id="L20">  SessionStore(Database database) {</span>
+<span class="fc" id="L21">    this.generator = new IdGenerator(0);</span>
+<span class="fc" id="L22">    this.lobbies = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L23">    this.connectionIds = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L24">    this.database = database;</span>
+<span class="fc" id="L25">  }</span>
+
+  String createNewLobby(String connectionId, String name, PushService pushService) {
+<span class="fc" id="L28">    String lobbyId = generator.getId();</span>
+<span class="fc" id="L29">    Lobby lobby = new Lobby(lobbyId, name, database, pushService);</span>
+<span class="fc" id="L30">    lobbies.put(lobbyId, lobby);</span>
+<span class="fc" id="L31">    return lobbyId;</span>
+  }
+
+  void joinLobby(String lobbyId, String connectionId, String userId) {
+<span class="fc" id="L35">    connectionIds.put(connectionId, lobbyId);</span>
+<span class="fc" id="L36">    Lobby lobby = lobbies.get(lobbyId);</span>
+<span class="fc" id="L37">    lobby.join(connectionId, userId);</span>
+<span class="fc" id="L38">  }</span>
+
+  void leaveLobby(String connectionId) {
+<span class="nc" id="L41">    Lobby lobby = getLobby(connectionId);</span>
+<span class="nc" id="L42">    lobby.leave(connectionId);</span>
+<span class="nc" id="L43">    connectionIds.remove(connectionId);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">    if (lobby.isEmpty()) {</span>
+<span class="nc" id="L45">      lobbies.remove(lobby.getLobbyId());</span>
+    }
+<span class="nc" id="L47">  }</span>
+
+  void startGame(String connectionId, RaceSettings raceSettings) {
+<span class="nc" id="L50">    Lobby lobby = getLobby(connectionId);</span>
+<span class="nc" id="L51">    lobby.startRace(connectionId, raceSettings);</span>
+<span class="nc" id="L52">  }</span>
+
+  List&lt;LobbyModel&gt; getOpenLobbies() {
+<span class="fc" id="L55">    List&lt;LobbyModel&gt; openLobbies = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">    for (Map.Entry&lt;String, Lobby&gt; entry : this.lobbies.entrySet()) {</span>
+<span class="fc" id="L57">      Lobby lobby = entry.getValue();</span>
+<span class="fc" id="L58">      openLobbies.add(lobby.lobbyModel());</span>
+<span class="fc" id="L59">    }</span>
+<span class="fc" id="L60">    return openLobbies;</span>
+  }
+
+  void setPlayerReady(String connectionId, boolean isReady) {
+<span class="nc" id="L64">    Lobby lobby = getLobby(connectionId);</span>
+<span class="nc" id="L65">    lobby.setPlayerReady(connectionId, isReady);</span>
+<span class="nc" id="L66">  }</span>
+
+  void updateProgress(String connectionId, ProgressSnapshot snapshot) {
+<span class="nc" id="L69">    Lobby lobby = getLobby(connectionId);</span>
+    // TODO: Send or log error when no race running
+<span class="nc bnc" id="L71" title="All 2 branches missed.">    if (lobby.isRunning()) {</span>
+<span class="nc" id="L72">      Race race = lobby.getRace();</span>
+<span class="nc" id="L73">      race.updateProgress(connectionId, snapshot);</span>
+    }
+<span class="nc" id="L75">  }</span>
+
+  private Lobby getLobby(String connectionId) {
+<span class="nc" id="L78">    String lobbyId = connectionIds.get(connectionId);</span>
+<span class="nc" id="L79">    return lobbies.get(lobbyId);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextToType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">TextToType.java</span></div><h1>TextToType.java</h1><pre class="source lang-java linenums">package model;
+
+/** Represent a text that needs to be written. */
+public class TextToType {
+
+  private final String completeText;
+  private final Counter counter;
+<span class="nc" id="L8">  private int mistakeCounter = 0;</span>
+
+  CorrectionStates[] checkedCharacters;
+
+<span class="nc" id="L12">  TextToType(final String text, Counter counter) {</span>
+<span class="nc" id="L13">    completeText = text;</span>
+<span class="nc" id="L14">    this.counter = counter;</span>
+
+<span class="nc" id="L16">    checkedCharacters = new CorrectionStates[completeText.length()];</span>
+<span class="nc" id="L17">  }</span>
+
+  boolean checkChar(char userInput) {
+<span class="nc" id="L20">    boolean guessed = false;</span>
+
+<span class="nc" id="L22">    char a = completeText.charAt(counter.getCurrentValue());</span>
+
+<span class="nc bnc" id="L24" title="All 2 branches missed.">    if (userInput == a) {</span>
+<span class="nc" id="L25">      guessed = true;</span>
+<span class="nc" id="L26">      checkedCharacters[counter.getCurrentValue()] = CorrectionStates.CORRECT;</span>
+<span class="nc" id="L27">      counter.increase();</span>
+    } else {
+<span class="nc" id="L29">      checkedCharacters[counter.getCurrentValue()] = CorrectionStates.INCORRECT;</span>
+<span class="nc" id="L30">      mistakeCounter++;</span>
+    }
+<span class="nc" id="L32">    return guessed;</span>
+  }
+
+  boolean checkFinish() {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">    return checkedCharacters[completeText.length() - 1] != null;</span>
+  }
+
+  public String getCompleteText() {
+<span class="nc" id="L40">    return completeText;</span>
+  }
+
+  public int getCounter() {
+<span class="nc" id="L44">    return counter.getCurrentValue();</span>
+  }
+
+  public int getMistakeCounter() {
+<span class="nc" id="L48">    return mistakeCounter;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

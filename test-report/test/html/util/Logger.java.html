@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Logger.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">util</a> &gt; <span class="el_source">Logger.java</span></div><h1>Logger.java</h1><pre class="source lang-java linenums">package util;
+
+/** Use as static class to log information with a corresponding log level. */
+<span class="nc" id="L4">public abstract class Logger {</span>
+
+  /** Use LogLevel to change the amount of information that is logged. */
+<span class="fc" id="L7">  enum LogLevel {</span>
+    /** Includes INFO, ERROR and additional DEBUG information. */
+<span class="fc" id="L9">    DEBUG,</span>
+
+    /** Includes ERROR and INFO information. */
+<span class="fc" id="L12">    INFO,</span>
+
+    /** Just outputs Errors. */
+<span class="fc" id="L15">    ERROR,</span>
+
+    /** Log nothing. */
+<span class="fc" id="L18">    OFF</span>
+  }
+
+  /** Set how much information is logged. */
+  static void setLevel(LogLevel level) {
+<span class="nc" id="L23">    Logger.level = level;</span>
+<span class="nc" id="L24">  }</span>
+
+<span class="fc" id="L26">  private static LogLevel level = LogLevel.INFO;</span>
+
+  public static void logInfo(String message) {
+<span class="fc" id="L29">    log(LogLevel.INFO, message);</span>
+<span class="fc" id="L30">  }</span>
+
+  public static void logDebug(String message) {
+<span class="nc" id="L33">    log(LogLevel.DEBUG, message);</span>
+<span class="nc" id="L34">  }</span>
+
+  public static void logError(String message) {
+<span class="nc" id="L37">    log(LogLevel.ERROR, message);</span>
+<span class="nc" id="L38">  }</span>
+
+  /** Log a message to standard out, it will only be displayed, if it has the appropriate level. */
+  static void log(LogLevel level, String message) {
+<span class="pc bpc" id="L42" title="4 of 5 branches missed.">    switch (Logger.level) {</span>
+      case OFF:
+<span class="nc" id="L44">        return;</span>
+      case DEBUG:
+<span class="nc" id="L46">        System.out.println(level + &quot;: &quot; + message);</span>
+<span class="nc" id="L47">        break;</span>
+      case INFO:
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (level != LogLevel.DEBUG) {</span>
+<span class="fc" id="L50">          System.out.println(level + &quot;: &quot; + message);</span>
+        }
+        break;
+      case ERROR:
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (level == LogLevel.ERROR) {</span>
+<span class="nc" id="L55">          System.out.println(level + &quot;: &quot; + message);</span>
+        }
+        break;
+      default:
+        break;
+    }
+<span class="fc" id="L61">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

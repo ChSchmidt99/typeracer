@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">client</a> &gt; <span class="el_source">ResponseHandler.java</span></div><h1>ResponseHandler.java</h1><pre class="source lang-java linenums">package client;
+
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import protocol.Response;
+
+class ResponseHandler implements Closeable {
+
+  private final BufferedReader reader;
+  private final Gson gson;
+  private final ExecutorService executorService;
+  private final HashSet&lt;ClientObserver&gt; observers;
+  private final HashSet&lt;RaceObserver&gt; raceObservers;
+  private final HashSet&lt;LobbyObserver&gt; lobbyObservers;
+  private final HashSet&lt;ErrorObserver&gt; errorObservers;
+
+<span class="nc" id="L25">  ResponseHandler(Socket socket, Gson gson) throws IOException {</span>
+<span class="nc" id="L26">    this.reader =</span>
+<span class="nc" id="L27">        new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));</span>
+<span class="nc" id="L28">    this.gson = gson;</span>
+<span class="nc" id="L29">    this.observers = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L30">    this.lobbyObservers = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L31">    this.raceObservers = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L32">    this.errorObservers = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L33">    executorService = Executors.newFixedThreadPool(1);</span>
+<span class="nc" id="L34">    executorService.execute(this::startListening);</span>
+<span class="nc" id="L35">  }</span>
+
+  /**
+   * Closes reader and executor service.
+   *
+   * @throws IOException when reader can't be closed
+   */
+  @Override
+  public void close() throws IOException {
+<span class="nc" id="L44">    this.executorService.shutdownNow();</span>
+<span class="nc" id="L45">    this.reader.close();</span>
+<span class="nc" id="L46">  }</span>
+
+  void subscribe(ClientObserver observer) {
+<span class="nc" id="L49">    observers.add(observer);</span>
+<span class="nc" id="L50">  }</span>
+
+  void unsubscribe(ClientObserver observer) {
+<span class="nc" id="L53">    observers.remove(observer);</span>
+<span class="nc" id="L54">  }</span>
+
+  void subscribeRaceUpdates(RaceObserver observer) {
+<span class="nc" id="L57">    raceObservers.add(observer);</span>
+<span class="nc" id="L58">  }</span>
+
+  void unsubscribeRaceUpdates(RaceObserver observer) {
+<span class="nc" id="L61">    raceObservers.remove(observer);</span>
+<span class="nc" id="L62">  }</span>
+
+  void subscribeLobbyUpdates(LobbyObserver observer) {
+<span class="nc" id="L65">    lobbyObservers.add(observer);</span>
+<span class="nc" id="L66">  }</span>
+
+  void unsubscribeLobbyUpdates(LobbyObserver observer) {
+<span class="nc" id="L69">    lobbyObservers.remove(observer);</span>
+<span class="nc" id="L70">  }</span>
+
+  void subscribeErrors(ErrorObserver observer) {
+<span class="nc" id="L73">    errorObservers.add(observer);</span>
+<span class="nc" id="L74">  }</span>
+
+  void unsubscribeErrors(ErrorObserver observer) {
+<span class="nc" id="L77">    errorObservers.remove(observer);</span>
+<span class="nc" id="L78">  }</span>
+
+  private void startListening() {
+    try {
+      String line;
+<span class="nc bnc" id="L83" title="All 2 branches missed.">      while ((line = this.reader.readLine()) != null) {</span>
+<span class="nc" id="L84">        Response response = gson.fromJson(line, Response.class);</span>
+<span class="nc" id="L85">        receivedResponse(response);</span>
+<span class="nc" id="L86">      }</span>
+<span class="nc" id="L87">    } catch (IOException e) {</span>
+      // TODO: Handle lost Server connection
+<span class="nc" id="L89">      System.out.println(e.getMessage());</span>
+<span class="nc" id="L90">    }</span>
+<span class="nc" id="L91">  }</span>
+
+  private void receivedResponse(Response response) {
+<span class="nc bnc" id="L94" title="All 8 branches missed.">    switch (response.type) {</span>
+      case Response.Types.REGISTERED:
+<span class="nc" id="L96">        observers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L98">              observer.registered(response.userId);</span>
+<span class="nc" id="L99">            });</span>
+<span class="nc" id="L100">        break;</span>
+      case Response.Types.ERROR:
+<span class="nc" id="L102">        errorObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L104">              observer.receivedError(response.message);</span>
+<span class="nc" id="L105">            });</span>
+<span class="nc" id="L106">        break;</span>
+      case Response.Types.GAME_STARTING:
+<span class="nc" id="L108">        lobbyObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L110">              observer.gameStarting(response.race);</span>
+<span class="nc" id="L111">            });</span>
+<span class="nc" id="L112">        break;</span>
+      case Response.Types.LOBBY_UPDATE:
+<span class="nc" id="L114">        lobbyObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L116">              observer.receivedLobbyUpdate(response.lobby);</span>
+<span class="nc" id="L117">            });</span>
+<span class="nc" id="L118">        break;</span>
+      case Response.Types.OPEN_LOBBIES:
+<span class="nc" id="L120">        observers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L122">              observer.receivedOpenLobbies(response.lobbies);</span>
+<span class="nc" id="L123">            });</span>
+<span class="nc" id="L124">        break;</span>
+      case Response.Types.RACE_UPDATE:
+<span class="nc" id="L126">        raceObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L128">              observer.receivedRaceUpdate(response.playerUpdates);</span>
+<span class="nc" id="L129">            });</span>
+<span class="nc" id="L130">        break;</span>
+      case Response.Types.CHECKERED_FLAG:
+<span class="nc" id="L132">        raceObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L134">              observer.receivedCheckeredFlag(response.raceStop);</span>
+<span class="nc" id="L135">            });</span>
+<span class="nc" id="L136">        break;</span>
+      default:
+<span class="nc" id="L138">        System.out.println(&quot;Received unknown ResponseType: &quot; + response.type);</span>
+    }
+<span class="nc" id="L140">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

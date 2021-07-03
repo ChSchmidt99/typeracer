@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">ApiImpl.java</span></div><h1>ApiImpl.java</h1><pre class="source lang-java linenums">package backend;
+
+import database.Database;
+import java.util.List;
+import protocol.LobbyModel;
+import protocol.ProgressSnapshot;
+import protocol.Response;
+import protocol.ResponseFactory;
+import server.PushService;
+import util.Logger;
+
+/** Currently just an experimental Api implementation. */
+public class ApiImpl implements Api {
+
+  private final PushService pushService;
+  private final SessionStore sessionStore;
+  private final Database database;
+  private final RaceSettings raceSettings;
+
+  /**
+   * Create an instance implementing the Api interface.
+   *
+   * @param pushService service where responses are sent to
+   */
+<span class="fc" id="L25">  public ApiImpl(PushService pushService, Database database) {</span>
+<span class="fc" id="L26">    this.pushService = pushService;</span>
+<span class="fc" id="L27">    this.database = database;</span>
+<span class="fc" id="L28">    this.sessionStore = new SessionStore(this.database);</span>
+<span class="fc" id="L29">    this.raceSettings = new RaceSettings(5, 1);</span>
+<span class="fc" id="L30">  }</span>
+
+  @Override
+  public void registerPlayer(String connectionId, String name) {
+    try {
+<span class="nc" id="L35">      String userId = database.registerUser(name);</span>
+<span class="nc" id="L36">      Response response = ResponseFactory.makeRegisteredResponse(userId);</span>
+<span class="nc" id="L37">      pushService.sendResponse(connectionId, response);</span>
+<span class="nc" id="L38">    } catch (Exception e) {</span>
+<span class="nc" id="L39">      Logger.logError(e.getMessage());</span>
+<span class="nc" id="L40">    }</span>
+<span class="nc" id="L41">  }</span>
+
+  @Override
+  public void createNewLobby(String connectionId, String userId, String lobbyName) {
+<span class="fc" id="L45">    String lobbyId = sessionStore.createNewLobby(connectionId, lobbyName, pushService);</span>
+<span class="fc" id="L46">    sessionStore.joinLobby(lobbyId, connectionId, userId);</span>
+<span class="fc" id="L47">  }</span>
+
+  @Override
+  public void joinLobby(String lobbyId, String connectionId, String userId) {
+<span class="nc" id="L51">    sessionStore.joinLobby(lobbyId, connectionId, userId);</span>
+<span class="nc" id="L52">  }</span>
+
+  @Override
+  public void leaveLobby(String connectionId) {
+<span class="nc" id="L56">    sessionStore.leaveLobby(connectionId);</span>
+<span class="nc" id="L57">  }</span>
+
+  @Override
+  public void startRace(String connectionId) {
+<span class="nc" id="L61">    sessionStore.startGame(connectionId, raceSettings);</span>
+<span class="nc" id="L62">  }</span>
+
+  @Override
+  public void getLobbies(String connectionId) {
+<span class="fc" id="L66">    List&lt;LobbyModel&gt; lobbies = sessionStore.getOpenLobbies();</span>
+<span class="fc" id="L67">    Response response = ResponseFactory.makeLobbiesResponse(lobbies);</span>
+<span class="fc" id="L68">    pushService.sendResponse(connectionId, response);</span>
+<span class="fc" id="L69">  }</span>
+
+  @Override
+  public void setPlayerReady(String connectionId, boolean isReady) {
+<span class="nc" id="L73">    sessionStore.setPlayerReady(connectionId, isReady);</span>
+<span class="nc" id="L74">  }</span>
+
+  @Override
+  public void updateProgress(String connectionId, ProgressSnapshot snapshot) {
+<span class="nc" id="L78">    sessionStore.updateProgress(connectionId, snapshot);</span>
+<span class="nc" id="L79">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
