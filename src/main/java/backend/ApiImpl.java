@@ -21,6 +21,7 @@ public class ApiImpl implements Api {
    * Create an instance implementing the Api interface.
    *
    * @param pushService service where responses are sent to
+   * @param database database
    */
   public ApiImpl(PushService pushService, Database database) {
     this.pushService = pushService;

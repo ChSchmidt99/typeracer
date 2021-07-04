@@ -14,7 +14,11 @@ public class TextDatabase {
 
   private ArrayList<String> dictionary;
 
-  /** constructor to initialize dictionary data structure. */
+  /**
+   * constructor to initialize dictionary data structure.
+   *
+   * @throws IOException if database file cannot be loaded
+   */
   public TextDatabase() throws IOException {
     dictionary = new ArrayList<String>();
     URL path = this.getClass().getClassLoader().getResource("dictionary.txt");
@@ -35,12 +39,20 @@ public class TextDatabase {
     s.close();
   }
 
-  /** getter to retrieve a dictionary. */
+  /**
+   * getter to retrieve a dictionary.
+   *
+   * @return dictionary as list
+   */
   public ArrayList<String> getDictionary() {
     return dictionary;
   }
 
-  /** getter to retrieve a random text from the dictionary. */
+  /**
+   * getter to retrieve a random text from the dictionary.
+   *
+   * @return random phrase to type
+   */
   public String getPhrase() {
     int guessedIndex = new Random().nextInt(dictionary.size());
     return dictionary.get(guessedIndex);

@@ -16,6 +16,7 @@ public interface Client extends ObserverHandler {
    * Start a new lobby.
    *
    * @param userId of host
+   * @param lobbyName name of lobby
    */
   void newLobby(String userId, String lobbyName);
 

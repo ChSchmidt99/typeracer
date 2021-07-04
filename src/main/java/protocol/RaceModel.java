@@ -13,6 +13,7 @@ public class RaceModel {
    * Create RaceModel.
    *
    * @param textToType text of the race
+   * @param players list of players
    */
   public RaceModel(String textToType, List<PlayerModel> players) {
     this.textToType = textToType;

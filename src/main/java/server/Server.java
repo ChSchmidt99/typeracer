@@ -23,7 +23,11 @@ public class Server implements Closeable, OnDisconnect {
   private final Api api;
   private final PushServiceImpl pushService;
 
-  /** Constructor of Server. */
+  /**
+   * Constructor of Server.
+   *
+   * @param database database
+   */
   public Server(Database database) {
     isRunning = false;
     closeables = new HashSet<>();

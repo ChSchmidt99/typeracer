@@ -19,6 +19,7 @@ public class RequestFactory {
    * Make a New game {@link Request} used to create a new game.
    *
    * @param userId of initial player
+   * @param lobbyName name of lobby
    * @return {@link Request}
    */
   public static Request makeNewLobbyRequest(String userId, String lobbyName) {

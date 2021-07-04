@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package backend;
+
+import protocol.PlayerUpdate;
+import protocol.ProgressSnapshot;
+
+/** Used to represent a Player in an ongoing race. */
+public class Player {
+
+  private final String userId;
+  private final String name;
+  private final String connectionId;
+  private int wpm;
+  private float progress;
+  private long raceStartTime;
+  private long lastUpdateTime;
+  // private int mistakes;
+
+<span class="fc" id="L18">  Player(String userId, String connectionId, String name) {</span>
+<span class="fc" id="L19">    this.userId = userId;</span>
+<span class="fc" id="L20">    this.connectionId = connectionId;</span>
+<span class="fc" id="L21">    this.name = name;</span>
+<span class="fc" id="L22">    this.wpm = 0;</span>
+<span class="fc" id="L23">    this.progress = 0;</span>
+<span class="fc" id="L24">    this.raceStartTime = 0;</span>
+<span class="fc" id="L25">    this.lastUpdateTime = 0;</span>
+    // this.mistakes = 0;
+<span class="fc" id="L27">  }</span>
+
+  String getConnectionId() {
+<span class="nc" id="L30">    return connectionId;</span>
+  }
+
+  String getUserId() {
+<span class="fc" id="L34">    return userId;</span>
+  }
+
+  String getName() {
+<span class="fc" id="L38">    return name;</span>
+  }
+
+  void updateProgress(ProgressSnapshot snapshot, int textLength) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">    if (isFinished()) {</span>
+<span class="fc" id="L43">      return;</span>
+    }
+    // Only set raceStartTime once
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">    if (this.raceStartTime == 0) {</span>
+<span class="fc" id="L47">      this.raceStartTime = snapshot.raceStartTime;</span>
+    }
+<span class="fc" id="L49">    this.lastUpdateTime = snapshot.timestamp;</span>
+<span class="fc" id="L50">    this.wpm = wordsPerMinute(snapshot.progress, this.raceDuration());</span>
+<span class="fc" id="L51">    this.progress = (float) snapshot.progress / textLength;</span>
+    // this.mistakes = snapshot.mistakes;
+<span class="fc" id="L53">  }</span>
+
+  PlayerUpdate getUpdate() {
+<span class="fc" id="L56">    return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());</span>
+  }
+
+  private long raceDuration() {
+<span class="fc" id="L60">    return this.lastUpdateTime - raceStartTime;</span>
+  }
+
+  private int wordsPerMinute(int charsTyped, long durationInSec) {
+<span class="fc" id="L64">    float durationInMin = (float) durationInSec / 60;</span>
+<span class="fc" id="L65">    int wordsTyped = charsTyped / 5;</span>
+<span class="fc" id="L66">    return (int) (wordsTyped / durationInMin);</span>
+  }
+
+  private boolean isFinished() {
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    return this.progress == 1;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

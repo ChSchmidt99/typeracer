@@ -5,7 +5,11 @@ import java.io.IOException;
 /** interface implements key functions to retrieve text, sore username and retrieve it. */
 public interface Database {
 
-  /** select random piece of text from dictionary and use it in the game. */
+  /**
+   * select random piece of text from dictionary and use it in the game.
+   *
+   * @return text to type
+   */
   String getTextToType();
 
   /**
@@ -21,6 +25,7 @@ public interface Database {
    *
    * @param userId name of user
    * @return userId
+   * @throws IOException when username cannot be loaded
    */
   String getUsername(String userId) throws IOException;
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">protocol</a> &gt; <span class="el_source">RequestFactory.java</span></div><h1>RequestFactory.java</h1><pre class="source lang-java linenums">package protocol;
+
+/** Factory for creating {@link Request} instances. */
+<span class="nc" id="L4">public class RequestFactory {</span>
+
+  /**
+   * Make a Register {@link Request} used to register a new player.
+   *
+   * @param playerName name of the player
+   * @return {@link Request}
+   */
+  public static Request makeRegisterRequest(String playerName) {
+<span class="fc" id="L13">    Request request = new Request(Request.Types.REGISTER);</span>
+<span class="fc" id="L14">    request.playerName = playerName;</span>
+<span class="fc" id="L15">    return request;</span>
+  }
+
+  /**
+   * Make a New game {@link Request} used to create a new game.
+   *
+   * @param userId of initial player
+   * @param lobbyName name of lobby
+   * @return {@link Request}
+   */
+  public static Request makeNewLobbyRequest(String userId, String lobbyName) {
+<span class="fc" id="L26">    Request request = new Request(Request.Types.NEW_LOBBY);</span>
+<span class="fc" id="L27">    request.userId = userId;</span>
+<span class="fc" id="L28">    request.lobbyName = lobbyName;</span>
+<span class="fc" id="L29">    return request;</span>
+  }
+
+  /**
+   * Make a join game {@link Request} used to join existing games.
+   *
+   * @param userId of player
+   * @param lobbyId of lobby
+   * @return {@link Request}
+   */
+  public static Request makeJoinLobbyRequest(String userId, String lobbyId) {
+<span class="fc" id="L40">    Request request = new Request(Request.Types.JOIN_LOBBY);</span>
+<span class="fc" id="L41">    request.userId = userId;</span>
+<span class="fc" id="L42">    request.lobbyId = lobbyId;</span>
+<span class="fc" id="L43">    return request;</span>
+  }
+
+  public static Request makeStartRaceRequest() {
+<span class="nc" id="L47">    return new Request(Request.Types.START_RACE);</span>
+  }
+
+  public static Request makeLeaveLobbyRequest() {
+<span class="nc" id="L51">    return new Request(Request.Types.LEAVE_LOBBY);</span>
+  }
+
+  public static Request makeGetOpenLobbiesRequest() {
+<span class="nc" id="L55">    return new Request(Request.Types.GET_LOBBIES);</span>
+  }
+
+  /**
+   * Make a is ready {@link Request} used to set player to be ready or not.
+   *
+   * @param isReady whether or not user is ready
+   * @return {@link Request}
+   */
+  public static Request makeIsReadyRequest(boolean isReady) {
+<span class="nc" id="L65">    Request request = new Request(Request.Types.PLAYER_READY);</span>
+<span class="nc" id="L66">    request.isReady = isReady;</span>
+<span class="nc" id="L67">    return request;</span>
+  }
+
+  /**
+   * Make progress update {@link Request} used to send current progress to server.
+   *
+   * @param snapshot current race progress snapshot
+   * @return {@link Request}
+   */
+  public static Request makeProgressUpdateRequest(ProgressSnapshot snapshot) {
+<span class="nc" id="L77">    Request request = new Request(Request.Types.UPDATE_PROGRESS);</span>
+<span class="nc" id="L78">    request.snapshot = snapshot;</span>
+<span class="nc" id="L79">    return request;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

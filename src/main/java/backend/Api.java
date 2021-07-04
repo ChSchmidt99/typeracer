@@ -18,6 +18,7 @@ public interface Api {
    *
    * @param connectionId id of the server connection
    * @param userId id of the user
+   * @param lobbyName name of the lobby
    */
   void createNewLobby(String connectionId, String userId, String lobbyName);
 

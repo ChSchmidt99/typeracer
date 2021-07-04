@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Race.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">Race.java</span></div><h1>Race.java</h1><pre class="source lang-java linenums">package backend;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import protocol.PlayerModel;
+import protocol.PlayerUpdate;
+import protocol.ProgressSnapshot;
+import protocol.RaceModel;
+import protocol.Response;
+import protocol.ResponseFactory;
+import server.PushService;
+import util.Logger;
+import util.Timestamp;
+
+/** Represents a single race. */
+class Race {
+
+  private final RaceSettings settings;
+  private final String textToType;
+  private final Map&lt;String, Player&gt; players;
+  private final PushService pushService;
+  private ScheduledExecutorService scheduler;
+  private RaceState state;
+
+<span class="fc" id="L30">  private enum RaceState {</span>
+<span class="fc" id="L31">    RUNNING,</span>
+<span class="fc" id="L32">    CHECKERED_FLAG,</span>
+<span class="fc" id="L33">    FINISHED</span>
+  }
+
+  /**
+   * Create a new Race.
+   *
+   * @param textToType text that needs to be typed
+   * @param players all players connected to the game
+   */
+  Race(
+      RaceSettings settings,
+      String textToType,
+      Map&lt;String, Player&gt; players,
+<span class="fc" id="L46">      PushService pushService) {</span>
+<span class="fc" id="L47">    this.textToType = textToType;</span>
+<span class="fc" id="L48">    this.players = players;</span>
+<span class="fc" id="L49">    this.pushService = pushService;</span>
+<span class="fc" id="L50">    this.state = RaceState.RUNNING;</span>
+<span class="fc" id="L51">    this.settings = settings;</span>
+<span class="fc" id="L52">    broadcastGameStarting();</span>
+<span class="fc" id="L53">    startUpdates();</span>
+<span class="fc" id="L54">  }</span>
+
+  RaceModel getModel() {
+<span class="fc" id="L57">    List&lt;PlayerModel&gt; out = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    for (Map.Entry&lt;String, Player&gt; entry : players.entrySet()) {</span>
+<span class="fc" id="L59">      out.add(new PlayerModel(entry.getValue().getUserId(), entry.getValue().getName()));</span>
+<span class="fc" id="L60">    }</span>
+<span class="fc" id="L61">    return new RaceModel(this.textToType, out);</span>
+  }
+
+  boolean getIsRunning() {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">    return this.state != RaceState.FINISHED;</span>
+  }
+
+  void updateProgress(String connectionId, ProgressSnapshot snapshot) {
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">    if (state == RaceState.FINISHED) {</span>
+<span class="nc" id="L70">      Logger.logError(&quot;Tried updating after race finished&quot;);</span>
+<span class="nc" id="L71">      return;</span>
+    }
+<span class="fc" id="L73">    Player player = players.get(connectionId);</span>
+<span class="fc" id="L74">    player.updateProgress(snapshot, textToType.length());</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    if (player.getUpdate().isFinished) {</span>
+<span class="fc" id="L76">      checkeredFlag();</span>
+    }
+<span class="fc" id="L78">  }</span>
+
+  void removePlayer(String connectionId) {
+<span class="nc" id="L81">    this.players.remove(connectionId);</span>
+<span class="nc" id="L82">  }</span>
+
+  private void checkeredFlag() {
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">    if (this.state == RaceState.CHECKERED_FLAG) {</span>
+<span class="nc" id="L86">      Logger.logError(&quot;Race already in checkered flag state&quot;);</span>
+<span class="nc" id="L87">      return;</span>
+    }
+<span class="fc" id="L89">    long raceStop = Timestamp.currentTimestamp() + settings.checkeredFlagDuration;</span>
+<span class="fc" id="L90">    broadcastCheckeredFlag(raceStop);</span>
+<span class="fc" id="L91">    ScheduledExecutorService s = Executors.newScheduledThreadPool(1);</span>
+<span class="fc" id="L92">    s.schedule(this::finishRace, settings.checkeredFlagDuration, TimeUnit.SECONDS);</span>
+<span class="fc" id="L93">    s.shutdown();</span>
+<span class="fc" id="L94">  }</span>
+
+  private void finishRace() {
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">    if (this.state == RaceState.FINISHED) {</span>
+<span class="nc" id="L98">      Logger.logError(&quot;Tried finishing an already finished race&quot;);</span>
+<span class="nc" id="L99">      return;</span>
+    }
+<span class="fc" id="L101">    this.state = RaceState.FINISHED;</span>
+<span class="fc" id="L102">    stopUpdates();</span>
+<span class="fc" id="L103">  }</span>
+
+  private void startUpdates() {
+<span class="fc" id="L106">    scheduler = Executors.newScheduledThreadPool(1);</span>
+<span class="fc" id="L107">    scheduler.scheduleAtFixedRate(</span>
+        this::broadcastUpdate, 0, settings.updateInterval, TimeUnit.SECONDS);
+<span class="fc" id="L109">  }</span>
+
+  private void stopUpdates() {
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">    if (scheduler != null) {</span>
+<span class="fc" id="L113">      scheduler.shutdown();</span>
+    }
+<span class="fc" id="L115">  }</span>
+
+  private void broadcastCheckeredFlag(long raceStop) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">    for (Map.Entry&lt;String, Player&gt; entry : players.entrySet()) {</span>
+<span class="fc" id="L119">      Response response = ResponseFactory.makeCheckeredFlagResponse(raceStop);</span>
+<span class="fc" id="L120">      pushService.sendResponse(entry.getKey(), response);</span>
+<span class="fc" id="L121">    }</span>
+<span class="fc" id="L122">  }</span>
+
+  private void broadcastUpdate() {
+<span class="fc" id="L125">    List&lt;PlayerUpdate&gt; updates = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">    for (Map.Entry&lt;String, Player&gt; entry : players.entrySet()) {</span>
+<span class="fc" id="L127">      updates.add(entry.getValue().getUpdate());</span>
+<span class="fc" id="L128">    }</span>
+<span class="fc" id="L129">    Response response = ResponseFactory.makeRaceUpdatesResponse(updates);</span>
+<span class="fc" id="L130">    broadcast(response);</span>
+<span class="fc" id="L131">  }</span>
+
+  private void broadcastGameStarting() {
+<span class="fc" id="L134">    broadcast(ResponseFactory.makeRaceStartingResponse(getModel()));</span>
+<span class="fc" id="L135">  }</span>
+
+  private void broadcast(Response response) {
+<span class="fc" id="L138">    Set&lt;String&gt; connectionIds = players.keySet();</span>
+<span class="fc" id="L139">    pushService.sendResponse(connectionIds, response);</span>
+<span class="fc" id="L140">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

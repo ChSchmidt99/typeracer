@@ -11,7 +11,6 @@ public interface PushService {
    *
    * @param connectionId of some existing {@link Connection}
    * @param response some {@link Response}
-   * @throws Exception when no Connection with connectionId exists
    */
   void sendResponse(String connectionId, Response response);
 
