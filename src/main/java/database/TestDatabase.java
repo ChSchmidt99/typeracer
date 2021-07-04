@@ -1,28 +1,26 @@
 package database;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
 import java.util.UUID;
 
 /** implements test for the database interface. */
 public class TestDatabase {
 
   Map<String, String> map = new HashMap<>();
-  private final String path;
+  // private final String path;
+  // private InputStream in;
 
   TestDatabase() throws URISyntaxException {
-    URL url = Objects.requireNonNull(this.getClass().getClassLoader().getResource("database.txt"));
-    this.path = Paths.get(url.toURI()).toString();
+    // URL url = this.getClass().getResource("/database.txt");
+    // in = this.getClass().getResourceAsStream("/database.txt");
+    // URI uri = url.toURI();
+    // System.out.println("Got uri: " + uri);
+    // this.path = Paths.get(uri).toString();
+    // System.out.println("Got path: " + this.path);
+    this.map = new HashMap<>();
   }
 
   /**
@@ -34,12 +32,14 @@ public class TestDatabase {
   String registerUser(String username) throws IOException {
     UUID uuid = UUID.randomUUID();
     String uuidAsString = uuid.toString();
-    Files.writeString(
-        Paths.get(path),
-        (username + " " + uuidAsString + System.lineSeparator()),
-        StandardCharsets.UTF_8,
-        StandardOpenOption.APPEND);
-
+    /*
+     Files.writeString(
+         Paths.get(path),
+         (username + " " + uuidAsString + System.lineSeparator()),
+         StandardCharsets.UTF_8,
+         StandardOpenOption.APPEND);
+    */
+    this.map.put(uuidAsString, username);
     return uuidAsString;
   }
 
@@ -50,7 +50,8 @@ public class TestDatabase {
    * @return userId
    */
   String getUsername(String userId) throws IOException {
-
+    return map.get(userId);
+    /*
     File f = new File(path);
     Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
 
@@ -66,6 +67,8 @@ public class TestDatabase {
       if (key.equals(userId)) {
         output = value;
       }
+
+
     }
 
     // TODO: Maybe find a nicer solution
@@ -73,5 +76,6 @@ public class TestDatabase {
       output = "unknown";
     }
     return output;
+     */
   }
 }
