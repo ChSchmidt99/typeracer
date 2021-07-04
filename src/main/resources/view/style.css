@@ -11,13 +11,18 @@
 .listlabel {
     -fx-font-family: "Helvetica";
     -fx-font-size: 12px;
-    -fx-pref-Height: 30px;
+    -fx-pref-height: 30px;
     -fx-pref-width: 450px;
 }
 
 .serverstatus {
     -fx-min-width: 18px;
     -fx-background-radius: 50px;
+}
+
+.joinbutton {
+  -fx-alignment: right;
+  -fx-font-size: 25px;
 }
 
 .serverstatus.green {
@@ -64,4 +69,13 @@
 .raceOverTimer {
     -fx-font-size: 50px;
     -fx-font-family: "Courier New";
+    -fx-text-fill: white;
+}
+
+.texttotype {
+  -fx-background-color: white;
+}
+
+.enteredtext {
+  -fx-background-color: white;
 }

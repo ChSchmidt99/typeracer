@@ -10,24 +10,24 @@
 
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="TypeRacer" />
-   <VBox fx:id="userlist" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+   <VBox fx:id="userlist" GridPane.rowIndex="1" styleClass="userlistmultiplayer">
       <children></children>
    </VBox>
     <HBox GridPane.rowIndex="2" alignment="CENTER" spacing="5">
         <Label fx:id="checkeredFlagLabel" styleClass="raceOverTimer" disable="true"/>
     </HBox>
-    <TextFlow fx:id="textToType" prefHeight="233.0" prefWidth="1280.0" GridPane.rowIndex="3" />
-   <HBox fx:id="enteredText" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4" >
+    <TextFlow fx:id="textToType" GridPane.rowIndex="3" styleClass="texttotype" />
+   <HBox fx:id="enteredText" GridPane.rowIndex="4" styleClass="enteredtext" >
       <children>
       </children>
    </HBox>
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="200.0" minHeight="140.0" prefHeight="200.0" />
-        <RowConstraints maxHeight="200.0" minHeight="180.0" prefHeight="200.0" />
-      <RowConstraints maxHeight="200.0" minHeight="180.0" prefHeight="200.0" />
-      <RowConstraints maxHeight="200.0" minHeight="180.0" prefHeight="200.0" />
+      <RowConstraints maxHeight="200.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="200.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="200.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="200.0" vgrow="ALWAYS" />
     </rowConstraints>
 </GridPane>
