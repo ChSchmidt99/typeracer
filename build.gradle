@@ -90,12 +90,12 @@ task serverJar(type: Jar) {
   archiveBaseName = "server"
   from (sourceSets.main.output) {
     include "**"
-    exclude "client/**"
+    exclude "app/**"
   }
 
   manifest {
     attributes(
-      'Main-Class': 'app.Main'
+      'Main-Class': 'server.Main'
     )
   }
 }

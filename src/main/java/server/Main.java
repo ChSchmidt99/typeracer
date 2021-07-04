@@ -20,6 +20,7 @@ public class Main {
       Server server = new Server(database);
       server.run(PORT);
     } catch (Exception exp) {
+      System.out.println("Unable to start server:");
       System.out.println(exp.getMessage());
     }
   }
