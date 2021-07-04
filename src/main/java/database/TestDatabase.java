@@ -14,19 +14,10 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.UUID;
 
-
-
 /** implements test for the database interface. */
 public class TestDatabase {
 
   Map<String, String> map = new HashMap<>();
-  private final String path;
-
-  TestDatabase() throws URISyntaxException {
-    URL url = Objects.requireNonNull(this.getClass().getClassLoader().getResource("database.txt"));
-    this.path = Paths.get(url.toURI()).toString();
-  }
-
   private final String path;
 
   TestDatabase() throws URISyntaxException {
