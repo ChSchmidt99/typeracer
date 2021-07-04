@@ -14,8 +14,10 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.UUID;
 
+
+
 /** implements test for the database interface. */
-public class TestDatabase implements Database {
+public class TestDatabase {
 
   Map<String, String> map = new HashMap<>();
   private final String path;
@@ -25,10 +27,11 @@ public class TestDatabase implements Database {
     this.path = Paths.get(url.toURI()).toString();
   }
 
-  /** select random piece of text from dictionary and use it in the game. */
-  @Override
-  public String getTextToType() {
-    return "Hallo Welt";
+  private final String path;
+
+  TestDatabase() throws URISyntaxException {
+    URL url = Objects.requireNonNull(this.getClass().getClassLoader().getResource("database.txt"));
+    this.path = Paths.get(url.toURI()).toString();
   }
 
   /**
@@ -37,8 +40,7 @@ public class TestDatabase implements Database {
    * @param username name of user
    * @return userId
    */
-  @Override
-  public String registerUser(String username) throws IOException {
+  String registerUser(String username) throws IOException {
     UUID uuid = UUID.randomUUID();
     String uuidAsString = uuid.toString();
     Files.writeString(
@@ -56,8 +58,8 @@ public class TestDatabase implements Database {
    * @param userId name of user
    * @return userId
    */
-  @Override
-  public String getUsername(String userId) throws IOException {
+  String getUsername(String userId) throws IOException {
+
     File f = new File(path);
     Scanner scanner = new Scanner(f, StandardCharsets.UTF_8);
 
