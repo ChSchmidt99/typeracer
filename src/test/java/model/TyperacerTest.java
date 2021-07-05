@@ -1,10 +1,8 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /** Unit tests for Typeracer class. */
 class TyperacerTest {
@@ -19,10 +17,35 @@ class TyperacerTest {
   }
 
   @Test
-  void testCheck() {
+  void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
-    boolean actual = tp.check('t');
-    assertTrue(actual);
+    CorrectionStates actual = tp.check('t');
+    CorrectionStates expectation = CorrectionStates.CORRECT;
+    assertEquals(actual, expectation);
+  }
+
+  @Test
+  void testCheckAutocorrected() {
+    Typeracer tp = new Typeracer("test");
+    CorrectionStates actual = tp.check('z');
+    CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
+    assertEquals(actual, expectation);
+  }
+
+  @Test
+  void testCheckIncorrect() {
+    Typeracer tp = new Typeracer("test");
+    CorrectionStates actual = tp.check('x');
+    CorrectionStates expectation = CorrectionStates.INCORRECT;
+    assertEquals(actual, expectation);
+  }
+
+  @Test
+  void testCheckUpperCaseAndLowerCase() {
+    Typeracer tp = new Typeracer("test");
+    CorrectionStates actual = tp.check('Z');
+    CorrectionStates expectation = CorrectionStates.INCORRECT;
+    assertEquals(actual, expectation);
   }
 
   @Test

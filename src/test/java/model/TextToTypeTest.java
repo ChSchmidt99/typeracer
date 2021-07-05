@@ -1,21 +1,37 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
-
+import static org.junit.jupiter.api.Assertions.*;
 
 /** Unit tests for TextToType class. */
 class TextToTypeTest {
 
   @Test
-  void testCheckChar() {
+  void testCheckCharCorrect() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    boolean actual = ttt.checkChar('t');
-    assertTrue(actual);
+    CorrectionStates actual = ttt.checkChar('t');
+    CorrectionStates expectation = CorrectionStates.CORRECT;
+    assertEquals(actual, expectation);
+  }
+
+  @Test
+  void testCheckCharAutocorrected() {
+    Counter counter = new Counter();
+    TextToType ttt = new TextToType("test", counter);
+    CorrectionStates actual = ttt.checkChar('z');
+    CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
+    assertEquals(actual, expectation);
+  }
+
+  @Test
+  void testCheckCharIncorrect() {
+    Counter counter = new Counter();
+    TextToType ttt = new TextToType("test", counter);
+    CorrectionStates actual = ttt.checkChar('x');
+    CorrectionStates expectation = CorrectionStates.INCORRECT;
+    assertEquals(actual, expectation);
   }
 
   @Test
