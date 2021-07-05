@@ -1,8 +1,10 @@
 package model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /** Unit tests for Typeracer class. */
 class TyperacerTest {

@@ -65,8 +65,15 @@ public class TextToType {
   }
   // source:
   // https://stackoverflow.com/questions/10275461/java-whats-the-most-efficient-way-to-remove-all-blank-space-from-a-stringbuild
+
   String chars = "qwertzuiopü asdfghjklöä'yxcvbnm,.-  ";
 
+  /**
+   * Method to find neighbouring keys.
+   *
+   * @param key typed char.
+   * @return String of key neighbours.
+   */
   public String getNeighboringKeys(char key) {
     StringBuilder result = new StringBuilder();
     for (char c : chars.toCharArray()) {
