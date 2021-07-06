@@ -24,6 +24,7 @@ Send request to create a new lobby and join as host.
 {
     "type" : "new lobby",
     "userId" : "<some userId>",
+    "iconId" : "<id of selected icon>",
     "lobbyName" : "<some name>"
 }
 ```
@@ -34,6 +35,7 @@ Send request to join an existing lobby with the provided lobby id.
 {
     "type" : "join lobby",
     "userId" : "<some userId>",
+    "iconId" : "<id of selected icon>",
     "lobbyId" : "<some lobbyId>"
 }
 ```
@@ -100,7 +102,8 @@ If the game is started successfully, a game starting response is broadcast to al
       "textToType" : "<string to type>",
       "players" : [{ 
         "name" : "<some name>",
-        "userId" : "<some userId>"
+        "userId" : "<some userId>",
+        "iconId" : "<id of selected icon>"
       }]
     }
 }

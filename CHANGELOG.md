@@ -6,6 +6,14 @@ The format is based on
 and this project adheres to
 [ Semantic Versioning ]( https :// semver . org / spec / v2 .0.0. html ).
 
+## [Abgabe 4] - 2021-07-07
+### Added
+- Added Custom Icon picker
+- Added custom Racetrack
+
+### Changed
+- Closing Client on Window Close
+
 ## [Abgabe 3] - 2021-07-04
 ### Added
 - Names to stored lobbies on server
