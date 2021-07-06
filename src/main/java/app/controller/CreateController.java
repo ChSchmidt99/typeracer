@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.IconManager;
 import client.Client;
 import client.ClientObserver;
 import java.util.List;
@@ -36,7 +37,7 @@ class CreateController extends Controller implements ClientObserver {
       displayError(LOBBY_NAME_ERROR);
     } else {
       new GameLobbyController(stage, client, userId);
-      client.newLobby(userId, lobbyname.getText());
+      client.newLobby(userId, lobbyname.getText(), IconManager.getSelectedIcon().getId());
     }
   }
 

@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.IconManager;
 import client.Client;
 import client.RaceObserver;
 import java.text.SimpleDateFormat;
@@ -17,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import model.CheckResult;
 import model.GamePhase;
 import model.TextToType;
 import model.Typeracer;
@@ -79,18 +81,29 @@ class MultiplayerController extends Controller implements RaceObserver {
                 return;
               }
               String typed = event.getCharacter();
-              enteredText.getChildren().add(charLabelCreator(game.check(typed.charAt(0)), typed));
+              CheckResult check = game.check(typed.charAt(0));
+              enteredText.getChildren().add(charLabelCreator(check));
               notifyInterval();
             });
   }
 
   /** Creates labels for user input which will be added to hbox enteredText. */
-  private Label charLabelCreator(boolean charCorrect, String letter) {
-    Label label = new Label(letter);
-    if (charCorrect) {
-      label.setStyle("-fx-text-fill: #ffffff;");
-    } else {
-      label.setStyle("-fx-text-fill: #fe55f7;");
+  private Label charLabelCreator(CheckResult check) {
+    Label label = new Label();
+    switch (check.state) {
+      case CORRECT:
+        label.setTextFill(Color.GREEN);
+        label.setText(Character.toString(check.expected));
+        break;
+      case INCORRECT:
+        label.setTextFill(Color.RED);
+        label.setText(Character.toString(check.typed));
+        break;
+      case AUTOCORRECTED:
+        label.setTextFill(Color.BLUE);
+        label.setText(Character.toString(check.expected));
+        break;
+      default:
     }
     return label;
   }
@@ -129,6 +142,8 @@ class MultiplayerController extends Controller implements RaceObserver {
       wpmCreator(player.userId);
       userlist.getChildren().add(userProgress.get(player.userId));
       userlist.getChildren().add(wpmLabels.get(player.userId));
+      Slider slider = sliderCreator(player);
+      userlist.getChildren().add(slider);
     }
   }
 
@@ -139,12 +154,19 @@ class MultiplayerController extends Controller implements RaceObserver {
     return label;
   }
 
-  private void sliderCreator(String userId) {
+  private Slider sliderCreator(PlayerModel playerModel) {
     Slider slider = new Slider();
     slider.setMin(0);
     slider.setMax(1);
     slider.setValue(0);
-    userProgress.put(userId, slider);
+    String style = "-fx-background-image :url(\"%s\");";
+    try {
+      slider.setStyle(String.format(style, IconManager.iconForId(playerModel.iconId).getPath()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    userProgress.put(playerModel.userId, slider);
+    return slider;
   }
 
   private void wpmCreator(String userId) {

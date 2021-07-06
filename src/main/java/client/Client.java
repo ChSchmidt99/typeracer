@@ -19,7 +19,7 @@ public interface Client extends ObserverHandler, Closeable {
    * @param userId of host
    * @param lobbyName name of lobby
    */
-  void newLobby(String userId, String lobbyName);
+  void newLobby(String userId, String lobbyName, String iconId);
 
   /**
    * Join an ongoing lobby.
@@ -27,7 +27,7 @@ public interface Client extends ObserverHandler, Closeable {
    * @param userId of player
    * @param gameId of game
    */
-  void joinLobby(String userId, String gameId);
+  void joinLobby(String userId, String gameId, String iconId);
 
   /** Start a race in the current lobby. */
   void startRace();

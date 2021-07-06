@@ -1,5 +1,6 @@
 package backend;
 
+import protocol.PlayerModel;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 
@@ -8,6 +9,7 @@ public class Player {
 
   private final String userId;
   private final String name;
+  private final String iconId;
   private final String connectionId;
   private int wpm;
   private float progress;
@@ -15,10 +17,11 @@ public class Player {
   private long lastUpdateTime;
   // private int mistakes;
 
-  Player(String userId, String connectionId, String name) {
+  Player(String userId, String connectionId, String name, String iconId) {
     this.userId = userId;
     this.connectionId = connectionId;
     this.name = name;
+    this.iconId = iconId;
     this.wpm = 0;
     this.progress = 0;
     this.raceStartTime = 0;
@@ -54,6 +57,10 @@ public class Player {
 
   PlayerUpdate getUpdate() {
     return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());
+  }
+
+  PlayerModel getModel() {
+    return new PlayerModel(this.userId, this.name, this.iconId);
   }
 
   private long raceDuration() {

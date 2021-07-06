@@ -7,8 +7,11 @@ public class PlayerModel {
 
   public final String userId;
 
-  public PlayerModel(String userId, String name) {
+  public final String iconId;
+
+  public PlayerModel(String userId, String name, String iconId) {
     this.name = name;
     this.userId = userId;
+    this.iconId = iconId;
   }
 }
