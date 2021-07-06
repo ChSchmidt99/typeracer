@@ -1,8 +1,10 @@
 package app.controller;
 
 import app.IconManager;
+import app.elements.RaceTrack;
 import client.Client;
 import client.RaceObserver;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,7 +12,6 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,7 +39,7 @@ class MultiplayerController extends Controller implements RaceObserver {
   long raceStart;
   int notifyCounter = 0;
   List<PlayerModel> players;
-  HashMap<String, Slider> userProgress = new HashMap<>();
+  HashMap<String, RaceTrack> userProgress = new HashMap<>();
 
   @FXML TextFlow textToType;
 
@@ -73,13 +74,14 @@ class MultiplayerController extends Controller implements RaceObserver {
         .addEventHandler(
             KeyEvent.KEY_TYPED,
             event -> {
-              if (game.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
-                return;
+              try {
+                String typed = event.getCharacter();
+                CheckResult check = game.check(typed.charAt(0));
+                enteredText.getChildren().add(charLabelCreator(check));
+                notifyInterval();
+              } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
               }
-              String typed = event.getCharacter();
-              CheckResult check = game.check(typed.charAt(0));
-              enteredText.getChildren().add(charLabelCreator(check));
-              notifyInterval();
             });
   }
 
@@ -134,8 +136,9 @@ class MultiplayerController extends Controller implements RaceObserver {
   private void setUsers() {
     for (PlayerModel player : players) {
       userlist.getChildren().add(userLabelCreator(player.name));
-      Slider slider = sliderCreator(player);
-      userlist.getChildren().add(slider);
+      RaceTrack track = trackCreator(player);
+      userlist.getChildren().add(track);
+      userProgress.put(player.userId, track);
     }
   }
 
@@ -146,23 +149,17 @@ class MultiplayerController extends Controller implements RaceObserver {
     return label;
   }
 
-  private Slider sliderCreator(PlayerModel playerModel) {
-    Slider slider = new Slider();
-    slider.setMin(0);
-    slider.setMax(1);
-    slider.setValue(0);
-    String style = "-fx-background-image :url(\"%s\");";
+  private RaceTrack trackCreator(PlayerModel playerModel) {
     try {
-      slider.setStyle(String.format(style, IconManager.iconForId(playerModel.iconId).getPath()));
-    } catch (Exception e) {
+      return new RaceTrack(IconManager.iconForId(playerModel.iconId), 500, 50, Color.WHITE);
+    } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    userProgress.put(playerModel.userId, slider);
-    return slider;
+    return null;
   }
 
-  private void sliderUpdate(PlayerUpdate update) {
-    userProgress.get(update.userId).setValue(update.percentProgress);
+  private void trackUpdate(PlayerUpdate update) {
+    userProgress.get(update.userId).updateProgress(update.percentProgress);
   }
 
   @Override
@@ -170,7 +167,7 @@ class MultiplayerController extends Controller implements RaceObserver {
     for (PlayerUpdate update : updates) {
       Platform.runLater(
           () -> {
-            sliderUpdate(update);
+            trackUpdate(update);
           });
     }
   }

@@ -38,7 +38,7 @@ public class Typeracer {
    * @return true if the check was successful. false otherwise.
    * @throws IllegalStateException – if the current Typeracer game is not running
    */
-  public CheckResult check(char guessedCharacter) {
+  public CheckResult check(char guessedCharacter) throws IllegalStateException {
     if (state.getCurrentGamePhase() != GamePhase.RUNNING) {
       throw new IllegalStateException("Game not running.");
     }

@@ -32,7 +32,7 @@ public class ApiTest implements PushService {
     String lobbyName = "some name";
     this.api.getLobbies(connectionId);
     assertEquals(lobbyResponse.size(), 0);
-    this.api.createNewLobby(connectionId, userId, lobbyName);
+    this.api.createNewLobby(connectionId, userId, lobbyName, "iconId");
     this.api.getLobbies(connectionId);
     assertEquals(lobbyResponse.size(), 1);
     assertEquals(lobbyResponse.get(0).name, lobbyName);

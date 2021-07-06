@@ -108,7 +108,8 @@ public class TextToType {
   // https://stackoverflow.com/questions/10275461/java-whats-the-most-efficient-way-to-remove-all-blank-space-from-a-stringbuild
 
   boolean checkFinish() {
-    return checkedCharacters[completeText.length() - 1] != null;
+    return checkedCharacters[completeText.length() - 1] != null
+        && checkedCharacters[completeText.length() - 1] != CorrectionStates.INCORRECT;
   }
 
   public String getCompleteText() {

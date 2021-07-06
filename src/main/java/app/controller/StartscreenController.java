@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.IconManager;
 import app.elements.IconPicker;
 import client.Client;
 import client.ClientImpl;
@@ -35,7 +34,6 @@ public class StartscreenController extends Controller implements ClientObserver 
    */
   public StartscreenController(Stage stage) {
     super(stage, FXMLPATH);
-    IconManager iconManager = new IconManager();
     baseGridPane.add(new IconPicker(4), 0, 3);
   }
 

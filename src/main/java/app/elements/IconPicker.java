@@ -11,10 +11,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+/** Custom Picker for Icons. */
 public class IconPicker extends GridPane {
 
   private final ToggleGroup group;
 
+  /**
+   * Create new IconPicker including all Icons specified in {@link IconManager}.
+   *
+   * @param iconsPerRow after how many icons a new line is started
+   */
   public IconPicker(int iconsPerRow) {
     this.group = new ToggleGroup();
     addIcons(IconManager.getAllIcons(), iconsPerRow);
@@ -42,18 +48,18 @@ public class IconPicker extends GridPane {
   }
 
   private VBox makePickerNode(Icon icon, boolean isSelected) {
-    VBox hBox = new VBox();
-    ImageView view = new ImageView(icon.getImage());
     RadioButton radioButton = new RadioButton();
     radioButton.setUserData(icon);
     radioButton.setToggleGroup(group);
-    // TODO: Necessary? Or already called with listener?
     if (isSelected) {
       radioButton.setSelected(isSelected);
       IconManager.setSelectedIcon(icon);
     }
-    hBox.getChildren().add(view);
-    hBox.getChildren().add(radioButton);
-    return hBox;
+    radioButton.setSelected(isSelected);
+    ImageView view = new ImageView(icon.getImage());
+    VBox box = new VBox();
+    box.getChildren().add(view);
+    box.getChildren().add(radioButton);
+    return box;
   }
 }

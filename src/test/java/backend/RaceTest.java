@@ -18,7 +18,7 @@ public class RaceTest implements PushService {
   @Test
   void finishRace() {
     String connectionId = "some id";
-    Player player = new Player("userId", connectionId, "some name");
+    Player player = new Player("userId", connectionId, "some name", "iconId");
     Map<String, Player> players = new HashMap<>();
     players.put(connectionId, player);
     String text = "some text";
