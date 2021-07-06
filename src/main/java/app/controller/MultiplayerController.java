@@ -37,7 +37,9 @@ class MultiplayerController extends Controller implements RaceObserver {
   int notifyCounter = 0;
   List<PlayerModel> players;
   HashMap<String, Slider> userProgress = new HashMap<>();
+  HashMap<String, Label> wpmLabels = new HashMap<>();
   String userId;
+  Label wpmLabel;
 
   @FXML TextFlow textToType;
 
@@ -121,11 +123,12 @@ class MultiplayerController extends Controller implements RaceObserver {
    * Adds the user list along with progress bars and wpm to game screen.
    */
   private void setUsers() {
-    System.out.println(players);
     for (PlayerModel player : players) {
       userlist.getChildren().add(userLabelCreator(player.name));
       sliderCreator(player.userId);
+      wpmCreator(player.userId);
       userlist.getChildren().add(userProgress.get(player.userId));
+      userlist.getChildren().add(wpmLabels.get(player.userId));
     }
   }
 
@@ -144,8 +147,18 @@ class MultiplayerController extends Controller implements RaceObserver {
     userProgress.put(userId, slider);
   }
 
+  private void wpmCreator(String userId) {
+    Label label = new Label();
+    label.setText("Wpm: 0");
+    wpmLabels.put(userId, label);
+  }
+
   private void sliderUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).setValue(update.percentProgress);
+  }
+
+  private void wpmUpdate(PlayerUpdate update) {
+    wpmLabels.get(update.userId).setText(String.valueOf(update.wpm));
   }
 
   @Override
@@ -154,6 +167,7 @@ class MultiplayerController extends Controller implements RaceObserver {
       Platform.runLater(
           () -> {
             sliderUpdate(update);
+            wpmUpdate(update);
           });
     }
   }
