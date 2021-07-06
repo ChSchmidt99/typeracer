@@ -30,10 +30,10 @@ class Lobby {
     this.name = name;
   }
 
-  void join(String connectionId, String userId) {
+  void join(String connectionId, String userId, String iconId) {
     try {
       String username = this.database.getUsername(userId);
-      LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username);
+      LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
       members.put(connectionId, lobbyMember);
       broadcastLobbyUpdate();
     } catch (IOException e) {

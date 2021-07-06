@@ -1,5 +1,7 @@
 package app.controller;
 
+import app.Icon;
+import app.IconManager;
 import client.Client;
 import client.RaceObserver;
 import java.text.SimpleDateFormat;
@@ -131,11 +133,10 @@ class MultiplayerController extends Controller implements RaceObserver {
    * Adds the user list along with progress bars and wpm to game screen.
    */
   private void setUsers() {
-    System.out.println(players);
     for (PlayerModel player : players) {
       userlist.getChildren().add(userLabelCreator(player.name));
-      sliderCreator(player.userId);
-      userlist.getChildren().add(userProgress.get(player.userId));
+      Slider slider = sliderCreator(player);
+      userlist.getChildren().add(slider);
     }
   }
 
@@ -146,12 +147,19 @@ class MultiplayerController extends Controller implements RaceObserver {
     return label;
   }
 
-  private void sliderCreator(String userId) {
+  private Slider sliderCreator(PlayerModel playerModel) {
     Slider slider = new Slider();
     slider.setMin(0);
     slider.setMax(1);
     slider.setValue(0);
-    userProgress.put(userId, slider);
+    String style = "-fx-background-image :url(\"%s\");";
+    try {
+      slider.setStyle(String.format(style, IconManager.iconForId(playerModel.iconId).getPath()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    userProgress.put(playerModel.userId, slider);
+    return slider;
   }
 
   private void sliderUpdate(PlayerUpdate update) {

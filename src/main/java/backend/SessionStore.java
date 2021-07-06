@@ -31,10 +31,10 @@ class SessionStore {
     return lobbyId;
   }
 
-  void joinLobby(String lobbyId, String connectionId, String userId) {
+  void joinLobby(String lobbyId, String connectionId, String userId, String iconId) {
     connectionIds.put(connectionId, lobbyId);
     Lobby lobby = lobbies.get(lobbyId);
-    lobby.join(connectionId, userId);
+    lobby.join(connectionId, userId, iconId);
   }
 
   void leaveLobby(String connectionId) {

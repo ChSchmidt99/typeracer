@@ -20,7 +20,7 @@ public interface Api {
    * @param userId id of the user
    * @param lobbyName name of the lobby
    */
-  void createNewLobby(String connectionId, String userId, String lobbyName);
+  void createNewLobby(String connectionId, String userId, String lobbyName, String iconId);
 
   /**
    * Call to join an existing lobby.
@@ -29,7 +29,7 @@ public interface Api {
    * @param connectionId id of server connection
    * @param userId id of user
    */
-  void joinLobby(String lobbyId, String connectionId, String userId);
+  void joinLobby(String lobbyId, String connectionId, String userId, String iconId);
 
   /**
    * Call to leave if currently in a lobby.
