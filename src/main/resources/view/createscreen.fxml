@@ -22,7 +22,7 @@
                 <Insets top="20.0" />
             </VBox.margin>
         </Button>
-      <Button fx:id="backToLobbyBrowser" mnemonicParsing="false" onAction="#backToLobbyBrowser" styleClass="gamebutton" text="Button" />
+      <Button fx:id="backToLobbyBrowser" mnemonicParsing="false" onAction="#backToLobbyBrowser" styleClass="gamebutton" text="Back" />
     </VBox>
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
