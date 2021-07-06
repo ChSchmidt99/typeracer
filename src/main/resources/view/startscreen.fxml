@@ -19,7 +19,7 @@
          </VBox.margin></Button>
       <TextField fx:id="username" focusTraversable="false" promptText="Username" styleClass="inputfield">
         <VBox.margin>
-          <Insets top="30.0" />
+          <Insets bottom="50.0" top="30.0" />
         </VBox.margin>
       </TextField>
     </VBox>

@@ -4,6 +4,7 @@ import app.Icon;
 import app.IconManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -48,18 +49,21 @@ public class IconPicker extends GridPane {
   }
 
   private VBox makePickerNode(Icon icon, boolean isSelected) {
+    VBox vBox = new VBox();
+    vBox.setSpacing(15);
+    vBox.setAlignment(Pos.CENTER);
+    ImageView view = new ImageView(icon.getImage());
     RadioButton radioButton = new RadioButton();
     radioButton.setUserData(icon);
+    radioButton.setFocusTraversable(false);
+    radioButton.setStyle("-fx-background-color: #ffffff; -fx-text-fill: #000000");
     radioButton.setToggleGroup(group);
     if (isSelected) {
       radioButton.setSelected(isSelected);
       IconManager.setSelectedIcon(icon);
     }
-    radioButton.setSelected(isSelected);
-    ImageView view = new ImageView(icon.getImage());
-    VBox box = new VBox();
-    box.getChildren().add(view);
-    box.getChildren().add(radioButton);
-    return box;
+    vBox.getChildren().add(view);
+    vBox.getChildren().add(radioButton);
+    return vBox;
   }
 }
