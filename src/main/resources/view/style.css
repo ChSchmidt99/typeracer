@@ -50,6 +50,7 @@
 
 .lobbyBrowser {
     -fx-font-size: 15px;
+    -fx-border-color: #ffffff;
 }
 
 .joinbutton {
@@ -81,7 +82,7 @@
 
 .enteredtext {
   -fx-background-color: #ffffff;
-  -fx-font-size: 25px;
+  -fx-font-size: 20px;
 }
 
 .ingameUserlabel {

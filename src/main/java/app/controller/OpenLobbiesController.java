@@ -4,22 +4,27 @@ import app.elements.JoinHandler;
 import app.elements.LobbyListCell;
 import client.Client;
 import client.ClientObserver;
+import java.io.IOException;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
 
-class ServerBrowserController extends Controller implements ClientObserver, JoinHandler {
+class OpenLobbiesController extends Controller implements ClientObserver, JoinHandler {
 
-  private static final String FXMLPATH = "view/serverbrowser.fxml";
+  private static final String FXMLPATH = "view/openlobbies.fxml";
   private final Client client;
   private final String userId;
 
   @FXML ListView<LobbyModel> lobbylist;
 
-  ServerBrowserController(Stage stage, Client client, String userId) {
+  @FXML
+  Button backToStartscreen;
+
+  OpenLobbiesController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
     this.userId = userId;
@@ -34,7 +39,7 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   }
 
   private void joinLobby(String lobbyId) {
-    new GameLobbyController(stage, client);
+    new GameLobbyController(stage, client, userId);
     client.joinLobby(userId, lobbyId);
   }
 
@@ -60,4 +65,11 @@ class ServerBrowserController extends Controller implements ClientObserver, Join
   public void clickedJoin(String lobbyId) {
     joinLobby(lobbyId);
   }
+
+  @FXML
+  private void backToStartscreen() throws IOException {
+    client.close();
+    new StartscreenController(stage);
+  }
+
 }

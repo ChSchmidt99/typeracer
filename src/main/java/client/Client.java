@@ -1,9 +1,10 @@
 package client;
 
+import java.io.Closeable;
 import protocol.ProgressSnapshot;
 
 /** Provides interface for all Server requests. */
-public interface Client extends ObserverHandler {
+public interface Client extends ObserverHandler, Closeable {
 
   /**
    * Register a new user.

@@ -30,7 +30,7 @@ public class StartscreenController extends Controller implements ClientObserver 
   }
 
   @FXML
-  private void switchToServerBrowser() {
+  private void switchToLobbyBrowser() {
     try {
       if (username.getText().equals("")) {
         displayError(USERNAME_ERROR);
@@ -53,7 +53,7 @@ public class StartscreenController extends Controller implements ClientObserver 
   public void registered(String userId) {
     Platform.runLater(
         () -> {
-          new ServerBrowserController(stage, client, userId);
+          new OpenLobbiesController(stage, client, userId);
         });
   }
 
