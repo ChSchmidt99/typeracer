@@ -149,6 +149,34 @@
   -fx-font-size: 35px;
 }
 
+.radio-button .radio {
+  -fx-background-color: #62fbf7;
+  -fx-background-radius: 0px;
+  -fx-border-radius: 0px;
+}
+.radio-button .dot {
+  -fx-mark-highlight-color: #fe55f7;
+  -fx-mark-color: #fe55f7;
+  -fx-background-radius: 0px;
+}
+
+.imageview {
+  -fx-background-color: #ffffff;
+}
+
+.check-box .box {
+  -fx-background-color: #62fbf7;
+  -fx-background-radius: 0px;
+  -fx-padding: 5px;
+}
+
+.check-box .mark {
+  -fx-mark-highlight-color: #fe55f7;
+  -fx-mark-color: #fe55f7;
+  -fx-background-radius: 0px;
+  -fx-shape: none;
+}
+
 
 
 

@@ -18,7 +18,7 @@ public class GameFinishedController extends Controller {
     this.userId = userId;
   }
 
-
+  //TODO: REQUEST LOBBY FROM SERVER
   @FXML
   private void returnToLobby() {
     new GameLobbyController(stage, client, userId);

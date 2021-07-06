@@ -2,12 +2,15 @@ package app.elements;
 
 import app.Icon;
 import app.IconManager;
+import java.awt.Color;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -42,18 +45,22 @@ public class IconPicker extends GridPane {
   }
 
   private VBox makePickerNode(Icon icon, boolean isSelected) {
-    VBox hBox = new VBox();
+    VBox vBox = new VBox();
+    vBox.setSpacing(15);
+    vBox.setAlignment(Pos.CENTER);
     ImageView view = new ImageView(icon.getImage());
     RadioButton radioButton = new RadioButton();
     radioButton.setUserData(icon);
+    radioButton.setFocusTraversable(false);
+    radioButton.setStyle("-fx-background-color: #ffffff; -fx-text-fill: #000000");
     radioButton.setToggleGroup(group);
     // TODO: Necessary? Or already called with listener?
     if (isSelected) {
       radioButton.setSelected(isSelected);
       IconManager.setSelectedIcon(icon);
     }
-    hBox.getChildren().add(view);
-    hBox.getChildren().add(radioButton);
-    return hBox;
+    vBox.getChildren().add(view);
+    vBox.getChildren().add(radioButton);
+    return vBox;
   }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -36,7 +37,11 @@ public class StartscreenController extends Controller implements ClientObserver 
   public StartscreenController(Stage stage) {
     super(stage, FXMLPATH);
     IconManager iconManager = new IconManager();
-    baseGridPane.add(new IconPicker(4), 0, 3);
+    IconPicker iconPicker = new IconPicker(4);
+    iconPicker.setAlignment(Pos.CENTER);
+    iconPicker.setHgap(40);
+    iconPicker.setVgap(20);
+    baseGridPane.add(iconPicker, 0, 3);
   }
 
   @FXML
