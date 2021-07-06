@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-
 /** Unit tests for Counter class. */
 class CounterTest {
 

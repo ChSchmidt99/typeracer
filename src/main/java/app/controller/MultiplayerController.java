@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import model.CheckResult;
 import model.GamePhase;
 import model.TextToType;
 import model.Typeracer;
@@ -74,18 +75,29 @@ class MultiplayerController extends Controller implements RaceObserver {
                 return;
               }
               String typed = event.getCharacter();
-              enteredText.getChildren().add(charLabelCreator(game.check(typed.charAt(0)), typed));
+              CheckResult check = game.check(typed.charAt(0));
+              enteredText.getChildren().add(charLabelCreator(check));
               notifyInterval();
             });
   }
 
   /** Creates labels for user input which will be added to hbox enteredText. */
-  private Label charLabelCreator(boolean charCorrect, String letter) {
-    Label label = new Label(letter);
-    if (charCorrect) {
-      label.setTextFill(Color.GREEN);
-    } else {
-      label.setTextFill(Color.RED);
+  private Label charLabelCreator(CheckResult check) {
+    Label label = new Label();
+    switch (check.state) {
+      case CORRECT:
+        label.setTextFill(Color.GREEN);
+        label.setText(Character.toString(check.expected));
+        break;
+      case INCORRECT:
+        label.setTextFill(Color.RED);
+        label.setText(Character.toString(check.typed));
+        break;
+      case AUTOCORRECTED:
+        label.setTextFill(Color.BLUE);
+        label.setText(Character.toString(check.expected));
+        break;
+      default:
     }
     return label;
   }

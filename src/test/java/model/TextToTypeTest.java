@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-
 /** Unit tests for TextToType class. */
 class TextToTypeTest {
 
@@ -14,27 +13,27 @@ class TextToTypeTest {
   void testCheckCharCorrect() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    CorrectionStates actual = ttt.checkChar('t');
+    CheckResult result = ttt.checkChar('t');
     CorrectionStates expectation = CorrectionStates.CORRECT;
-    assertEquals(actual, expectation);
+    assertEquals(result.state, expectation);
   }
 
   @Test
   void testCheckCharAutocorrected() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    CorrectionStates actual = ttt.checkChar('z');
+    CheckResult result = ttt.checkChar('z');
     CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
-    assertEquals(actual, expectation);
+    assertEquals(result.state, expectation);
   }
 
   @Test
   void testCheckCharIncorrect() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    CorrectionStates actual = ttt.checkChar('x');
+    CheckResult result = ttt.checkChar('x');
     CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(actual, expectation);
+    assertEquals(result.state, expectation);
   }
 
   @Test

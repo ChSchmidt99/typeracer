@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-
-
 /** Unit tests for Typeracer class. */
 class TyperacerTest {
 
@@ -21,7 +19,7 @@ class TyperacerTest {
   @Test
   void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('t');
+    CorrectionStates actual = tp.check('t').state;
     CorrectionStates expectation = CorrectionStates.CORRECT;
     assertEquals(actual, expectation);
   }
@@ -29,7 +27,7 @@ class TyperacerTest {
   @Test
   void testCheckAutocorrected() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('z');
+    CorrectionStates actual = tp.check('z').state;
     CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
     assertEquals(actual, expectation);
   }
@@ -37,7 +35,7 @@ class TyperacerTest {
   @Test
   void testCheckIncorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('x');
+    CorrectionStates actual = tp.check('x').state;
     CorrectionStates expectation = CorrectionStates.INCORRECT;
     assertEquals(actual, expectation);
   }
@@ -45,17 +43,8 @@ class TyperacerTest {
   @Test
   void testCheckUpperCaseAndLowerCase() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('Z');
+    CorrectionStates actual = tp.check('Z').state;
     CorrectionStates expectation = CorrectionStates.INCORRECT;
     assertEquals(actual, expectation);
-  }
-
-  @Test
-  void testForfeit() {
-    Typeracer tp = new Typeracer("");
-    GamePhase expectation = GamePhase.FINISHED;
-    tp.forfeit();
-    GamePhase actual = tp.getState().getCurrentGamePhase();
-    assertEquals(expectation, actual);
   }
 }

@@ -16,21 +16,22 @@ public class TextToType {
     checkedCharacters = new CorrectionStates[completeText.length()];
   }
 
-  CorrectionStates checkChar(char userInput) {
+  CheckResult checkChar(char userInput) {
     CorrectionStates guessed = CorrectionStates.INCORRECT;
 
-    char given = completeText.charAt(counter.getCurrentValue());
+    char expected = completeText.charAt(counter.getCurrentValue());
 
-    if (userInput == given) {
+    if (userInput == expected) {
       guessed = CorrectionStates.CORRECT;
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.CORRECT;
       counter.increase();
     } else {
-      if (checkForAutocorrect(userInput, given) == given) {
+      if (checkForAutocorrect(userInput, expected) == expected) {
         guessed = CorrectionStates.AUTOCORRECTED;
+        counter.increase();
       }
     }
-    return guessed;
+    return new CheckResult(guessed, userInput, expected);
   }
 
   /**
@@ -120,9 +121,5 @@ public class TextToType {
 
   public int getMistakeCounter() {
     return mistakeCounter;
-  }
-
-  String getCompleteText() {
-    return completeText;
   }
 }

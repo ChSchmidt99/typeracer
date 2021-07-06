@@ -9,7 +9,6 @@ public class Typeracer {
   private final GameState state;
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-  Typeracer(final String text) {
   public Typeracer(final String text) {
     state = new GameState(text);
   }
@@ -39,28 +38,17 @@ public class Typeracer {
    * @return true if the check was successful. false otherwise.
    * @throws IllegalStateException – if the current Typeracer game is not running
    */
-  public CorrectionStates check(char guessedCharacter) {
+  public CheckResult check(char guessedCharacter) {
     if (state.getCurrentGamePhase() != GamePhase.RUNNING) {
       throw new IllegalStateException("Game not running.");
     }
 
-    CorrectionStates isCharCorrect = state.getTypeChar().checkChar(guessedCharacter);
+    CheckResult result = state.getTypeChar().checkChar(guessedCharacter);
     if (state.getTypeChar().checkFinish()) {
       state.endGame();
     }
 
     notifyListeners();
-    return isCharCorrect;
-  }
-
-  /**
-   * Forfeit the current game. This method can only be called on an active game. Otherwise, an
-   * IllegalStateException is thrown.
-   *
-   * @throws IllegalStateException – if the current Typeracer game is not running
-   */
-  public void forfeit() {
-    state.endGame();
-    notifyListeners();
+    return result;
   }
 }
