@@ -2,6 +2,7 @@ package app.elements;
 
 import app.Icon;
 import app.IconManager;
+import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
@@ -39,20 +40,16 @@ public class IconPicker extends GridPane {
             });
   }
 
-  private void addIcons(Icon[] icons, int iconsPerRow) {
+  private void addIcons(List<Icon> icons, int iconsPerRow) {
     int index = 0;
-    for (int i = 0; i < icons.length; i++) {
-      VBox entry = makePickerNode(icons[i], i == 0);
+    for (int i = 0; i < icons.size(); i++) {
+      VBox entry = makePickerNode(icons.get(i), i == 0);
       this.add(entry, index % iconsPerRow, i / iconsPerRow);
       index++;
     }
   }
 
   private VBox makePickerNode(Icon icon, boolean isSelected) {
-    VBox vBox = new VBox();
-    vBox.setSpacing(15);
-    vBox.setAlignment(Pos.CENTER);
-    ImageView view = new ImageView(icon.getImage());
     RadioButton radioButton = new RadioButton();
     radioButton.setUserData(icon);
     radioButton.setFocusTraversable(false);
@@ -62,8 +59,12 @@ public class IconPicker extends GridPane {
       radioButton.setSelected(isSelected);
       IconManager.setSelectedIcon(icon);
     }
-    vBox.getChildren().add(view);
-    vBox.getChildren().add(radioButton);
-    return vBox;
+    ImageView view = new ImageView(icon.getImage());
+    VBox box = new VBox();
+    box.setSpacing(15);
+    box.setAlignment(Pos.CENTER);
+    box.getChildren().add(view);
+    box.getChildren().add(radioButton);
+    return box;
   }
 }

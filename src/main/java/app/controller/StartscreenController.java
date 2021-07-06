@@ -35,7 +35,6 @@ public class StartscreenController extends Controller implements ClientObserver 
    */
   public StartscreenController(Stage stage) {
     super(stage, FXMLPATH);
-    IconManager iconManager = new IconManager();
     IconPicker iconPicker = new IconPicker(4);
     iconPicker.setAlignment(Pos.CENTER);
     iconPicker.setHgap(40);

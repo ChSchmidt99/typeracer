@@ -39,7 +39,6 @@ class MultiplayerController extends Controller implements RaceObserver {
   long raceStart;
   int notifyCounter = 0;
   List<PlayerModel> players;
-  HashMap<String, Slider> userProgress = new HashMap<>();
   HashMap<String, Label> wpmLabels = new HashMap<>();
   String userId;
   HashMap<String, RaceTrack> userProgress = new HashMap<>();
@@ -52,6 +51,14 @@ class MultiplayerController extends Controller implements RaceObserver {
 
   @FXML Label checkeredFlagLabel;
 
+  /**
+   * Controller for Multiplayer game screen.
+   *
+   * @param stage where controller is hosted in
+   * @param race model of the race
+   * @param client for server communication
+   * @param userId id of user
+   */
   public MultiplayerController(Stage stage, RaceModel race, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
@@ -149,9 +156,6 @@ class MultiplayerController extends Controller implements RaceObserver {
       userHbox.getChildren().add(userLabelCreator(player.name));
       userHbox.getChildren().add(wpmLabels.get(player.userId));
       userlist.getChildren().add(userHbox);
-      Slider slider = sliderCreator(player);
-      userlist.getChildren().add(slider);
-      userlist.getChildren().add(userLabelCreator(player.name));
       RaceTrack track = trackCreator(player);
       userlist.getChildren().add(track);
       userProgress.put(player.userId, track);
@@ -172,26 +176,17 @@ class MultiplayerController extends Controller implements RaceObserver {
       e.printStackTrace();
     }
     return null;
-  private Slider sliderCreator(PlayerModel playerModel) {
-    Slider slider = new Slider();
-    slider.setMin(0);
-    slider.setMax(1);
-    slider.setValue(0);
-    userProgress.put(playerModel.userId, slider);
-    return slider;
   }
 
   private void trackUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).updateProgress(update.percentProgress);
+  }
+
   private void wpmCreator(String userId) {
     Label label = new Label();
     label.setText("Wpm: 0");
     label.setStyle("-fx-text-fill:#ffffff;");
     wpmLabels.put(userId, label);
-  }
-
-  private void sliderUpdate(PlayerUpdate update) {
-    userProgress.get(update.userId).setValue(update.percentProgress);
   }
 
   private void wpmUpdate(PlayerUpdate update) {
@@ -204,7 +199,6 @@ class MultiplayerController extends Controller implements RaceObserver {
       Platform.runLater(
           () -> {
             trackUpdate(update);
-            sliderUpdate(update);
             wpmUpdate(update);
           });
     }

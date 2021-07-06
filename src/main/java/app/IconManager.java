@@ -1,11 +1,14 @@
 package app;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /** Stores the currently selected Icon and all paths to all possible icons. */
 public class IconManager {
 
-  static final Icon[] icons = {
+  private static final Icon[] icons = {
     new Icon("1", "icons/floppy.PNG"),
     new Icon("2", "icons/minesweep.PNG"),
     new Icon("3", "icons/msdos.PNG"),
@@ -21,8 +24,10 @@ public class IconManager {
    *
    * @return array of {@link Icon}
    */
-  public static Icon[] getAllIcons() {
-    return icons;
+  public static List<Icon> getAllIcons() {
+    List<Icon> out = new ArrayList<>();
+    Collections.addAll(out, icons);
+    return out;
   }
 
   /**
