@@ -4,6 +4,9 @@ import client.Client;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
+/*
+ * Controller for game finished screen.
+ */
 public class GameFinishedController extends Controller {
 
   private Client client;
