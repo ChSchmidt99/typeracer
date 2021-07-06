@@ -55,6 +55,7 @@ class MultiplayerController extends Controller implements RaceObserver {
     this.players = race.players;
     this.textToType2 = game.getState().getTypeChar();
     Text text = new Text(game.getState().getTypeChar().getCompleteText());
+    text.setFill(Color.web("#62fbf7"));
     textToType.getChildren().addAll(text);
     setupKeyHandler();
     this.raceStart = Timestamp.currentTimestamp();
@@ -141,6 +142,7 @@ class MultiplayerController extends Controller implements RaceObserver {
   private Label userLabelCreator(String user) {
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
+    label.setStyle("-fx-font-size: 25px; -fx-background-color: #ffffff; -fx-text-fill: #000000;");
     return label;
   }
 
@@ -173,6 +175,7 @@ class MultiplayerController extends Controller implements RaceObserver {
           SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
           Date end = Timestamp.timestampToDate(raceStop);
           String stopTime = format.format(end);
+          checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
           checkeredFlagLabel.setDisable(false);
           checkeredFlagLabel.setText("Race Ending: " + stopTime);
         });

@@ -25,8 +25,8 @@ abstract class Controller {
       stage.setScene(new Scene(root, 1280, 720));
       stage.setMaxHeight(1080);
       stage.setMaxWidth(1920);
-      stage.setMinHeight(480);
-      stage.setMinWidth(640);
+      stage.setMinHeight(540);
+      stage.setMinWidth(960);
     } catch (Exception e) {
       System.out.println(ERROR);
       e.printStackTrace();

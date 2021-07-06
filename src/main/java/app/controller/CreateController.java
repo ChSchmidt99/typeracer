@@ -4,6 +4,7 @@ import client.Client;
 import client.ClientObserver;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
@@ -20,6 +21,8 @@ class CreateController extends Controller implements ClientObserver {
 
   @FXML TextField lobbyname;
 
+  @FXML Button backToLobbyBrowser;
+
   CreateController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
@@ -32,7 +35,7 @@ class CreateController extends Controller implements ClientObserver {
     if (lobbyname.getText().equals("")) {
       displayError(LOBBY_NAME_ERROR);
     } else {
-      new GameLobbyController(stage, client);
+      new GameLobbyController(stage, client, userId);
       client.newLobby(userId, lobbyname.getText());
     }
   }
@@ -42,4 +45,9 @@ class CreateController extends Controller implements ClientObserver {
 
   @Override
   public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
+
+  @FXML
+  void backToLobbyBrowser() {
+    new OpenLobbiesController(stage, client, userId);
+  }
 }

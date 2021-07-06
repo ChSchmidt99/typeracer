@@ -11,7 +11,7 @@
       <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefWidth="640.0" spacing="100.0">
          <VBox alignment="CENTER_LEFT">
             <children>
-               <Label fx:id="lobbyNameLabel" minWidth="400.0" />
+               <Label fx:id="lobbyNameLabel" minWidth="400.0" focusTraversable="false" />
                <VBox>
                   <children>
                      <Label fx:id="idLabel" minWidth="400.0" />
@@ -20,7 +20,7 @@
                </VBox>
             </children>
          </VBox>
-         <Button fx:id="joinButton" alignment="CENTER" contentDisplay="CENTER" onAction="#clickedJoin" style="-fx-font-size: 20px; -fx-text-fill: black;" styleClass="joinbutton" text="Join" />
+         <Button fx:id="joinButton" alignment="CENTER" contentDisplay="CENTER" onAction="#clickedJoin" styleClass="joinbutton" text="Join" />
       </HBox>
    </graphic>
 </fx:root>

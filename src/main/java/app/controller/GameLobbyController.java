@@ -17,16 +17,20 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
   private static final String FXMLPATH = "view/gamelobby.fxml";
   private static final String CHECKBOX_ERROR = "Please check 'ready' box.";
   private final Client client;
+  private String userId;
 
   @FXML CheckBox lobbyCheckbox;
 
   @FXML Button startButton;
 
+  @FXML Button backToLobbyBrowser;
+
   @FXML ListView<String> userlist;
 
-  GameLobbyController(Stage stage, Client client) {
+  GameLobbyController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
+    this.userId = userId;
     client.subscribeLobbyUpdates(this);
     client.subscribeErrors(this);
   }
@@ -66,5 +70,11 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
           userlist.getItems().addAll(lobby.players);
           this.startButton.setDisable(lobby.isRunning);
         });
+  }
+
+  @FXML
+  private void backToLobbyBrowser() {
+    client.leaveLobby();
+    new OpenLobbiesController(stage, client, userId);
   }
 }
