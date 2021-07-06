@@ -21,8 +21,7 @@ class CreateController extends Controller implements ClientObserver {
 
   @FXML TextField lobbyname;
 
-  @FXML
-  Button backToLobbyBrowser;
+  @FXML Button backToLobbyBrowser;
 
   CreateController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -51,5 +50,4 @@ class CreateController extends Controller implements ClientObserver {
   void backToLobbyBrowser() {
     new OpenLobbiesController(stage, client, userId);
   }
-
 }

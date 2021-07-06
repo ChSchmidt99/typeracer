@@ -21,8 +21,7 @@ class OpenLobbiesController extends Controller implements ClientObserver, JoinHa
 
   @FXML ListView<LobbyModel> lobbylist;
 
-  @FXML
-  Button backToStartscreen;
+  @FXML Button backToStartscreen;
 
   OpenLobbiesController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);
@@ -71,5 +70,4 @@ class OpenLobbiesController extends Controller implements ClientObserver, JoinHa
     client.close();
     new StartscreenController(stage);
   }
-
 }
