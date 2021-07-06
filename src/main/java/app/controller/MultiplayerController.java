@@ -49,7 +49,6 @@ class MultiplayerController extends Controller implements RaceObserver {
 
   @FXML Label checkeredFlagLabel;
 
-
   public MultiplayerController(Stage stage, RaceModel race, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
@@ -206,5 +205,4 @@ class MultiplayerController extends Controller implements RaceObserver {
           new GameFinishedController(stage, client, userId);
         });
   }
-
 }

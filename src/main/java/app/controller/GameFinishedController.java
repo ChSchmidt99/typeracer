@@ -1,7 +1,6 @@
 package app.controller;
 
 import client.Client;
-import client.RaceObserver;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
@@ -18,7 +17,7 @@ public class GameFinishedController extends Controller {
     this.userId = userId;
   }
 
-  //TODO: REQUEST LOBBY FROM SERVER
+  // TODO: REQUEST LOBBY FROM SERVER
   @FXML
   private void returnToLobby() {
     new GameLobbyController(stage, client, userId);
