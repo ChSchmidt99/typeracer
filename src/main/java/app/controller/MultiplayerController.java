@@ -37,6 +37,7 @@ class MultiplayerController extends Controller implements RaceObserver {
   int notifyCounter = 0;
   List<PlayerModel> players;
   HashMap<String, Slider> userProgress = new HashMap<>();
+  String userId;
 
   @FXML TextFlow textToType;
 
@@ -46,9 +47,10 @@ class MultiplayerController extends Controller implements RaceObserver {
 
   @FXML Label checkeredFlagLabel;
 
-  public MultiplayerController(Stage stage, RaceModel race, Client client) {
+  public MultiplayerController(Stage stage, RaceModel race, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
+    this.userId = userId;
     client.subscribeRaceUpdates(this);
     this.game = new Typeracer(race.textToType);
     this.players = race.players;
@@ -166,6 +168,8 @@ class MultiplayerController extends Controller implements RaceObserver {
           checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
           checkeredFlagLabel.setDisable(false);
           checkeredFlagLabel.setText("Race Ending: " + stopTime);
+          new GameFinishedController(stage, client, userId);
         });
   }
+
 }

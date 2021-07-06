@@ -23,8 +23,6 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
 
   @FXML Button startButton;
 
-  @FXML Button backToLobbyBrowser;
-
   @FXML ListView<String> userlist;
 
   GameLobbyController(Stage stage, Client client, String userId) {
@@ -59,7 +57,7 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
 
   @Override
   public void gameStarting(RaceModel race) {
-    Platform.runLater(() -> new MultiplayerController(stage, race, client));
+    Platform.runLater(() -> new MultiplayerController(stage, race, client, userId));
   }
 
   @Override

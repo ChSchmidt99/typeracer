@@ -117,6 +117,37 @@
     -fx-border-color: #ffffff;
 }
 
+.podium {
+  -fx-border-color: #ffffff;
+  -fx-font-size: 50px !important;
+}
+
+.top {
+  -fx-border-width: 5px 5px 0px 5px;
+}
+
+.right {
+  -fx-border-width: 5px 5px 5px 5px;
+}
+
+.left {
+  -fx-border-width: 5px 0px 5px 5px;
+}
+
+.first {
+  -fx-font-size: 35px;
+  -fx-text-fill: #62fbf7;
+}
+
+.second {
+  -fx-text-fill: #fe55f7;
+  -fx-font-size: 35px;
+}
+
+.third {
+  -fx-text-fill: #ffffff;
+  -fx-font-size: 35px;
+}
 
 
 
