@@ -12,8 +12,8 @@
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="Open Servers" />
     <VBox alignment="TOP_CENTER" GridPane.rowIndex="1">
-      <ListView fx:id="lobbylist" focusTraversable="false" maxWidth="640.0" prefHeight="200.0" prefWidth="640.0" />
-        <Button fx:id="createButton" onAction="#switchToCreateScreen" text="Create New Game">
+      <ListView fx:id="lobbylist" focusTraversable="false" styleClass="lobbyBrowser" maxWidth="640.0" prefHeight="200.0" prefWidth="640.0" />
+        <Button fx:id="createButton" onAction="#switchToCreateScreen" styleClass="gamebutton" text="Create New Game">
            <VBox.margin>
                <Insets top="20.0" />
            </VBox.margin>

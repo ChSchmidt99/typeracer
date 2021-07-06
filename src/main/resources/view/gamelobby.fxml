@@ -15,17 +15,17 @@
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="Game Lobby" />
     <VBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-        <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="labelscrollpane">
+        <ScrollPane focusTraversable="false" prefHeight="200.0" prefWidth="200.0" styleClass="gameLobbyScrollpane">
             <VBox.margin>
                 <Insets top="30.0" />
             </VBox.margin>
-            <AnchorPane prefHeight="200.0" prefWidth="620.0">
+            <AnchorPane prefHeight="200.0" prefWidth="620.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;">
             <children>
-               <ListView fx:id="userlist" prefHeight="200.0" prefWidth="640.0" />
+               <ListView fx:id="userlist" focusTraversable="false" prefHeight="200.0" prefWidth="640.0" styleClass="lobbylist" />
             </children>
             </AnchorPane>
         </ScrollPane>
-            <Button fx:id="startButton" onAction="#startGame" text="Start Game" />
+            <Button fx:id="startButton" onAction="#startGame" styleClass="gamebutton" text="Start Game" />
             <CheckBox fx:id="lobbyCheckbox" onAction="#checkedReady" styleClass="checkbox" text="Ready" />
     </VBox>
     <columnConstraints>

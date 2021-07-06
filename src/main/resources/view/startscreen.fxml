@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.TextField?>
-<?import javafx.geometry.Insets?>
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11"
-  xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="TypeRacer" />
     <VBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-        <Button styleClass="button" onAction="#switchToSingleplayer" text="Singleplayer" />
-        <Button styleClass="button" onAction="#switchToServerBrowser" text="Multiplayer" />
-      <TextField fx:id="username" promptText="Username" styleClass="inputfield">
+        <Button onAction="#switchToSingleplayer" styleClass="gamebutton" text="Singleplayer" />
+        <Button onAction="#switchToServerBrowser" styleClass="gamebutton" text="Multiplayer">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin></Button>
+      <TextField fx:id="username" focusTraversable="false" promptText="Username" styleClass="inputfield">
         <VBox.margin>
           <Insets top="30.0" />
         </VBox.margin>
