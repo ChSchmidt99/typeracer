@@ -3,14 +3,14 @@ package app;
 public class IconManager {
 
   private static final Icon[] icons = {
-          new Icon("1","icons/floppy.PNG"),
-          new Icon("2","icons/minesweep.PNG"),
-          new Icon("3","icons/msdos.PNG"),
-          new Icon("4","icons/paint.PNG"),
-          new Icon("5","icons/print.PNG"),
-          new Icon("6","icons/regedit.PNG"),
-          new Icon("7","icons/solitaire.PNG"),
-          new Icon("8","icons/win.PNG")
+    new Icon("1", "icons/floppy.PNG"),
+    new Icon("2", "icons/minesweep.PNG"),
+    new Icon("3", "icons/msdos.PNG"),
+    new Icon("4", "icons/paint.PNG"),
+    new Icon("5", "icons/print.PNG"),
+    new Icon("6", "icons/regedit.PNG"),
+    new Icon("7", "icons/solitaire.PNG"),
+    new Icon("8", "icons/win.PNG")
   };
 
   public static Icon[] getAllIcons() {
@@ -26,7 +26,7 @@ public class IconManager {
   }
 
   public static Icon iconForId(String iconId) throws Exception {
-    for (Icon icon: icons) {
+    for (Icon icon : icons) {
       if (icon.getId().equals(iconId)) {
         return icon;
       }
@@ -35,5 +35,4 @@ public class IconManager {
   }
 
   private static Icon selected;
-
 }

@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.Icon;
 import app.IconManager;
 import client.Client;
 import client.ClientObserver;

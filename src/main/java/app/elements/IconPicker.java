@@ -18,22 +18,25 @@ public class IconPicker extends GridPane {
   public IconPicker(int iconsPerRow) {
     this.group = new ToggleGroup();
     addIcons(IconManager.getAllIcons(), iconsPerRow);
-    group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-      @Override
-      public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue,
-                          Toggle newValue) {
-        if (newValue != null) {
-          IconManager.setSelectedIcon((Icon) newValue.getUserData());
-        }
-      }
-    });
+    group
+        .selectedToggleProperty()
+        .addListener(
+            new ChangeListener<Toggle>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue != null) {
+                  IconManager.setSelectedIcon((Icon) newValue.getUserData());
+                }
+              }
+            });
   }
 
   private void addIcons(Icon[] icons, int iconsPerRow) {
     int index = 0;
     for (int i = 0; i < icons.length; i++) {
       VBox entry = makePickerNode(icons[i], i == 0);
-      this.add(entry,index%iconsPerRow,i/iconsPerRow);
+      this.add(entry, index % iconsPerRow, i / iconsPerRow);
       index++;
     }
   }
@@ -53,5 +56,4 @@ public class IconPicker extends GridPane {
     hBox.getChildren().add(radioButton);
     return hBox;
   }
-
 }

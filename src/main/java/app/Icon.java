@@ -23,5 +23,4 @@ public class Icon {
   public String getPath() {
     return path;
   }
-
 }

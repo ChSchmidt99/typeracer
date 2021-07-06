@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.Icon;
 import app.IconManager;
 import app.elements.IconPicker;
 import client.Client;
@@ -27,8 +26,7 @@ public class StartscreenController extends Controller implements ClientObserver 
 
   @FXML TextField username;
 
-  @FXML
-  GridPane baseGridPane;
+  @FXML GridPane baseGridPane;
 
   /**
    * Constructor for StartscreenController; creates a new Startscreen.

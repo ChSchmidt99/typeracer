@@ -23,8 +23,8 @@ public class PlayerUpdate {
    * @param isFinished true when player is finished
    * @param duration local duration of race
    */
-  public PlayerUpdate(String userId, int wpm, float percentProgress,
-                      boolean isFinished, long duration) {
+  public PlayerUpdate(
+      String userId, int wpm, float percentProgress, boolean isFinished, long duration) {
     this.userId = userId;
     this.wpm = wpm;
     this.percentProgress = percentProgress;
