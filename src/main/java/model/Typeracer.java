@@ -2,7 +2,6 @@ package model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-// import java.util.Scanner;
 
 /** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
 public class Typeracer {
@@ -10,17 +9,10 @@ public class Typeracer {
   private final GameState state;
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+  Typeracer(final String text) {
   public Typeracer(final String text) {
     state = new GameState(text);
   }
-
-  // Scanner sc = new Scanner(System.in);  // User input
-
-  // String input = sc.next();
-
-  // char[] ch = input.toCharArray();
-
-  // char myChar = ch[0];
 
   public void addPropertyChangeListener(final PropertyChangeListener changeListener) {
     support.addPropertyChangeListener(changeListener);
@@ -47,12 +39,12 @@ public class Typeracer {
    * @return true if the check was successful. false otherwise.
    * @throws IllegalStateException – if the current Typeracer game is not running
    */
-  public boolean check(char guessedCharacter) {
+  public CorrectionStates check(char guessedCharacter) {
     if (state.getCurrentGamePhase() != GamePhase.RUNNING) {
       throw new IllegalStateException("Game not running.");
     }
 
-    boolean isCharCorrect = state.getTypeChar().checkChar(guessedCharacter);
+    CorrectionStates isCharCorrect = state.getTypeChar().checkChar(guessedCharacter);
     if (state.getTypeChar().checkFinish()) {
       state.endGame();
     }
