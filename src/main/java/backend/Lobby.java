@@ -20,6 +20,7 @@ class Lobby {
   private final PushService pushService;
   private final Database database;
   private final String name;
+  private final int maxPlayers = 4;
   private Race race;
 
   Lobby(String lobbyId, String name, Database database, PushService pushService) {
@@ -32,10 +33,15 @@ class Lobby {
 
   void join(String connectionId, String userId, String iconId) {
     try {
-      String username = this.database.getUsername(userId);
-      LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
-      members.put(connectionId, lobbyMember);
-      broadcastLobbyUpdate();
+      if (members.size() < maxPlayers) {
+        String username = this.database.getUsername(userId);
+        LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
+        members.put(connectionId, lobbyMember);
+        broadcastLobbyUpdate();
+      } else {
+        Response error = ResponseFactory.makeErrorResponse("Max number of players.");
+        pushService.sendResponse(connectionId, error);
+      }
     } catch (IOException e) {
       Logger.logError(e.getMessage());
     }

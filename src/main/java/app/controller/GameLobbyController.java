@@ -17,7 +17,7 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
   private static final String FXMLPATH = "view/gamelobby.fxml";
   private static final String CHECKBOX_ERROR = "Please check 'ready' box.";
   private final Client client;
-  private String userId;
+  private final String userId;
 
   @FXML CheckBox lobbyCheckbox;
 
@@ -50,9 +50,7 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
   @Override
   public void receivedError(String message) {
     Platform.runLater(
-        () -> {
-          displayError(message);
-        });
+        () -> displayError(message));
   }
 
   @Override

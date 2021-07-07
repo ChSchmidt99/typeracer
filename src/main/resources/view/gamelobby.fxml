@@ -13,30 +13,31 @@
 <?import javafx.scene.layout.VBox?>
 
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-    <Label styleClass="title" text="Game Lobby" />
-    <VBox alignment="TOP_CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-        <ScrollPane focusTraversable="false" prefHeight="200.0" prefWidth="200.0" styleClass="gameLobbyScrollpane">
+    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="GameLobby" textAlignment="CENTER" wrapText="true" />
+    <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
+        <ScrollPane focusTraversable="false" maxWidth="700.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" styleClass="gameLobbyScrollpane">
             <VBox.margin>
                 <Insets top="30.0" />
             </VBox.margin>
-            <AnchorPane prefHeight="200.0" prefWidth="620.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;">
+            <AnchorPane prefHeight="197.0" prefWidth="660.0">
             <children>
-               <ListView fx:id="userlist" focusTraversable="false" prefHeight="200.0" prefWidth="640.0" styleClass="lobbylist" />
+               <ListView fx:id="userlist" focusTraversable="false" prefHeight="197.0" prefWidth="672.0" styleClass="lobbylist" />
             </children>
             </AnchorPane>
         </ScrollPane>
             <Button fx:id="startButton" onAction="#startGame" styleClass="gamebutton" text="Start Game">
          <VBox.margin>
             <Insets top="10.0" />
-         </VBox.margin></Button>
+         </VBox.margin>
+      </Button>
       <Button fx:id="backToLobbyBrowser" mnemonicParsing="false" onAction="#backToLobbyBrowser" styleClass="gamebutton" text="Back" />
             <CheckBox fx:id="lobbyCheckbox" onAction="#checkedReady" styleClass="checkbox" text="Ready" />
     </VBox>
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
+      <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" />
-        <RowConstraints maxHeight="400.0" minHeight="180.0" prefHeight="400.0" />
+        <RowConstraints fillHeight="false" maxHeight="600.0" minHeight="180.0" prefHeight="540.0" />
     </rowConstraints>
 </GridPane>

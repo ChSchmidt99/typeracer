@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
@@ -21,8 +20,6 @@ class OpenLobbiesController extends Controller implements ClientObserver, JoinHa
   private final String userId;
 
   @FXML ListView<LobbyModel> lobbylist;
-
-  @FXML Button backToStartscreen;
 
   OpenLobbiesController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);

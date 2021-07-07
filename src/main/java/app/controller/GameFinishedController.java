@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 /** Controller for game finished screen. */
 public class GameFinishedController extends Controller {
 
-  private Client client;
-  private String userId;
+  private final Client client;
+  private final String userId;
 
   private static final String FXMLPATH = "view/gamefinished.fxml";
 

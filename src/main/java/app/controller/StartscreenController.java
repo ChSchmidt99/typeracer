@@ -8,13 +8,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import protocol.LobbyModel;
 
 /** Handles transition functionality for startscreen. */
@@ -39,7 +37,7 @@ public class StartscreenController extends Controller implements ClientObserver 
     iconPicker.setAlignment(Pos.CENTER);
     iconPicker.setHgap(40);
     iconPicker.setVgap(20);
-    baseGridPane.add(iconPicker, 0, 3);
+    baseGridPane.add(iconPicker, 1, 1);
   }
 
   @FXML
@@ -52,15 +50,12 @@ public class StartscreenController extends Controller implements ClientObserver 
         client.subscribe(this);
         client.registerUser(username.getText());
         stage.setOnCloseRequest(
-            new EventHandler<WindowEvent>() {
-              @Override
-              public void handle(WindowEvent event) {
-                Platform.exit();
-                try {
-                  client.close();
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
+            event -> {
+              Platform.exit();
+              try {
+                client.close();
+              } catch (IOException e) {
+                e.printStackTrace();
               }
             });
       }
@@ -77,9 +72,7 @@ public class StartscreenController extends Controller implements ClientObserver 
   @Override
   public void registered(String userId) {
     Platform.runLater(
-        () -> {
-          new OpenLobbiesController(stage, client, userId);
-        });
+        () -> new OpenLobbiesController(stage, client, userId));
   }
 
   @Override

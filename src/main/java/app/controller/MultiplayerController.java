@@ -42,6 +42,7 @@ class MultiplayerController extends Controller implements RaceObserver {
   HashMap<String, Label> wpmLabels = new HashMap<>();
   String userId;
   HashMap<String, RaceTrack> userProgress = new HashMap<>();
+  private int colorAlternateCounter = 0;
 
   @FXML TextFlow textToType;
 
@@ -150,14 +151,20 @@ class MultiplayerController extends Controller implements RaceObserver {
   private void setUsers() {
     for (PlayerModel player : players) {
       HBox userHbox = new HBox();
+      VBox userVbox = new VBox();
       userHbox.setSpacing(20);
       wpmCreator(player.userId);
-      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7;");
-      userHbox.getChildren().add(userLabelCreator(player.name));
-      userHbox.getChildren().add(wpmLabels.get(player.userId));
-      userlist.getChildren().add(userHbox);
       RaceTrack track = trackCreator(player);
-      userlist.getChildren().add(track);
+      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
+
+
+      userVbox.getChildren().add(userLabelCreator(player.name));
+      userVbox.getChildren().add(wpmLabels.get(player.userId));
+
+      userHbox.getChildren().add(userVbox);
+      userHbox.getChildren().add(track);
+
+      userlist.getChildren().add(userHbox);
       userProgress.put(player.userId, track);
     }
   }
@@ -165,13 +172,18 @@ class MultiplayerController extends Controller implements RaceObserver {
   private Label userLabelCreator(String user) {
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
-    label.setStyle("-fx-font-size: 25px; -fx-background-color: #ffffff; -fx-text-fill: #000000;");
+    label.setStyle("-fx-font-size: 25px; -fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-min-width: 150px;");
     return label;
   }
 
   private RaceTrack trackCreator(PlayerModel playerModel) {
     try {
-      return new RaceTrack(IconManager.iconForId(playerModel.iconId), 500, 50, Color.WHITE);
+      colorAlternateCounter++;
+      if (colorAlternateCounter%2 == 0) {
+        return new RaceTrack(IconManager.iconForId(playerModel.iconId), 450, 25, Color.web("#fe55f7"));
+      } else {
+        return new RaceTrack(IconManager.iconForId(playerModel.iconId), 450, 25, Color.web("#62fbf7"));
+      }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -190,7 +202,7 @@ class MultiplayerController extends Controller implements RaceObserver {
   }
 
   private void wpmUpdate(PlayerUpdate update) {
-    wpmLabels.get(update.userId).setText(String.valueOf(update.wpm));
+    wpmLabels.get(update.userId).setText("WPM: " + update.wpm);
   }
 
   @Override

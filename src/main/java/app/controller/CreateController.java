@@ -5,7 +5,6 @@ import client.Client;
 import client.ClientObserver;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import protocol.LobbyModel;
@@ -18,11 +17,9 @@ class CreateController extends Controller implements ClientObserver {
   private static final String FXMLPATH = "view/createscreen.fxml";
   private static final String LOBBY_NAME_ERROR = "Please enter lobby name";
   private final Client client;
-  private String userId;
+  private final String userId;
 
   @FXML TextField lobbyname;
-
-  @FXML Button backToLobbyBrowser;
 
   CreateController(Stage stage, Client client, String userId) {
     super(stage, FXMLPATH);

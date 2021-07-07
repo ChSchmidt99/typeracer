@@ -22,7 +22,7 @@ abstract class Controller {
                   getClass().getProtectionDomain().getClassLoader().getResource(fxmlpath))));
       loader.setController(this);
       Parent root = loader.load();
-      stage.setScene(new Scene(root, 1280, 720));
+      stage.setScene(new Scene(root, 960, 540));
       stage.setMaxHeight(1080);
       stage.setMaxWidth(1920);
       stage.setMinHeight(540);
@@ -39,10 +39,6 @@ abstract class Controller {
     alert.setContentText(errormessage);
     alert.setHeaderText(null);
     alert.showAndWait();
-  }
-
-  public void print(String message) {
-    System.out.println(message);
   }
 
   /*
