@@ -172,12 +172,11 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   private RaceTrack trackCreator(PlayerData playerData) {
     try {
-      return new RaceTrack(IconManager.iconForId(playerData.iconId), 500, 50, Color.WHITE);
       colorAlternateCounter++;
       if (colorAlternateCounter%2 == 0) {
-        return new RaceTrack(IconManager.iconForId(playerModel.iconId), 450, 25, Color.web("#fe55f7"));
+        return new RaceTrack(IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#fe55f7"));
       } else {
-        return new RaceTrack(IconManager.iconForId(playerModel.iconId), 450, 25, Color.web("#62fbf7"));
+        return new RaceTrack(IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
