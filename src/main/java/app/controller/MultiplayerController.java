@@ -90,6 +90,7 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
     checkeredFlagLabel.setDisable(false);
     checkeredFlagLabel.setText("End: " + stopTime);
+    model.shutdownTimerScheduler();
   }
 
   @Override

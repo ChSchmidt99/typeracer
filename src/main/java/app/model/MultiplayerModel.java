@@ -31,7 +31,6 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver {
   private List<PlayerUpdate> updates;
   private int notifyCounter;
   private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-  private Boolean gameRunning = true;
 
   /**
    * Create Model for Multiplayer View.
@@ -149,6 +148,10 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver {
         },
         60 * 60,
         TimeUnit.SECONDS);
+  }
+
+  public void shutdownTimerScheduler() {
+    this.scheduler.shutdownNow();
   }
 
   @Override
