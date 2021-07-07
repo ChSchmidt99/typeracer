@@ -13,7 +13,7 @@ import server.PushService;
 import util.Logger;
 
 /** Represents one game currently managed by the server. */
-class Lobby {
+class Lobby implements RaceFinishedListener {
 
   private final String lobbyId;
   private final HashMap<String, LobbyMember> members;
@@ -28,6 +28,11 @@ class Lobby {
     this.pushService = pushService;
     this.database = database;
     this.name = name;
+  }
+
+  @Override
+  public void raceFinished() {
+    broadcastLobbyUpdate();
   }
 
   void join(String connectionId, String userId, String iconId) {
@@ -63,7 +68,7 @@ class Lobby {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService);
+    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService, this);
     broadcastLobbyUpdate();
   }
 
@@ -96,6 +101,11 @@ class Lobby {
 
   boolean isEmpty() {
     return this.members.isEmpty();
+  }
+
+  void sendUpdate(String connectionId) {
+    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());
+    pushService.sendResponse(connectionId, response);
   }
 
   private Map<String, Player> getReadyPlayers() {

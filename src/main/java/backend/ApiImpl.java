@@ -70,6 +70,11 @@ public class ApiImpl implements Api {
   }
 
   @Override
+  public void sendLobbyUpdate(String connectionId) {
+    sessionStore.sendLobbyUpdate(connectionId);
+  }
+
+  @Override
   public void setPlayerReady(String connectionId, boolean isReady) {
     sessionStore.setPlayerReady(connectionId, isReady);
   }

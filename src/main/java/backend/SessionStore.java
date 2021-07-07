@@ -74,7 +74,12 @@ class SessionStore {
     }
   }
 
-  private Lobby getLobby(String connectionId) {
+  void sendLobbyUpdate(String connectionId) {
+    Lobby lobby = getLobby(connectionId);
+    lobby.sendUpdate(connectionId);
+  }
+
+  Lobby getLobby(String connectionId) {
     String lobbyId = connectionIds.get(connectionId);
     return lobbies.get(lobbyId);
   }

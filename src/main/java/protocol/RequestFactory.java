@@ -80,4 +80,13 @@ public class RequestFactory {
     request.snapshot = snapshot;
     return request;
   }
+
+  /**
+   * Make progress update {@link Request} used to send current progress to server.
+   *
+   * @return {@link Request}
+   */
+  public static Request makeLobbyUpdateRequest() {
+    return new Request(Request.Types.LOBBY_UPDATE);
+  }
 }
