@@ -113,6 +113,9 @@ class Connection implements Closeable {
       case Request.Types.LOBBY_UPDATE:
         api.sendLobbyUpdate(id);
         break;
+      case Request.Types.PREV_RACE_RESULT:
+        api.sendPreviousRaceResult(id);
+        break;
       default:
         Logger.logError("Unknown Request type: " + request.type);
     }

@@ -79,6 +79,11 @@ class SessionStore {
     lobby.sendUpdate(connectionId);
   }
 
+  void sendPreviousRaceResult(String connectionId) {
+    Lobby lobby = getLobby(connectionId);
+    lobby.sendPreviousRaceResult(connectionId);
+  }
+
   Lobby getLobby(String connectionId) {
     String lobbyId = connectionIds.get(connectionId);
     return lobbies.get(lobbyId);

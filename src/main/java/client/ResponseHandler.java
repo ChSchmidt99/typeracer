@@ -19,6 +19,7 @@ class ResponseHandler implements Closeable {
   private final ExecutorService executorService;
   private final HashSet<ClientObserver> observers;
   private final HashSet<RaceObserver> raceObservers;
+  private final HashSet<RaceResultObserver> resultObservers;
   private final HashSet<LobbyObserver> lobbyObservers;
   private final HashSet<ErrorObserver> errorObservers;
 
@@ -29,6 +30,7 @@ class ResponseHandler implements Closeable {
     this.observers = new HashSet<>();
     this.lobbyObservers = new HashSet<>();
     this.raceObservers = new HashSet<>();
+    this.resultObservers = new HashSet<>();
     this.errorObservers = new HashSet<>();
     executorService = Executors.newFixedThreadPool(1);
     executorService.execute(this::startListening);
@@ -68,6 +70,10 @@ class ResponseHandler implements Closeable {
   void unsubscribeLobbyUpdates(LobbyObserver observer) {
     lobbyObservers.remove(observer);
   }
+
+  void subscribeResults(RaceResultObserver observer) { resultObservers.add(observer); }
+
+  void unsubscribeResults(RaceResultObserver observer) { resultObservers.remove(observer); }
 
   void subscribeErrors(ErrorObserver observer) {
     errorObservers.add(observer);
@@ -132,6 +138,12 @@ class ResponseHandler implements Closeable {
         raceObservers.forEach(
             (observer) -> {
               observer.receivedCheckeredFlag(response.raceStop);
+            });
+        break;
+      case Response.Types.RACE_RESULT:
+        resultObservers.forEach(
+            (observer) -> {
+              observer.receivedRaceResult(response.raceResult);
             });
         break;
       default:

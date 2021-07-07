@@ -83,4 +83,9 @@ public class ApiImpl implements Api {
   public void updateProgress(String connectionId, ProgressSnapshot snapshot) {
     sessionStore.updateProgress(connectionId, snapshot);
   }
+
+  @Override
+  public void sendPreviousRaceResult(String connectionId) {
+    sessionStore.sendPreviousRaceResult(connectionId);
+  }
 }

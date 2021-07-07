@@ -21,8 +21,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import model.CheckResult;
-import protocol.PlayerData;
+import protocol.RaceResult;
+import protocol.User;
 import protocol.PlayerUpdate;
+import protocol.UserResult;
 import util.Timestamp;
 
 /** Handles all gui functionality associated with gameplay. */
@@ -68,6 +70,16 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   }
 
   @Override
+  public void receivedRaceResult(RaceResult result) {
+    openGameOverScreen(result);
+    System.out.println("Duration: " + result.duration);
+    for (UserResult res: result.classification) {
+      System.out.println(res.user.name);
+      System.out.println(res.wpm);
+    }
+  }
+
+  @Override
   public void checkeredFlag(long raceEndTimestamp) {
     SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
     Date end = Timestamp.timestampToDate(raceEndTimestamp);
@@ -75,13 +87,12 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
     checkeredFlagLabel.setDisable(false);
     checkeredFlagLabel.setText("Race Ending: " + stopTime);
-    openGameOverScreen();
   }
 
-  private void openGameOverScreen() {
+  private void openGameOverScreen(RaceResult result) {
     model.leaveRace();
     try {
-      new GameFinishedController(stage, new GameFinishedModel()).show();
+      new GameFinishedController(stage, new GameFinishedModel(result)).show();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -108,8 +119,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   /*
    * Adds the user list along with progress bars and wpm to game screen.
    */
-  private void setupTracks(List<PlayerData> players) {
-    for (PlayerData player : players) {
+  private void setupTracks(List<User> players) {
+    for (User player : players) {
 
       VBox userVbox = new VBox();
 
@@ -171,15 +182,15 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     return label;
   }
 
-  private RaceTrack trackCreator(PlayerData playerData) {
+  private RaceTrack trackCreator(User user) {
     try {
       colorAlternateCounter++;
       if (colorAlternateCounter % 2 == 0) {
         return new RaceTrack(
-            IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#fe55f7"));
+            IconManager.iconForId(user.iconId), 450, 25, Color.web("#fe55f7"));
       } else {
         return new RaceTrack(
-            IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#62fbf7"));
+            IconManager.iconForId(user.iconId), 450, 25, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();

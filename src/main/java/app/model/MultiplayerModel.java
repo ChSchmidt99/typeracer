@@ -4,6 +4,8 @@ import app.ApplicationState;
 import client.Client;
 import client.RaceObserver;
 import java.util.List;
+
+import client.RaceResultObserver;
 import javafx.application.Platform;
 import model.CheckResult;
 import model.GamePhase;
@@ -11,10 +13,11 @@ import model.Typeracer;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
+import protocol.RaceResult;
 import util.Timestamp;
 
 /** Model for Multiplayer View. */
-public class MultiplayerModel implements RaceObserver {
+public class MultiplayerModel implements RaceObserver, RaceResultObserver {
 
   private MultiplayerModelObserver observer;
 
@@ -35,6 +38,7 @@ public class MultiplayerModel implements RaceObserver {
     this.typeracer = new Typeracer(race.textToType);
     this.notifyCounter = 0;
     ApplicationState.getInstance().getClient().subscribeRaceUpdates(this);
+    ApplicationState.getInstance().getClient().subscribeResults(this);
   }
 
   /**
@@ -76,6 +80,7 @@ public class MultiplayerModel implements RaceObserver {
 
   public void leaveRace() {
     ApplicationState.getInstance().getClient().unsubscribeRaceUpdates(this);
+    ApplicationState.getInstance().getClient().unsubscribeResults(this);
   }
 
   /*
@@ -114,6 +119,13 @@ public class MultiplayerModel implements RaceObserver {
   public void receivedCheckeredFlag(long raceStop) {
     if (observer != null) {
       Platform.runLater(() -> observer.checkeredFlag(raceStop));
+    }
+  }
+
+  @Override
+  public void receivedRaceResult(RaceResult result) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedRaceResult(result));
     }
   }
 }
