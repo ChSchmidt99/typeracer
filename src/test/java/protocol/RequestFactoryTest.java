@@ -25,10 +25,12 @@ public class RequestFactoryTest {
   void new_game_request() {
     String userId = UUID.randomUUID().toString();
     String lobbyName = "Some name";
-    Request request = RequestFactory.makeNewLobbyRequest(userId, lobbyName);
+    String iconId = "Some Icon Id";
+    Request request = RequestFactory.makeNewLobbyRequest(userId, lobbyName, iconId);
     String expected =
         String.format(
-            "{\"type\":\"new lobby\",\"userId\":\"%s\",\"lobbyName\":\"%s\"}", userId, lobbyName);
+            "{\"type\":\"new lobby\",\"userId\":\"%s\",\"iconId\":\"%s\",\"lobbyName\":\"%s\"}",
+            userId, iconId, lobbyName);
     String result = gson.toJson(request);
     assertEquals(expected, result);
   }
@@ -37,10 +39,12 @@ public class RequestFactoryTest {
   void join_game_request() {
     String userId = UUID.randomUUID().toString();
     String gameId = UUID.randomUUID().toString();
+    String iconId = UUID.randomUUID().toString();
     String expected =
         String.format(
-            "{\"type\":\"join lobby\",\"userId\":\"%s\",\"lobbyId\":\"%s\"}", userId, gameId);
-    Request request = RequestFactory.makeJoinLobbyRequest(userId, gameId);
+            "{\"type\":\"join lobby\",\"userId\":\"%s\",\"iconId\":\"%s\",\"lobbyId\":\"%s\"}",
+            userId, iconId, gameId);
+    Request request = RequestFactory.makeJoinLobbyRequest(userId, gameId, iconId);
     String result = gson.toJson(request);
     assertEquals(expected, result);
   }

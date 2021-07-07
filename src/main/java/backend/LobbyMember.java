@@ -4,9 +4,11 @@ package backend;
 class LobbyMember {
 
   private boolean isReady;
+  // TODO: Collect Userinfo in abstract class
   private final String userId;
   private final String connectionId;
   private final String name;
+  private final String iconId;
   private boolean inRace;
 
   /**
@@ -15,11 +17,12 @@ class LobbyMember {
    * @param userId id of user
    * @param name name of user
    */
-  LobbyMember(String userId, String connectionId, String name) {
+  LobbyMember(String userId, String connectionId, String name, String iconId) {
     this.isReady = false;
     this.userId = userId;
     this.connectionId = connectionId;
     this.name = name;
+    this.iconId = iconId;
     this.inRace = false;
   }
 
@@ -36,7 +39,7 @@ class LobbyMember {
   }
 
   Player toPlayer() {
-    return new Player(this.userId, this.connectionId, this.name);
+    return new Player(this.userId, this.connectionId, this.name, this.iconId);
   }
 
   boolean isInRace() {

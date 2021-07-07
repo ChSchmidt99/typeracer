@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="baseGridPane" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="TypeRacer" />
     <VBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <Button onAction="#switchToSingleplayer" styleClass="gamebutton" text="Singleplayer" />
@@ -19,7 +19,7 @@
          </VBox.margin></Button>
       <TextField fx:id="username" focusTraversable="false" promptText="Username" styleClass="inputfield">
         <VBox.margin>
-          <Insets top="30.0" />
+          <Insets bottom="50.0" top="30.0" />
         </VBox.margin>
       </TextField>
     </VBox>

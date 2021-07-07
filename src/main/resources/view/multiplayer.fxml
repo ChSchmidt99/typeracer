@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
@@ -16,14 +15,10 @@
          <Insets top="15.0" />
       </GridPane.margin></VBox>
    <TextFlow fx:id="textToType" maxHeight="200.0" maxWidth="640.0" styleClass="textToType" GridPane.rowIndex="2" />
-   <HBox fx:id="enteredText" maxHeight="50.0" maxWidth="640.0" prefHeight="50.0" prefWidth="640.0" styleClass="enteredtext" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
-      <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-      </padding>
-   </HBox>
+   <TextFlow fx:id="enteredText" maxHeight="400.0" maxWidth="640.0" prefHeight="200.0" prefWidth="640.0" styleClass="enteredtext" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER" />
    <Label fx:id="checkeredFlagLabel" styleClass="raceOverTimer" GridPane.rowIndex="4" />
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="200.0" minHeight="100.0" prefHeight="100.0" />

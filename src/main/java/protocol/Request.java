@@ -21,6 +21,8 @@ public class Request {
 
   public String playerName;
 
+  public String iconId;
+
   public String lobbyId;
 
   public String lobbyName;

@@ -49,13 +49,13 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
-  public void newLobby(String userId, String lobbyName) {
-    sendRequest(RequestFactory.makeNewLobbyRequest(userId, lobbyName));
+  public void newLobby(String userId, String lobbyName, String iconId) {
+    sendRequest(RequestFactory.makeNewLobbyRequest(userId, lobbyName, iconId));
   }
 
   @Override
-  public void joinLobby(String userId, String gameId) {
-    sendRequest(RequestFactory.makeJoinLobbyRequest(userId, gameId));
+  public void joinLobby(String userId, String gameId, String iconId) {
+    sendRequest(RequestFactory.makeJoinLobbyRequest(userId, gameId, iconId));
   }
 
   @Override

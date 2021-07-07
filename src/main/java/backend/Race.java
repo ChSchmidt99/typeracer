@@ -56,7 +56,7 @@ class Race {
   RaceModel getModel() {
     List<PlayerModel> out = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
-      out.add(new PlayerModel(entry.getValue().getUserId(), entry.getValue().getName()));
+      out.add(entry.getValue().getModel());
     }
     return new RaceModel(this.textToType, out);
   }

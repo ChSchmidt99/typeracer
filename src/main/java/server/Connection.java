@@ -90,10 +90,10 @@ class Connection implements Closeable {
         api.registerPlayer(id, request.playerName);
         break;
       case Request.Types.NEW_LOBBY:
-        api.createNewLobby(id, request.userId, request.lobbyName);
+        api.createNewLobby(id, request.userId, request.lobbyName, request.iconId);
         break;
       case Request.Types.JOIN_LOBBY:
-        api.joinLobby(request.lobbyId, id, request.userId);
+        api.joinLobby(request.lobbyId, id, request.userId, request.iconId);
         break;
       case Request.Types.LEAVE_LOBBY:
         api.leaveLobby(id);

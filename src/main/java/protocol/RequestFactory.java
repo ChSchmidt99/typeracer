@@ -22,10 +22,11 @@ public class RequestFactory {
    * @param lobbyName name of lobby
    * @return {@link Request}
    */
-  public static Request makeNewLobbyRequest(String userId, String lobbyName) {
+  public static Request makeNewLobbyRequest(String userId, String lobbyName, String iconId) {
     Request request = new Request(Request.Types.NEW_LOBBY);
     request.userId = userId;
     request.lobbyName = lobbyName;
+    request.iconId = iconId;
     return request;
   }
 
@@ -36,10 +37,11 @@ public class RequestFactory {
    * @param lobbyId of lobby
    * @return {@link Request}
    */
-  public static Request makeJoinLobbyRequest(String userId, String lobbyId) {
+  public static Request makeJoinLobbyRequest(String userId, String lobbyId, String iconId) {
     Request request = new Request(Request.Types.JOIN_LOBBY);
     request.userId = userId;
     request.lobbyId = lobbyId;
+    request.iconId = iconId;
     return request;
   }
 

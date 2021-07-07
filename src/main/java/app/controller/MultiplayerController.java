@@ -1,7 +1,10 @@
 package app.controller;
 
+import app.IconManager;
+import app.elements.RaceTrack;
 import client.Client;
 import client.RaceObserver;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +12,6 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,19 +39,30 @@ class MultiplayerController extends Controller implements RaceObserver {
   long raceStart;
   int notifyCounter = 0;
   List<PlayerModel> players;
-  HashMap<String, Slider> userProgress = new HashMap<>();
+  HashMap<String, Label> wpmLabels = new HashMap<>();
+  String userId;
+  HashMap<String, RaceTrack> userProgress = new HashMap<>();
 
   @FXML TextFlow textToType;
 
-  @FXML HBox enteredText;
+  @FXML TextFlow enteredText;
 
   @FXML VBox userlist;
 
   @FXML Label checkeredFlagLabel;
 
-  public MultiplayerController(Stage stage, RaceModel race, Client client) {
+  /**
+   * Controller for Multiplayer game screen.
+   *
+   * @param stage where controller is hosted in
+   * @param race model of the race
+   * @param client for server communication
+   * @param userId id of user
+   */
+  public MultiplayerController(Stage stage, RaceModel race, Client client, String userId) {
     super(stage, FXMLPATH);
     this.client = client;
+    this.userId = userId;
     client.subscribeRaceUpdates(this);
     this.game = new Typeracer(race.textToType);
     this.players = race.players;
@@ -72,13 +85,14 @@ class MultiplayerController extends Controller implements RaceObserver {
         .addEventHandler(
             KeyEvent.KEY_TYPED,
             event -> {
-              if (game.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
-                return;
+              try {
+                String typed = event.getCharacter();
+                CheckResult check = game.check(typed.charAt(0));
+                enteredText.getChildren().add(charLabelCreator(check));
+                notifyInterval();
+              } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
               }
-              String typed = event.getCharacter();
-              CheckResult check = game.check(typed.charAt(0));
-              enteredText.getChildren().add(charLabelCreator(check));
-              notifyInterval();
             });
   }
 
@@ -87,16 +101,19 @@ class MultiplayerController extends Controller implements RaceObserver {
     Label label = new Label();
     switch (check.state) {
       case CORRECT:
-        label.setTextFill(Color.GREEN);
-        label.setText(Character.toString(check.expected));
+        Text characterCorrect = new Text(Character.toString(check.expected));
+        characterCorrect.setFill(Color.WHITE);
+        enteredText.getChildren().addAll(characterCorrect);
         break;
       case INCORRECT:
-        label.setTextFill(Color.RED);
-        label.setText(Character.toString(check.typed));
+        Text characterIncorrect = new Text(Character.toString(check.typed));
+        characterIncorrect.setFill(Color.web("#fe55f7"));
+        enteredText.getChildren().addAll(characterIncorrect);
         break;
       case AUTOCORRECTED:
-        label.setTextFill(Color.BLUE);
-        label.setText(Character.toString(check.expected));
+        Text characterAutocorrected = new Text(Character.toString(check.typed));
+        characterAutocorrected.setFill(Color.web("#62fbf7"));
+        enteredText.getChildren().addAll(characterAutocorrected);
         break;
       default:
     }
@@ -112,7 +129,7 @@ class MultiplayerController extends Controller implements RaceObserver {
       return;
     }
     notifyCounter++;
-    if (notifyCounter == 5) {
+    if (notifyCounter == 2) {
       notifyServer();
       notifyCounter = 0;
     }
@@ -131,11 +148,17 @@ class MultiplayerController extends Controller implements RaceObserver {
    * Adds the user list along with progress bars and wpm to game screen.
    */
   private void setUsers() {
-    System.out.println(players);
     for (PlayerModel player : players) {
-      userlist.getChildren().add(userLabelCreator(player.name));
-      sliderCreator(player.userId);
-      userlist.getChildren().add(userProgress.get(player.userId));
+      HBox userHbox = new HBox();
+      userHbox.setSpacing(20);
+      wpmCreator(player.userId);
+      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7;");
+      userHbox.getChildren().add(userLabelCreator(player.name));
+      userHbox.getChildren().add(wpmLabels.get(player.userId));
+      userlist.getChildren().add(userHbox);
+      RaceTrack track = trackCreator(player);
+      userlist.getChildren().add(track);
+      userProgress.put(player.userId, track);
     }
   }
 
@@ -146,16 +169,28 @@ class MultiplayerController extends Controller implements RaceObserver {
     return label;
   }
 
-  private void sliderCreator(String userId) {
-    Slider slider = new Slider();
-    slider.setMin(0);
-    slider.setMax(1);
-    slider.setValue(0);
-    userProgress.put(userId, slider);
+  private RaceTrack trackCreator(PlayerModel playerModel) {
+    try {
+      return new RaceTrack(IconManager.iconForId(playerModel.iconId), 500, 50, Color.WHITE);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
-  private void sliderUpdate(PlayerUpdate update) {
-    userProgress.get(update.userId).setValue(update.percentProgress);
+  private void trackUpdate(PlayerUpdate update) {
+    userProgress.get(update.userId).updateProgress(update.percentProgress);
+  }
+
+  private void wpmCreator(String userId) {
+    Label label = new Label();
+    label.setText("Wpm: 0");
+    label.setStyle("-fx-text-fill:#ffffff;");
+    wpmLabels.put(userId, label);
+  }
+
+  private void wpmUpdate(PlayerUpdate update) {
+    wpmLabels.get(update.userId).setText(String.valueOf(update.wpm));
   }
 
   @Override
@@ -163,7 +198,8 @@ class MultiplayerController extends Controller implements RaceObserver {
     for (PlayerUpdate update : updates) {
       Platform.runLater(
           () -> {
-            sliderUpdate(update);
+            trackUpdate(update);
+            wpmUpdate(update);
           });
     }
   }
@@ -178,6 +214,7 @@ class MultiplayerController extends Controller implements RaceObserver {
           checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
           checkeredFlagLabel.setDisable(false);
           checkeredFlagLabel.setText("Race Ending: " + stopTime);
+          new GameFinishedController(stage, client, userId);
         });
   }
 }

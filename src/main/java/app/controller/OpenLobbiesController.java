@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.IconManager;
 import app.elements.JoinHandler;
 import app.elements.LobbyListCell;
 import client.Client;
@@ -39,7 +40,7 @@ class OpenLobbiesController extends Controller implements ClientObserver, JoinHa
 
   private void joinLobby(String lobbyId) {
     new GameLobbyController(stage, client, userId);
-    client.joinLobby(userId, lobbyId);
+    client.joinLobby(userId, lobbyId, IconManager.getSelectedIcon().getId());
   }
 
   private void addLobbiesToList(List<LobbyModel> idList) {

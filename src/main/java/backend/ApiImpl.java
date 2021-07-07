@@ -42,14 +42,14 @@ public class ApiImpl implements Api {
   }
 
   @Override
-  public void createNewLobby(String connectionId, String userId, String lobbyName) {
+  public void createNewLobby(String connectionId, String userId, String lobbyName, String iconId) {
     String lobbyId = sessionStore.createNewLobby(connectionId, lobbyName, pushService);
-    sessionStore.joinLobby(lobbyId, connectionId, userId);
+    sessionStore.joinLobby(lobbyId, connectionId, userId, iconId);
   }
 
   @Override
-  public void joinLobby(String lobbyId, String connectionId, String userId) {
-    sessionStore.joinLobby(lobbyId, connectionId, userId);
+  public void joinLobby(String lobbyId, String connectionId, String userId, String iconId) {
+    sessionStore.joinLobby(lobbyId, connectionId, userId, iconId);
   }
 
   @Override

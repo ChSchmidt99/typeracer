@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.elements.IconPicker;
 import client.Client;
 import client.ClientImpl;
 import client.ClientObserver;
@@ -9,7 +10,9 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import protocol.LobbyModel;
@@ -23,6 +26,8 @@ public class StartscreenController extends Controller implements ClientObserver 
 
   @FXML TextField username;
 
+  @FXML GridPane baseGridPane;
+
   /**
    * Constructor for StartscreenController; creates a new Startscreen.
    *
@@ -30,6 +35,11 @@ public class StartscreenController extends Controller implements ClientObserver 
    */
   public StartscreenController(Stage stage) {
     super(stage, FXMLPATH);
+    IconPicker iconPicker = new IconPicker(4);
+    iconPicker.setAlignment(Pos.CENTER);
+    iconPicker.setHgap(40);
+    iconPicker.setVgap(20);
+    baseGridPane.add(iconPicker, 0, 3);
   }
 
   @FXML
