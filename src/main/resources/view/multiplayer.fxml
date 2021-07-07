@@ -10,7 +10,7 @@
 
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label styleClass="title" text="TypeRacer" />
-   <VBox fx:id="userlist" maxWidth="640.0" prefHeight="185.0" prefWidth="640.0" styleClass="ingameuserlist" GridPane.rowIndex="1">
+   <VBox fx:id="userList" maxWidth="640.0" prefHeight="185.0" prefWidth="640.0" styleClass="ingameuserlist" GridPane.rowIndex="1">
       <GridPane.margin>
          <Insets top="15.0" />
       </GridPane.margin></VBox>

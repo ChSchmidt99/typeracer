@@ -21,7 +21,7 @@ abstract class Controller {
         new FXMLLoader(
             (Objects.requireNonNull(
                 getClass().getProtectionDomain().getClassLoader().getResource(fxmlpath))));
-    loader.setController(this) ;
+    loader.setController(this);
     this.root = loader.load();
     if (stage.getScene() == null) {
       stage.setScene(new Scene(root, 1280, 720));

@@ -1,8 +1,7 @@
 package app.controller;
 
-import javafx.stage.Stage;
-
 import java.io.IOException;
+import javafx.stage.Stage;
 
 class SingleplayerController extends Controller {
 

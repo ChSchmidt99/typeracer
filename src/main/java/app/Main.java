@@ -1,11 +1,14 @@
 package app;
 
 import app.controller.StartscreenController;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
+import app.model.StartScreenModel;
+import client.Client;
 import java.io.IOException;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /** Main Class and method. */
 public class Main extends Application {
@@ -13,12 +16,28 @@ public class Main extends Application {
   @Override
   public void start(Stage stage) {
     try {
+      stage.setOnCloseRequest(
+          new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+              Platform.exit();
+              try {
+                Client client = ApplicationState.getInstance().getClient();
+                if (client != null) {
+                  client.close();
+                }
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            }
+          });
       stage.setTitle("TypeRacer");
       stage.setMaxHeight(1080);
       stage.setMaxWidth(1920);
       stage.setMinHeight(540);
       stage.setMinWidth(960);
-      StartscreenController startscreenController = new StartscreenController(stage);
+      StartscreenController startscreenController =
+          new StartscreenController(stage, new StartScreenModel());
       startscreenController.show();
     } catch (IOException e) {
       e.printStackTrace();
