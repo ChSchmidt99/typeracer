@@ -15,7 +15,7 @@
          <String fx:value="title" />
          <String fx:value="ingametitle" />
       </styleClass></Label>
-   <VBox fx:id="userlist" maxWidth="720.0" spacing="15.0" styleClass="ingameuserlist" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+   <VBox fx:id="userList" maxWidth="720.0" spacing="15.0" styleClass="ingameuserlist" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
       <GridPane.margin>
          <Insets top="40.0" />
       </GridPane.margin></VBox>

@@ -110,6 +110,9 @@ class Connection implements Closeable {
       case Request.Types.UPDATE_PROGRESS:
         api.updateProgress(id, request.snapshot);
         break;
+      case Request.Types.LOBBY_UPDATE:
+        api.sendLobbyUpdate(id);
+        break;
       default:
         Logger.logError("Unknown Request type: " + request.type);
     }

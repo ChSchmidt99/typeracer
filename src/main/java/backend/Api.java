@@ -53,6 +53,13 @@ public interface Api {
   void getLobbies(String connectionId);
 
   /**
+   * Call to send a lobby update to the specified connection.
+   *
+   * @param connectionId id of the server connection
+   */
+  void sendLobbyUpdate(String connectionId);
+
+  /**
    * Call to set whether or not a player is ready.
    *
    * @param connectionId id of the server connection

@@ -12,7 +12,7 @@
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxHeight="900.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Create" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2" />
     <VBox alignment="CENTER" maxWidth="700.0" prefWidth="700.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
-        <TextField fx:id="lobbyname" promptText="lobbyname" styleClass="inputfield">
+        <TextField fx:id="lobbyName" promptText="lobbyname" styleClass="inputfield">
             <VBox.margin>
                 <Insets top="30.0" />
             </VBox.margin>

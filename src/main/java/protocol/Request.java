@@ -13,6 +13,7 @@ public class Request {
     public static final String PLAYER_READY = "player ready";
     public static final String GET_LOBBIES = "get lobbies";
     public static final String UPDATE_PROGRESS = "update progress";
+    public static final String LOBBY_UPDATE = "get lobby update";
   }
 
   public final String type;

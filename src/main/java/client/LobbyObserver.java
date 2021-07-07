@@ -19,11 +19,4 @@ public interface LobbyObserver {
    * @param lobby information about the updated lobby
    */
   void receivedLobbyUpdate(LobbyModel lobby);
-
-  /**
-   * Received error response from server.
-   *
-   * @param message error message
-   */
-  void receivedError(String message);
 }

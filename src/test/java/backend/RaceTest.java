@@ -24,7 +24,7 @@ public class RaceTest implements PushService {
     String text = "some text";
     long duration = 1;
     RaceSettings settings = new RaceSettings(duration, 1);
-    Race race = new Race(settings, text, players, this);
+    Race race = new Race(settings, text, players, this, null);
     assertTrue(race.getIsRunning());
     race.updateProgress(connectionId, new ProgressSnapshot(0, 5, text.length(), 0));
     try {

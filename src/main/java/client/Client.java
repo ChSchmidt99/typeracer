@@ -38,6 +38,8 @@ public interface Client extends ObserverHandler, Closeable {
   /** Request a list of all open lobbies. */
   void requestLobbies();
 
+  void requestLobbyUpdate();
+
   /**
    * Set ready or not. If ready, client will join the next race.
    *

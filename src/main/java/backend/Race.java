@@ -24,6 +24,7 @@ class Race {
   private final String textToType;
   private final Map<String, Player> players;
   private final PushService pushService;
+  private final RaceFinishedListener listener;
   private ScheduledExecutorService scheduler;
   private RaceState state;
 
@@ -43,12 +44,14 @@ class Race {
       RaceSettings settings,
       String textToType,
       Map<String, Player> players,
-      PushService pushService) {
+      PushService pushService,
+      RaceFinishedListener listener) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
     this.state = RaceState.RUNNING;
     this.settings = settings;
+    this.listener = listener;
     broadcastGameStarting();
     startUpdates();
   }
@@ -100,6 +103,9 @@ class Race {
     }
     this.state = RaceState.FINISHED;
     stopUpdates();
+    if (listener != null) {
+      listener.raceFinished();
+    }
   }
 
   private void startUpdates() {
