@@ -110,21 +110,19 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
    */
   private void setupTracks(List<PlayerData> players) {
     for (PlayerData player : players) {
-      HBox userHbox = new HBox();
-      userHbox.setSpacing(20);
+
+      VBox userVbox = new VBox();
+
       wpmCreator(player.userId);
-      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7;");
-      userHbox.getChildren().add(userLabelCreator(player.name));
-      userHbox.getChildren().add(wpmLabels.get(player.userId));
-      userList.getChildren().add(userHbox);
-      RaceTrack track = trackCreator(player);
+      userVbox.getChildren().add(userLabelCreator(player.name));
+      userVbox.getChildren().add(wpmLabels.get(player.userId));
       wpmLabels
           .get(player.userId)
           .setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
 
-      VBox userVbox = new VBox();
-      userVbox.getChildren().add(userLabelCreator(player.name));
-      userVbox.getChildren().add(wpmLabels.get(player.userId));
+      HBox userHbox = new HBox();
+      userHbox.setSpacing(20);
+      RaceTrack track = trackCreator(player);
 
       userHbox.getChildren().add(userVbox);
       userHbox.getChildren().add(track);

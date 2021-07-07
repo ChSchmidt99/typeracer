@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" text="TypeRacer" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="4">
       <styleClass>
          <String fx:value="title" />

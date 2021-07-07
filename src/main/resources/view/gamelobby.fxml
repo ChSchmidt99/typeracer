@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="GameLobby" textAlignment="CENTER" wrapText="true" />
     <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
         <ScrollPane focusTraversable="false" maxWidth="700.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" styleClass="gameLobbyScrollpane">
