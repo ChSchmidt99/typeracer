@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import model.CheckResult;
-import protocol.PlayerModel;
+import protocol.PlayerData;
 import protocol.PlayerUpdate;
 import util.Timestamp;
 
@@ -29,6 +29,8 @@ import util.Timestamp;
 class MultiplayerController extends Controller implements MultiplayerModelObserver {
 
   private static final String FXMLPATH = "view/multiplayer.fxml";
+
+  // TODO: Combine in auxiliary class
   HashMap<String, Label> wpmLabels = new HashMap<>();
   HashMap<String, RaceTrack> userProgress = new HashMap<>();
   private final MultiplayerModel model;
@@ -50,9 +52,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     super(stage, FXMLPATH);
     this.model = model;
     model.setObserver(this);
-    setupText(model.getRaceModel().textToType);
+    setupText(model.getRaceData().textToType);
     setupKeyHandler();
-    setupTracks(model.getRaceModel().players);
+    setupTracks(model.getRaceData().players);
   }
 
   @Override
@@ -105,8 +107,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   /*
    * Adds the user list along with progress bars and wpm to game screen.
    */
-  private void setupTracks(List<PlayerModel> players) {
-    for (PlayerModel player : players) {
+  private void setupTracks(List<PlayerData> players) {
+    for (PlayerData player : players) {
       HBox userHbox = new HBox();
       userHbox.setSpacing(20);
       wpmCreator(player.userId);
@@ -157,9 +159,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     return label;
   }
 
-  private RaceTrack trackCreator(PlayerModel playerModel) {
+  private RaceTrack trackCreator(PlayerData playerData) {
     try {
-      return new RaceTrack(IconManager.iconForId(playerModel.iconId), 500, 50, Color.WHITE);
+      return new RaceTrack(IconManager.iconForId(playerData.iconId), 500, 50, Color.WHITE);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }

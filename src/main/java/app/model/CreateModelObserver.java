@@ -1,8 +1,9 @@
 package app.model;
 
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
+/** Interface to receive CreateModel updates. */
 public interface CreateModelObserver {
 
-  void joinedLobby(LobbyModel lobby);
+  void joinedLobby(LobbyData lobby);
 }

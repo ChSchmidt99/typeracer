@@ -1,10 +1,11 @@
 package app.model;
 
-import protocol.RaceModel;
+import protocol.RaceData;
 
+/** Observer for GameLobbyModel. */
 public interface GameLobbyModelObserver {
 
   void updatedLobby();
 
-  void startedRace(RaceModel model);
+  void startedRace(RaceData model);
 }

@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
 /*
  * Handles all gui functionality for game creation.
@@ -50,7 +50,7 @@ class CreateController extends Controller implements CreateModelObserver {
   }
 
   @Override
-  public void joinedLobby(LobbyModel lobby) {
+  public void joinedLobby(LobbyData lobby) {
     try {
       new GameLobbyController(stage, new GameLobbyModel(lobby)).show();
     } catch (IOException e) {

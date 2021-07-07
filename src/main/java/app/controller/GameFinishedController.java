@@ -6,7 +6,7 @@ import app.model.GameLobbyModel;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
 /** Controller for game finished screen. */
 public class GameFinishedController extends Controller implements GameFinishedModelObserver {
@@ -27,7 +27,7 @@ public class GameFinishedController extends Controller implements GameFinishedMo
   }
 
   @Override
-  public void receivedGameLobby(LobbyModel lobby) {
+  public void receivedGameLobby(LobbyData lobby) {
     model.setObserver(null);
     try {
       new GameLobbyController(stage, new GameLobbyModel(lobby)).show();

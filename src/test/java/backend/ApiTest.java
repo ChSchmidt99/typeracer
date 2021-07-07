@@ -8,7 +8,7 @@ import mocks.MockDatabase;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.Response;
 import server.PushService;
 
@@ -18,7 +18,7 @@ public class ApiTest implements PushService {
 
   private Api api;
 
-  private List<LobbyModel> lobbyResponse;
+  private List<LobbyData> lobbyResponse;
 
   @BeforeAll
   void init() {

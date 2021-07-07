@@ -1,7 +1,7 @@
 package client;
 
 import java.util.List;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
 /** Observer to receive responses from {@link Client}. */
 public interface ClientObserver {
@@ -18,5 +18,5 @@ public interface ClientObserver {
    *
    * @param lobbies list of open lobbies
    */
-  void receivedOpenLobbies(List<LobbyModel> lobbies);
+  void receivedOpenLobbies(List<LobbyData> lobbies);
 }

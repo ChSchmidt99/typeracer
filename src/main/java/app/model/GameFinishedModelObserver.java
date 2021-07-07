@@ -1,8 +1,9 @@
 package app.model;
 
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
+/** Observer for GameFinishedModel. */
 public interface GameFinishedModelObserver {
 
-  void receivedGameLobby(LobbyModel lobbyModel);
+  void receivedGameLobby(LobbyData lobbyData);
 }

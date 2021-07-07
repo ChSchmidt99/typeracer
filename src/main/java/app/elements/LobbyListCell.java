@@ -7,10 +7,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
 /** Fills Cells of the Lobby List in our lobby browser. */
-public class LobbyListCell extends ListCell<LobbyModel> {
+public class LobbyListCell extends ListCell<LobbyData> {
 
   private static final String FXML_PATH = "view/lobbylistcell.fxml";
 
@@ -55,7 +55,7 @@ public class LobbyListCell extends ListCell<LobbyModel> {
   }
 
   @Override
-  public void updateItem(LobbyModel model, boolean empty) {
+  public void updateItem(LobbyData model, boolean empty) {
     if (empty) {
       clearContent();
     } else {
@@ -75,7 +75,7 @@ public class LobbyListCell extends ListCell<LobbyModel> {
     setText(null);
   }
 
-  private void setContent(LobbyModel model) {
+  private void setContent(LobbyData model) {
     joinButton.setDisable(model.isRunning);
     joinButton.setVisible(true);
     lobbyNameLabel.setText(model.name);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
@@ -72,12 +72,12 @@ class Lobby implements RaceFinishedListener {
     broadcastLobbyUpdate();
   }
 
-  LobbyModel lobbyModel() {
+  LobbyData lobbyModel() {
     List<String> playerNames = new ArrayList<>();
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
       playerNames.add(entry.getValue().getName());
     }
-    return new LobbyModel(lobbyId, playerNames, name, isRunning());
+    return new LobbyData(lobbyId, playerNames, name, isRunning());
   }
 
   void setPlayerReady(String connectionId, boolean isReady) {

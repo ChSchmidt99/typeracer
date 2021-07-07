@@ -7,13 +7,19 @@ import client.ClientObserver;
 import client.LobbyObserver;
 import java.util.List;
 import javafx.application.Platform;
-import protocol.LobbyModel;
-import protocol.RaceModel;
+import protocol.LobbyData;
+import protocol.RaceData;
 
+/** Model for OpenLobbies View. */
 public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
 
   private OpenLobbiesModelObserver observer;
 
+  /**
+   * Set Observer.
+   *
+   * @param observer ovserver
+   */
   public void setObserver(OpenLobbiesModelObserver observer) {
     this.observer = observer;
   }
@@ -23,6 +29,11 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
     client.requestLobbies();
   }
 
+  /**
+   * Call to join lobby.
+   *
+   * @param lobbyId id of lobby
+   */
   public void joinLobby(String lobbyId) {
     Client client = ApplicationState.getInstance().getClient();
     String userId = ApplicationState.getInstance().getUserId();
@@ -31,12 +42,12 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
   }
 
   @Override
-  public void gameStarting(RaceModel race) {
+  public void gameStarting(RaceData race) {
     // TODO: remove unused functions from interface
   }
 
   @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {
+  public void receivedLobbyUpdate(LobbyData lobby) {
     ApplicationState.getInstance().getClient().unsubscribeLobbyUpdates(this);
     Platform.runLater(() -> observer.joinedLobby(lobby));
   }
@@ -47,7 +58,7 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
   }
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
+  public void receivedOpenLobbies(List<LobbyData> lobbies) {
     Platform.runLater(() -> observer.receivedOpenLobbies(lobbies));
   }
 }
