@@ -9,10 +9,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-    <Label styleClass="title" text="Open Servers" />
-    <VBox alignment="TOP_CENTER" GridPane.rowIndex="1">
-      <ListView fx:id="lobbylist" focusTraversable="false" maxWidth="640.0" prefHeight="200.0" prefWidth="640.0" styleClass="lobbyBrowser" />
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Lobbies" textAlignment="CENTER" wrapText="true" />
+    <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
+      <ListView fx:id="lobbylist" focusTraversable="false" maxWidth="700.0" prefHeight="200.0" prefWidth="700.0" styleClass="lobbyBrowser" />
         <Button fx:id="createButton" onAction="#switchToCreateScreen" styleClass="gamebutton" text="Create New Game">
            <VBox.margin>
                <Insets top="20.0" />
@@ -21,10 +21,10 @@
       <Button fx:id="backToStartscreen" mnemonicParsing="false" onAction="#backToStartscreen" styleClass="gamebutton" text="Back" />
     </VBox>
    <columnConstraints>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
+      <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="200.0" minHeight="100.0" prefHeight="100.0" />
-      <RowConstraints maxHeight="700.0" minHeight="300.0" prefHeight="600.0" valignment="CENTER" />
+      <RowConstraints fillHeight="false" maxHeight="700.0" minHeight="300.0" prefHeight="540.0" valignment="CENTER" />
    </rowConstraints>
 </GridPane>

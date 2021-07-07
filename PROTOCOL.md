@@ -39,8 +39,15 @@ Send request to join an existing lobby with the provided lobby id.
     "lobbyId" : "<some lobbyId>"
 }
 ```
-If lobby was joined successfully, a response with information about the created lobby is returned. The same response will also be sent every time the lobby is changed in some way. For example when players join or leave.
+### Request Lobby update
+A updated version of the current lobby can be requested using the following request.
+```json
+{
+    "type" : "get lobby update"
+}
+```
 ### Response on Lobby updates
+After a joining a Lobby, requesting a lobby update or on lobby changes, the following response will be sent to the client.
 ```json
 {
     "type" : "lobby update",

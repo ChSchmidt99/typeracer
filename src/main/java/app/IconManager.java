@@ -9,8 +9,8 @@ import java.util.List;
 public class IconManager {
 
   private static final Icon[] icons = {
-    new Icon("1", "icons/floppy.PNG"),
-    new Icon("2", "icons/minesweep.PNG"),
+    new Icon("1", "icons/notepad.PNG"),
+    new Icon("2", "icons/printer.PNG"),
     new Icon("3", "icons/msdos.PNG"),
     new Icon("4", "icons/paint.PNG"),
     new Icon("5", "icons/print.PNG"),

@@ -2,7 +2,7 @@ package backend;
 
 import database.Database;
 import java.util.List;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.ProgressSnapshot;
 import protocol.Response;
 import protocol.ResponseFactory;
@@ -64,9 +64,14 @@ public class ApiImpl implements Api {
 
   @Override
   public void getLobbies(String connectionId) {
-    List<LobbyModel> lobbies = sessionStore.getOpenLobbies();
+    List<LobbyData> lobbies = sessionStore.getOpenLobbies();
     Response response = ResponseFactory.makeLobbiesResponse(lobbies);
     pushService.sendResponse(connectionId, response);
+  }
+
+  @Override
+  public void sendLobbyUpdate(String connectionId) {
+    sessionStore.sendLobbyUpdate(connectionId);
   }
 
   @Override

@@ -6,20 +6,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
 import util.Logger;
 
 /** Represents one game currently managed by the server. */
-class Lobby {
+class Lobby implements RaceFinishedListener {
 
   private final String lobbyId;
   private final HashMap<String, LobbyMember> members;
   private final PushService pushService;
   private final Database database;
   private final String name;
+  private static final int maxPlayers = 4;
   private Race race;
 
   Lobby(String lobbyId, String name, Database database, PushService pushService) {
@@ -30,12 +31,22 @@ class Lobby {
     this.name = name;
   }
 
+  @Override
+  public void raceFinished() {
+    broadcastLobbyUpdate();
+  }
+
   void join(String connectionId, String userId, String iconId) {
     try {
-      String username = this.database.getUsername(userId);
-      LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
-      members.put(connectionId, lobbyMember);
-      broadcastLobbyUpdate();
+      if (members.size() < maxPlayers) {
+        String username = this.database.getUsername(userId);
+        LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
+        members.put(connectionId, lobbyMember);
+        broadcastLobbyUpdate();
+      } else {
+        Response error = ResponseFactory.makeErrorResponse("Max number of players.");
+        pushService.sendResponse(connectionId, error);
+      }
     } catch (IOException e) {
       Logger.logError(e.getMessage());
     }
@@ -63,16 +74,16 @@ class Lobby {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService);
+    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService, this);
     broadcastLobbyUpdate();
   }
 
-  LobbyModel lobbyModel() {
+  LobbyData lobbyModel() {
     List<String> playerNames = new ArrayList<>();
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
       playerNames.add(entry.getValue().getName());
     }
-    return new LobbyModel(lobbyId, playerNames, name, isRunning());
+    return new LobbyData(lobbyId, playerNames, name, isRunning());
   }
 
   void setPlayerReady(String connectionId, boolean isReady) {
@@ -96,6 +107,11 @@ class Lobby {
 
   boolean isEmpty() {
     return this.members.isEmpty();
+  }
+
+  void sendUpdate(String connectionId) {
+    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());
+    pushService.sendResponse(connectionId, response);
   }
 
   private Map<String, Player> getReadyPlayers() {

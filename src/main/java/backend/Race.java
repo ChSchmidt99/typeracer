@@ -7,10 +7,10 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import protocol.PlayerModel;
+import protocol.PlayerData;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
-import protocol.RaceModel;
+import protocol.RaceData;
 import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
@@ -24,6 +24,7 @@ class Race {
   private final String textToType;
   private final Map<String, Player> players;
   private final PushService pushService;
+  private final RaceFinishedListener listener;
   private ScheduledExecutorService scheduler;
   private RaceState state;
 
@@ -43,22 +44,24 @@ class Race {
       RaceSettings settings,
       String textToType,
       Map<String, Player> players,
-      PushService pushService) {
+      PushService pushService,
+      RaceFinishedListener listener) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
     this.state = RaceState.RUNNING;
     this.settings = settings;
+    this.listener = listener;
     broadcastGameStarting();
     startUpdates();
   }
 
-  RaceModel getModel() {
-    List<PlayerModel> out = new ArrayList<>();
+  RaceData getModel() {
+    List<PlayerData> out = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
       out.add(entry.getValue().getModel());
     }
-    return new RaceModel(this.textToType, out);
+    return new RaceData(this.textToType, out);
   }
 
   boolean getIsRunning() {
@@ -100,6 +103,9 @@ class Race {
     }
     this.state = RaceState.FINISHED;
     stopUpdates();
+    if (listener != null) {
+      listener.raceFinished();
+    }
   }
 
   private void startUpdates() {

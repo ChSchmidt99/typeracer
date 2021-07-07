@@ -1,23 +1,24 @@
 package app.controller;
 
-import client.Client;
-import client.ErrorObserver;
-import client.LobbyObserver;
-import javafx.application.Platform;
+import app.model.GameLobbyModel;
+import app.model.GameLobbyModelObserver;
+import app.model.MultiplayerModel;
+import app.model.OpenLobbiesModel;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
-import protocol.RaceModel;
+import protocol.LobbyData;
+import protocol.RaceData;
 
-class GameLobbyController extends Controller implements LobbyObserver, ErrorObserver {
+class GameLobbyController extends Controller implements GameLobbyModelObserver {
 
   private static final String FXMLPATH = "view/gamelobby.fxml";
   private static final String CHECKBOX_ERROR = "Please check 'ready' box.";
-  private final Client client;
-  private String userId;
+
+  private final GameLobbyModel model;
 
   @FXML CheckBox lobbyCheckbox;
 
@@ -25,54 +26,55 @@ class GameLobbyController extends Controller implements LobbyObserver, ErrorObse
 
   @FXML ListView<String> userlist;
 
-  GameLobbyController(Stage stage, Client client, String userId) {
+  GameLobbyController(Stage stage, GameLobbyModel model) throws IOException {
     super(stage, FXMLPATH);
-    this.client = client;
-    this.userId = userId;
-    client.subscribeLobbyUpdates(this);
-    client.subscribeErrors(this);
+    this.model = model;
+    this.model.setObserver(this);
+    displayLobby(model.getLobby());
+    model.setReady(lobbyCheckbox.isSelected());
   }
 
   @FXML
   void checkedReady() {
-    client.setIsReady(lobbyCheckbox.isSelected());
+    model.setReady(lobbyCheckbox.isSelected());
   }
 
   @FXML
   void startGame() {
     if (lobbyCheckbox.isSelected()) {
-      client.startRace();
+      model.startRace();
     } else {
       displayError(CHECKBOX_ERROR);
     }
   }
 
-  @Override
-  public void receivedError(String message) {
-    Platform.runLater(
-        () -> {
-          displayError(message);
-        });
-  }
-
-  @Override
-  public void gameStarting(RaceModel race) {
-    Platform.runLater(() -> new MultiplayerController(stage, race, client, userId));
-  }
-
-  @Override
-  public void receivedLobbyUpdate(LobbyModel lobby) {
-    Platform.runLater(
-        () -> {
-          userlist.getItems().clear();
-          userlist.getItems().addAll(lobby.players);
-          this.startButton.setDisable(lobby.isRunning);
-        });
-  }
-
   @FXML
-  private void backToLobbyBrowser() {
-    client.leaveLobby();
-    new OpenLobbiesController(stage, client, userId);
+  void backToLobbyBrowser() {
+    model.leaveLobby();
+    try {
+      new OpenLobbiesController(stage, new OpenLobbiesModel()).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void updatedLobby() {
+    displayLobby(model.getLobby());
+  }
+
+  @Override
+  public void startedRace(RaceData race) {
+    try {
+      new MultiplayerController(stage, new MultiplayerModel(race)).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void displayLobby(LobbyData lobby) {
+    userlist.getItems().clear();
+    userlist.getItems().addAll(lobby.players);
+    this.startButton.setDisable(lobby.isRunning);
   }
 }

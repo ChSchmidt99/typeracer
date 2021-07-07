@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-    <Label styleClass="title" text="Race over" />
-   <VBox alignment="CENTER" maxWidth="900.0" prefHeight="200.0" prefWidth="100.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxWidth="90.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Finished" textAlignment="CENTER" wrapText="true" />
+   <VBox alignment="CENTER" maxWidth="900.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <children>
-         <VBox alignment="CENTER" maxWidth="400.0" prefHeight="150.0" prefWidth="400.0">
+         <VBox alignment="CENTER" maxWidth="350.0" prefHeight="120.0" prefWidth="350.0">
             <children>
                <Label alignment="CENTER" contentDisplay="BOTTOM" styleClass="first" text="1st">
                   <graphic>
@@ -42,9 +42,9 @@
          </VBox>
          <VBox prefHeight="200.0" prefWidth="100.0">
             <children>
-               <HBox alignment="TOP_CENTER" maxHeight="500.0" prefHeight="150.0" prefWidth="900.0">
+               <HBox alignment="TOP_CENTER" maxHeight="120.0" prefHeight="120.0" prefWidth="700.0">
                   <children>
-                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="450.0">
+                     <VBox alignment="CENTER" prefHeight="120.0" prefWidth="350.0">
                         <children>
                            <Label alignment="CENTER" contentDisplay="RIGHT" styleClass="second" text="2nd">
                               <graphic>
@@ -68,7 +68,7 @@
                            <String fx:value="left" />
                         </styleClass>
                      </VBox>
-                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="450.0">
+                     <VBox alignment="CENTER" prefHeight="120.0" prefWidth="350.0">
                         <children>
                            <Label alignment="CENTER" styleClass="third" text="3rd">
                               <graphic>
@@ -100,10 +100,10 @@
       </children>
    </VBox>
    <columnConstraints>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="640.0" prefWidth="1280.0" />
+      <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="200.0" minHeight="100.0" prefHeight="100.0" />
-      <RowConstraints maxHeight="700.0" minHeight="300.0" prefHeight="600.0" valignment="CENTER" />
+      <RowConstraints maxHeight="700.0" minHeight="300.0" prefHeight="540.0" valignment="CENTER" />
    </rowConstraints>
 </GridPane>

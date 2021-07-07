@@ -74,6 +74,11 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
+  public void requestLobbyUpdate() {
+    sendRequest(RequestFactory.makeLobbyUpdateRequest());
+  }
+
+  @Override
   public void setIsReady(boolean isReady) {
     sendRequest(RequestFactory.makeIsReadyRequest(isReady));
   }

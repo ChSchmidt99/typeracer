@@ -1,74 +1,88 @@
 package app.controller;
 
-import app.IconManager;
+import app.ApplicationState;
 import app.elements.JoinHandler;
 import app.elements.LobbyListCell;
+import app.model.CreateModel;
+import app.model.GameLobbyModel;
+import app.model.OpenLobbiesModel;
+import app.model.OpenLobbiesModelObserver;
+import app.model.StartScreenModel;
 import client.Client;
-import client.ClientObserver;
 import java.io.IOException;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
-class OpenLobbiesController extends Controller implements ClientObserver, JoinHandler {
+class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbiesModelObserver {
 
   private static final String FXMLPATH = "view/openlobbies.fxml";
-  private final Client client;
-  private final String userId;
 
-  @FXML ListView<LobbyModel> lobbylist;
+  private OpenLobbiesModel model;
+
+  @FXML ListView<LobbyData> lobbylist;
 
   @FXML Button backToStartscreen;
 
-  OpenLobbiesController(Stage stage, Client client, String userId) {
+  OpenLobbiesController(Stage stage, OpenLobbiesModel model) throws IOException {
     super(stage, FXMLPATH);
-    this.client = client;
-    this.userId = userId;
-    client.subscribe(this);
-    client.requestLobbies();
+    this.model = model;
     initActions();
+    model.setObserver(this);
+    model.requestLobbyList();
+  }
+
+  @Override
+  public void receivedOpenLobbies(List<LobbyData> lobbies) {
+    addLobbiesToList(lobbies);
+  }
+
+  @Override
+  public void joinedLobby(LobbyData lobby) {
+    changeToGameLobbyScreen(lobby);
+  }
+
+  @Override
+  public void clickedJoin(String lobbyId) {
+    model.joinLobby(lobbyId);
   }
 
   @FXML
   private void switchToCreateScreen() {
-    new CreateController(stage, client, userId);
+    try {
+      new CreateController(stage, new CreateModel()).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
-  private void joinLobby(String lobbyId) {
-    new GameLobbyController(stage, client, userId);
-    client.joinLobby(userId, lobbyId, IconManager.getSelectedIcon().getId());
+  @FXML
+  private void backToStartscreen() throws IOException {
+    Client client = ApplicationState.getInstance().getClient();
+    client.close();
+    ApplicationState.getInstance().setClient(null);
+    new StartscreenController(stage, new StartScreenModel()).show();
   }
 
-  private void addLobbiesToList(List<LobbyModel> idList) {
+  private void addLobbiesToList(List<LobbyData> idList) {
     for (int i = 0; i < idList.size(); i++) {
       lobbylist.getItems().add(i, idList.get(i));
     }
   }
 
-  @Override
-  public void registered(String userId) {}
-
-  @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
-    Platform.runLater(() -> addLobbiesToList(lobbies));
-  }
-
-  void initActions() {
+  private void initActions() {
     lobbylist.setCellFactory(lobbyListView -> new LobbyListCell(this));
   }
 
-  @Override
-  public void clickedJoin(String lobbyId) {
-    joinLobby(lobbyId);
-  }
-
-  @FXML
-  private void backToStartscreen() throws IOException {
-    client.close();
-    new StartscreenController(stage);
+  private void changeToGameLobbyScreen(LobbyData lobby) {
+    try {
+      new GameLobbyController(stage, new GameLobbyModel(lobby)).show();
+      model.setObserver(null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

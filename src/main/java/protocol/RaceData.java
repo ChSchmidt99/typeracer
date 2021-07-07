@@ -3,11 +3,11 @@ package protocol;
 import java.util.List;
 
 /** Json model including all race information. */
-public class RaceModel {
+public class RaceData {
 
   public final String textToType;
 
-  public final List<PlayerModel> players;
+  public final List<PlayerData> players;
 
   /**
    * Create RaceModel.
@@ -15,7 +15,7 @@ public class RaceModel {
    * @param textToType text of the race
    * @param players list of players
    */
-  public RaceModel(String textToType, List<PlayerModel> players) {
+  public RaceData(String textToType, List<PlayerData> players) {
     this.textToType = textToType;
     this.players = players;
   }

@@ -1,28 +1,23 @@
 package app.controller;
 
 import app.elements.IconPicker;
-import client.Client;
-import client.ClientImpl;
-import client.ClientObserver;
+import app.model.OpenLobbiesModel;
+import app.model.StartScreenModel;
+import app.model.StartScreenModelObserver;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.List;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import protocol.LobbyModel;
 
 /** Handles transition functionality for startscreen. */
-public class StartscreenController extends Controller implements ClientObserver {
+public class StartscreenController extends Controller implements StartScreenModelObserver {
 
   private static final String FXMLPATH = "view/startscreen.fxml";
   private static final String USERNAME_ERROR = "Please choose a username";
-  private Client client = null;
+
+  private StartScreenModel model;
 
   @FXML TextField username;
 
@@ -33,13 +28,11 @@ public class StartscreenController extends Controller implements ClientObserver 
    *
    * @param stage JavaFx stage to host the view in
    */
-  public StartscreenController(Stage stage) {
+  public StartscreenController(Stage stage, StartScreenModel model) throws IOException {
     super(stage, FXMLPATH);
-    IconPicker iconPicker = new IconPicker(4);
-    iconPicker.setAlignment(Pos.CENTER);
-    iconPicker.setHgap(40);
-    iconPicker.setVgap(20);
-    baseGridPane.add(iconPicker, 0, 3);
+    this.model = model;
+    model.setObserver(this);
+    addIconPicker();
   }
 
   @FXML
@@ -48,21 +41,7 @@ public class StartscreenController extends Controller implements ClientObserver 
       if (username.getText().equals("")) {
         displayError(USERNAME_ERROR);
       } else {
-        this.client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
-        client.subscribe(this);
-        client.registerUser(username.getText());
-        stage.setOnCloseRequest(
-            new EventHandler<WindowEvent>() {
-              @Override
-              public void handle(WindowEvent event) {
-                Platform.exit();
-                try {
-                  client.close();
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
-              }
-            });
+        model.register(username.getText());
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -71,17 +50,28 @@ public class StartscreenController extends Controller implements ClientObserver 
 
   @FXML
   private void switchToSingleplayer() {
-    new SingleplayerController(stage);
+    try {
+      new SingleplayerController(stage).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
-  @Override
-  public void registered(String userId) {
-    Platform.runLater(
-        () -> {
-          new OpenLobbiesController(stage, client, userId);
-        });
+  private void addIconPicker() {
+    IconPicker iconPicker = new IconPicker(4);
+    iconPicker.setAlignment(Pos.CENTER);
+    iconPicker.setHgap(40);
+    iconPicker.setVgap(20);
+    baseGridPane.add(iconPicker, 1, 1);
   }
 
-  @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
+  /** Called when user was registered successfully. */
+  public void registered() {
+    try {
+      new OpenLobbiesController(stage, new OpenLobbiesModel()).show();
+      model.setObserver(null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

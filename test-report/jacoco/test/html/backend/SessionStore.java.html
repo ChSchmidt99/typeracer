@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.ProgressSnapshot;
 import server.PushService;
 
@@ -55,7 +55,7 @@ class SessionStore {
 <span class="fc" id="L55">    List&lt;LobbyModel&gt; openLobbies = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L56" title="All 2 branches covered.">    for (Map.Entry&lt;String, Lobby&gt; entry : this.lobbies.entrySet()) {</span>
 <span class="fc" id="L57">      Lobby lobby = entry.getValue();</span>
-<span class="fc" id="L58">      openLobbies.add(lobby.lobbyModel());</span>
+<span class="fc" id="L58">      openLobbies.add(lobby.lobbyData());</span>
 <span class="fc" id="L59">    }</span>
 <span class="fc" id="L60">    return openLobbies;</span>
   }

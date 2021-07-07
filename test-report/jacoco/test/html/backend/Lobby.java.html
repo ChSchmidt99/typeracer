@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
 import server.PushService;
@@ -67,7 +67,7 @@ class Lobby {
 <span class="nc" id="L67">    broadcastLobbyUpdate();</span>
 <span class="nc" id="L68">  }</span>
 
-  LobbyModel lobbyModel() {
+  LobbyModel lobbyData() {
 <span class="fc" id="L71">    List&lt;String&gt; playerNames = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L72" title="All 2 branches covered.">    for (Map.Entry&lt;String, LobbyMember&gt; entry : members.entrySet()) {</span>
 <span class="fc" id="L73">      playerNames.add(entry.getValue().getName());</span>
@@ -114,7 +114,7 @@ class Lobby {
 <span class="fc" id="L114">  }</span>
 
   private void broadcastLobbyUpdate() {
-<span class="fc" id="L117">    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());</span>
+<span class="fc" id="L117">    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyData());</span>
 <span class="fc" id="L118">    broadcast(response);</span>
 <span class="fc" id="L119">  }</span>
 }

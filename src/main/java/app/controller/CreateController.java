@@ -1,54 +1,60 @@
 package app.controller;
 
-import app.IconManager;
-import client.Client;
-import client.ClientObserver;
-import java.util.List;
+import app.model.CreateModel;
+import app.model.CreateModelObserver;
+import app.model.GameLobbyModel;
+import app.model.OpenLobbiesModel;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
 /*
  * Handles all gui functionality for game creation.
  */
-class CreateController extends Controller implements ClientObserver {
+class CreateController extends Controller implements CreateModelObserver {
 
   private static final String FXMLPATH = "view/createscreen.fxml";
   private static final String LOBBY_NAME_ERROR = "Please enter lobby name";
-  private final Client client;
-  private String userId;
 
-  @FXML TextField lobbyname;
+  private final CreateModel model;
+
+  @FXML TextField lobbyName;
 
   @FXML Button backToLobbyBrowser;
 
-  CreateController(Stage stage, Client client, String userId) {
+  CreateController(Stage stage, CreateModel model) throws IOException {
     super(stage, FXMLPATH);
-    this.client = client;
-    this.userId = userId;
-    client.subscribe(this);
+    this.model = model;
+    model.setObserver(this);
   }
 
   @FXML
   void switchToGameLobby() {
-    if (lobbyname.getText().equals("")) {
+    if (lobbyName.getText().equals("")) {
       displayError(LOBBY_NAME_ERROR);
     } else {
-      new GameLobbyController(stage, client, userId);
-      client.newLobby(userId, lobbyname.getText(), IconManager.getSelectedIcon().getId());
+      model.createLobby(lobbyName.getText());
+    }
+  }
+
+  @FXML
+  void backToLobbyBrowser() {
+    try {
+      new OpenLobbiesController(stage, new OpenLobbiesModel()).show();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
   @Override
-  public void registered(String userId) {}
-
-  @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {}
-
-  @FXML
-  void backToLobbyBrowser() {
-    new OpenLobbiesController(stage, client, userId);
+  public void joinedLobby(LobbyData lobby) {
+    try {
+      new GameLobbyController(stage, new GameLobbyModel(lobby)).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

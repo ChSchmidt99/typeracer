@@ -42,10 +42,21 @@
     -fx-background-color: transparent;
 }
 
+.gamebutton:hover {
+    -fx-text-fill: #fe55f7;
+}
+
 .title {
-    -fx-font-size: 65px;
+    -fx-font-size: 80px;
     -fx-padding: 15px;
     -fx-text-fill: #62fbf7;
+    -fx-border-color: #fe55f7;
+    -fx-border-width: 5px 5px 5px 5px;
+}
+
+.title:hover {
+    -fx-text-fill: #fe55f7;
+    -fx-border-color: #62fbf7;
 }
 
 .lobbyBrowser {
@@ -105,11 +116,8 @@
     -fx-text-fill: #000000;
 }
 
-.userlist {
-    -fx-min-height: 300px;
-    -fx-min-width: 300px;
-    -fx-max-width: 500px;
-    -fx-font-size: 25px;
+.userlist .list-cell {
+    -fx-font-size: 30px;
 }
 
 .lobbylist {
@@ -135,18 +143,18 @@
 }
 
 .first {
-  -fx-font-size: 35px;
+  -fx-font-size: 25px;
   -fx-text-fill: #62fbf7;
 }
 
 .second {
   -fx-text-fill: #fe55f7;
-  -fx-font-size: 35px;
+  -fx-font-size: 25px;
 }
 
 .third {
   -fx-text-fill: #ffffff;
-  -fx-font-size: 35px;
+  -fx-font-size: 25px;
 }
 
 .radio-button .radio {

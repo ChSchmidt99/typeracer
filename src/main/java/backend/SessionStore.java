@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 import protocol.ProgressSnapshot;
 import server.PushService;
 
@@ -51,8 +51,8 @@ class SessionStore {
     lobby.startRace(connectionId, raceSettings);
   }
 
-  List<LobbyModel> getOpenLobbies() {
-    List<LobbyModel> openLobbies = new ArrayList<>();
+  List<LobbyData> getOpenLobbies() {
+    List<LobbyData> openLobbies = new ArrayList<>();
     for (Map.Entry<String, Lobby> entry : this.lobbies.entrySet()) {
       Lobby lobby = entry.getValue();
       openLobbies.add(lobby.lobbyModel());
@@ -74,7 +74,12 @@ class SessionStore {
     }
   }
 
-  private Lobby getLobby(String connectionId) {
+  void sendLobbyUpdate(String connectionId) {
+    Lobby lobby = getLobby(connectionId);
+    lobby.sendUpdate(connectionId);
+  }
+
+  Lobby getLobby(String connectionId) {
     String lobbyId = connectionIds.get(connectionId);
     return lobbies.get(lobbyId);
   }
