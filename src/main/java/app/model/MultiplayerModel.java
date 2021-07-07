@@ -10,35 +10,57 @@ import model.GamePhase;
 import model.Typeracer;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
-import protocol.RaceModel;
+import protocol.RaceData;
 import util.Timestamp;
 
+/** Model for Multiplayer View. */
 public class MultiplayerModel implements RaceObserver {
 
   private MultiplayerModelObserver observer;
 
   private final long raceStart;
   private final Typeracer typeracer;
-  private final RaceModel raceModel;
+  private final RaceData raceData;
   private List<PlayerUpdate> updates;
   private int notifyCounter;
 
-  public MultiplayerModel(RaceModel race) {
-    this.raceModel = race;
+  /**
+   * Create Model for Multiplayer View.
+   *
+   * @param race information about started race
+   */
+  public MultiplayerModel(RaceData race) {
+    this.raceData = race;
     this.raceStart = Timestamp.currentTimestamp();
     this.typeracer = new Typeracer(race.textToType);
     this.notifyCounter = 0;
     ApplicationState.getInstance().getClient().subscribeRaceUpdates(this);
   }
 
+  /**
+   * Set Observer.
+   *
+   * @param observer observer
+   */
   public void setObserver(MultiplayerModelObserver observer) {
     this.observer = observer;
   }
 
-  public RaceModel getRaceModel() {
-    return raceModel;
+  /**
+   * Get information about the race.
+   *
+   * @return {@link RaceData}
+   */
+  public RaceData getRaceData() {
+    return raceData;
   }
 
+  /**
+   * Call when a key was typed.
+   *
+   * @param key typed key
+   * @return {@link CheckResult}
+   */
   public CheckResult typed(String key) {
     if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
       return null;

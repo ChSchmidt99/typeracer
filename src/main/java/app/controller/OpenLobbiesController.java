@@ -15,7 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
+import protocol.LobbyData;
 
 class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbiesModelObserver {
 
@@ -23,7 +23,7 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
 
   private OpenLobbiesModel model;
 
-  @FXML ListView<LobbyModel> lobbylist;
+  @FXML ListView<LobbyData> lobbylist;
 
   @FXML Button backToStartscreen;
 
@@ -36,12 +36,12 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
   }
 
   @Override
-  public void receivedOpenLobbies(List<LobbyModel> lobbies) {
+  public void receivedOpenLobbies(List<LobbyData> lobbies) {
     addLobbiesToList(lobbies);
   }
 
   @Override
-  public void joinedLobby(LobbyModel lobby) {
+  public void joinedLobby(LobbyData lobby) {
     changeToGameLobbyScreen(lobby);
   }
 
@@ -67,7 +67,7 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
     new StartscreenController(stage, new StartScreenModel()).show();
   }
 
-  private void addLobbiesToList(List<LobbyModel> idList) {
+  private void addLobbiesToList(List<LobbyData> idList) {
     for (int i = 0; i < idList.size(); i++) {
       lobbylist.getItems().add(i, idList.get(i));
     }
@@ -77,7 +77,7 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
     lobbylist.setCellFactory(lobbyListView -> new LobbyListCell(this));
   }
 
-  private void changeToGameLobbyScreen(LobbyModel lobby) {
+  private void changeToGameLobbyScreen(LobbyData lobby) {
     try {
       new GameLobbyController(stage, new GameLobbyModel(lobby)).show();
       model.setObserver(null);

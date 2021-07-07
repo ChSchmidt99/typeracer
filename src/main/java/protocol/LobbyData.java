@@ -3,7 +3,7 @@ package protocol;
 import java.util.List;
 
 /** Json model for all lobby information. */
-public class LobbyModel {
+public class LobbyData {
 
   public String id;
 
@@ -21,7 +21,7 @@ public class LobbyModel {
    * @param name lobby name
    * @param isRunning whether or not a race is currently running
    */
-  public LobbyModel(String id, List<String> players, String name, boolean isRunning) {
+  public LobbyData(String id, List<String> players, String name, boolean isRunning) {
     this.id = id;
     this.players = players;
     this.name = name;

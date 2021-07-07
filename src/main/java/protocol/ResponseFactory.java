@@ -20,10 +20,10 @@ public class ResponseFactory {
   /**
    * Make Lobby response. Used for any lobby updates.
    *
-   * @param lobby {@link LobbyModel} of the updated lobby
+   * @param lobby {@link LobbyData} of the updated lobby
    * @return {@link Response}
    */
-  public static Response makeLobbyUpdateResponse(LobbyModel lobby) {
+  public static Response makeLobbyUpdateResponse(LobbyData lobby) {
     Response response = new Response(Response.Types.LOBBY_UPDATE);
     response.lobby = lobby;
     return response;
@@ -32,10 +32,10 @@ public class ResponseFactory {
   /**
    * Make race starting response. Used to notify users when a race is about to start.
    *
-   * @param model {@link RaceModel} of the started race
+   * @param model {@link RaceData} of the started race
    * @return {@link Response}
    */
-  public static Response makeRaceStartingResponse(RaceModel model) {
+  public static Response makeRaceStartingResponse(RaceData model) {
     Response response = new Response(Response.Types.GAME_STARTING);
     response.race = model;
     return response;
@@ -56,10 +56,10 @@ public class ResponseFactory {
   /**
    * Make Lobbies response. Used to send all open lobbies to clients.
    *
-   * @param lobbies list of {@link LobbyModel}
+   * @param lobbies list of {@link LobbyData}
    * @return {@link Response}
    */
-  public static Response makeLobbiesResponse(List<LobbyModel> lobbies) {
+  public static Response makeLobbiesResponse(List<LobbyData> lobbies) {
     Response response = new Response(Response.Types.OPEN_LOBBIES);
     response.lobbies = lobbies;
     return response;

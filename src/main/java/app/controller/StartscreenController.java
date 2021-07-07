@@ -65,6 +65,7 @@ public class StartscreenController extends Controller implements StartScreenMode
     baseGridPane.add(iconPicker, 1, 1);
   }
 
+  /** Called when user was registered successfully. */
   public void registered() {
     try {
       new OpenLobbiesController(stage, new OpenLobbiesModel()).show();

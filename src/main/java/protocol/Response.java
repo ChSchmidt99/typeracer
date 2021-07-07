@@ -22,11 +22,11 @@ public class Response {
 
   public String userId;
 
-  public LobbyModel lobby;
+  public LobbyData lobby;
 
-  public RaceModel race;
+  public RaceData race;
 
-  public List<LobbyModel> lobbies;
+  public List<LobbyData> lobbies;
 
   public List<PlayerUpdate> playerUpdates;
 

@@ -10,8 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import protocol.LobbyModel;
-import protocol.RaceModel;
+import protocol.LobbyData;
+import protocol.RaceData;
 
 class GameLobbyController extends Controller implements GameLobbyModelObserver {
 
@@ -64,7 +64,7 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
   }
 
   @Override
-  public void startedRace(RaceModel race) {
+  public void startedRace(RaceData race) {
     try {
       new MultiplayerController(stage, new MultiplayerModel(race)).show();
     } catch (IOException e) {
@@ -72,7 +72,7 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
     }
   }
 
-  private void displayLobby(LobbyModel lobby) {
+  private void displayLobby(LobbyData lobby) {
     userlist.getItems().clear();
     userlist.getItems().addAll(lobby.players);
     this.startButton.setDisable(lobby.isRunning);

@@ -1,6 +1,6 @@
 package backend;
 
-import protocol.PlayerModel;
+import protocol.PlayerData;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 
@@ -59,8 +59,8 @@ public class Player {
     return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());
   }
 
-  PlayerModel getModel() {
-    return new PlayerModel(this.userId, this.name, this.iconId);
+  PlayerData getModel() {
+    return new PlayerData(this.userId, this.name, this.iconId);
   }
 
   private long raceDuration() {
