@@ -16,7 +16,7 @@
          <String fx:value="title" />
          <String fx:value="ingametitle" />
       </styleClass></Label>
-   <VBox fx:id="userList" maxWidth="720.0" spacing="15.0" styleClass="ingameuserlist" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+   <VBox fx:id="userList" maxHeight="300.0" maxWidth="720.0" minHeight="50.0" prefHeight="100.0" spacing="15.0" styleClass="ingameuserlist" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
       <GridPane.margin>
          <Insets top="40.0" />
       </GridPane.margin></VBox>
@@ -33,7 +33,7 @@
         <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="1080.0" minHeight="300.0" valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints maxHeight="300.0" minHeight="100.0" prefHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints maxHeight="600.0" minHeight="100.0" prefHeight="100.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="200.0" minHeight="100.0" prefHeight="100.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" valignment="TOP" />

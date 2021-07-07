@@ -184,7 +184,7 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
     label.setStyle(
-        "-fx-font-size: 25px; -fx-background-color: #ffffff; "
+        "-fx-font-size: 20px; -fx-background-color: #ffffff; "
             + "-fx-text-fill: #000000; -fx-min-width: 150px;");
     return label;
   }
@@ -194,10 +194,10 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
       colorAlternateCounter++;
       if (colorAlternateCounter % 2 == 0) {
         return new RaceTrack(
-            IconManager.iconForId(user.iconId), 450, 25, Color.web("#fe55f7"));
+            IconManager.iconForId(user.iconId), 450, 20, Color.web("#fe55f7"));
       } else {
         return new RaceTrack(
-            IconManager.iconForId(user.iconId), 450, 25, Color.web("#62fbf7"));
+            IconManager.iconForId(user.iconId), 450, 20, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();

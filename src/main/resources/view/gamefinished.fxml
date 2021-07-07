@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxWidth="90.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Finished" textAlignment="CENTER" wrapText="true" />
    <VBox alignment="CENTER" maxWidth="900.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <children>
@@ -20,13 +19,9 @@
             <children>
                <Label alignment="CENTER" contentDisplay="BOTTOM" styleClass="first" text="1st">
                   <graphic>
-                     <Label fx:id="firstPlace" contentDisplay="TOP" styleClass="first" text="Username">
+                     <Label fx:id="firstPlace" contentDisplay="TOP" styleClass="first">
                         <graphic>
-                           <ImageView fx:id="firstPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@player_icons/regedit.PNG" />
-                              </image>
-                           </ImageView>
+                           <ImageView fx:id="firstPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                         </graphic>
                         <padding>
                            <Insets top="10.0" />
@@ -48,13 +43,9 @@
                         <children>
                            <Label alignment="CENTER" contentDisplay="RIGHT" styleClass="second" text="2nd">
                               <graphic>
-                                 <Label fx:id="secondPlace" contentDisplay="TOP" styleClass="second" text="Username2">
+                                 <Label fx:id="secondPlace" contentDisplay="TOP" styleClass="second">
                                     <graphic>
-                                       <ImageView fx:id="secondPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                          <image>
-                                             <Image url="@player_icons/print.PNG" />
-                                          </image>
-                                       </ImageView>
+                                       <ImageView fx:id="secondPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                     </graphic>
                                     <padding>
                                        <Insets left="20.0" />
@@ -72,13 +63,9 @@
                         <children>
                            <Label alignment="CENTER" styleClass="third" text="3rd">
                               <graphic>
-                                 <Label fx:id="thirdPlace" alignment="CENTER_RIGHT" contentDisplay="TOP" styleClass="third" text="Username3">
+                                 <Label fx:id="thirdPlace" alignment="CENTER_RIGHT" contentDisplay="TOP" styleClass="third">
                                     <graphic>
-                                       <ImageView fx:id="thirdPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                          <image>
-                                             <Image url="@player_icons/solitaire.PNG" />
-                                          </image>
-                                       </ImageView>
+                                       <ImageView fx:id="thirdPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                     </graphic>
                                     <padding>
                                        <Insets right="20.0" />
