@@ -1,5 +1,6 @@
 package app.controller;
 
+import java.io.IOException;
 import java.util.Objects;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

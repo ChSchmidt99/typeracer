@@ -35,12 +35,6 @@ public class StartscreenController extends Controller implements StartScreenMode
     addIconPicker();
   }
 
-  /*    IconPicker iconPicker = new IconPicker(4);
-    iconPicker.setAlignment(Pos.CENTER);
-    iconPicker.setHgap(40);
-    iconPicker.setVgap(20);
-    baseGridPane.add(iconPicker, 1, 1);*/
-
   @FXML
   private void switchToLobbyBrowser() {
     try {
@@ -68,7 +62,7 @@ public class StartscreenController extends Controller implements StartScreenMode
     iconPicker.setAlignment(Pos.CENTER);
     iconPicker.setHgap(40);
     iconPicker.setVgap(20);
-    baseGridPane.add(iconPicker, 0, 3);
+    baseGridPane.add(iconPicker, 1, 1);
   }
 
   public void registered() {

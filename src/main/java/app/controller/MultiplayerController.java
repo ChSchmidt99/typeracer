@@ -109,15 +109,21 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   private void setupTracks(List<PlayerModel> players) {
     for (PlayerModel player : players) {
       HBox userHbox = new HBox();
+      VBox userVbox = new VBox();
       userHbox.setSpacing(20);
       wpmCreator(player.userId);
-      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7;");
-      userHbox.getChildren().add(userLabelCreator(player.name));
-      userHbox.getChildren().add(wpmLabels.get(player.userId));
-      userList.getChildren().add(userHbox);
       RaceTrack track = trackCreator(player);
-      userList.getChildren().add(track);
+      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
+
+      userVbox.getChildren().add(userLabelCreator(player.name));
+      userVbox.getChildren().add(wpmLabels.get(player.userId));
+
+      userHbox.getChildren().add(userVbox);
+      userHbox.getChildren().add(track);
+
+      userList.getChildren().add(userHbox);
       userProgress.put(player.userId, track);
+
     }
   }
 
@@ -174,7 +180,7 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   private void wpmCreator(String userId) {
     Label label = new Label();
-    label.setText("Wpm: 0");
+    label.setText("WPM: 0");
     label.setStyle("-fx-text-fill:#ffffff;");
     wpmLabels.put(userId, label);
   }
