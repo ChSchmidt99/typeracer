@@ -57,6 +57,10 @@ public class RequestFactory {
     return new Request(Request.Types.GET_LOBBIES);
   }
 
+  public static Request makePreviousRaceResultRequest() {
+    return new Request(Request.Types.PREV_RACE_RESULT);
+  }
+
   /**
    * Make a is ready {@link Request} used to set player to be ready or not.
    *

@@ -1,18 +1,23 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import protocol.PlayerData;
+
+import protocol.RaceResult;
+import protocol.User;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
 import protocol.Response;
 import protocol.ResponseFactory;
+import protocol.UserResult;
 import server.PushService;
 import util.Logger;
 import util.Timestamp;
@@ -57,9 +62,9 @@ class Race {
   }
 
   RaceData getModel() {
-    List<PlayerData> out = new ArrayList<>();
+    List<User> out = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
-      out.add(entry.getValue().getModel());
+      out.add(entry.getValue().getUser());
     }
     return new RaceData(this.textToType, out);
   }
@@ -82,6 +87,23 @@ class Race {
 
   void removePlayer(String connectionId) {
     this.players.remove(connectionId);
+  }
+
+  RaceResult getRaceResult() {
+    List<Player> p = new ArrayList<>();
+    for (Map.Entry<String, Player> entry: players.entrySet()) {
+      p.add(entry.getValue());
+    }
+    p.sort(Comparator.comparing(Player::raceDuration));
+    List<UserResult> classification = new ArrayList<>();
+    for (int i = 0; i < p.size(); i++) {
+      Player player = p.get(i);
+      UserResult result = new UserResult(player.getUser(), player.getWpm(),
+              player.getMistakes(), i+1);
+      classification.add(result);
+    }
+    long duration = p.get(0).raceDuration();
+    return new RaceResult(duration, classification);
   }
 
   private void checkeredFlag() {

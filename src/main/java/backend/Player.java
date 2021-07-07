@@ -1,6 +1,6 @@
 package backend;
 
-import protocol.PlayerData;
+import protocol.User;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 
@@ -15,7 +15,7 @@ public class Player {
   private float progress;
   private long raceStartTime;
   private long lastUpdateTime;
-  // private int mistakes;
+  private int mistakes;
 
   Player(String userId, String connectionId, String name, String iconId) {
     this.userId = userId;
@@ -26,7 +26,7 @@ public class Player {
     this.progress = 0;
     this.raceStartTime = 0;
     this.lastUpdateTime = 0;
-    // this.mistakes = 0;
+    this.mistakes = 0;
   }
 
   String getConnectionId() {
@@ -52,18 +52,26 @@ public class Player {
     this.lastUpdateTime = snapshot.timestamp;
     this.wpm = wordsPerMinute(snapshot.progress, this.raceDuration());
     this.progress = (float) snapshot.progress / textLength;
-    // this.mistakes = snapshot.mistakes;
+    this.mistakes = snapshot.mistakes;
   }
 
   PlayerUpdate getUpdate() {
     return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());
   }
 
-  PlayerData getModel() {
-    return new PlayerData(this.userId, this.name, this.iconId);
+  int getWpm() {
+    return wpm;
   }
 
-  private long raceDuration() {
+  int getMistakes() {
+    return this.mistakes;
+  }
+
+  User getUser() {
+    return new User(this.userId, this.name, this.iconId);
+  }
+
+  long raceDuration() {
     return this.lastUpdateTime - raceStartTime;
   }
 

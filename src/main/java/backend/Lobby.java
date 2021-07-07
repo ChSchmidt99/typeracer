@@ -21,6 +21,7 @@ class Lobby implements RaceFinishedListener {
   private final Database database;
   private final String name;
   private static final int maxPlayers = 4;
+  private List<Race> finishedRaces;
   private Race race;
 
   Lobby(String lobbyId, String name, Database database, PushService pushService) {
@@ -28,12 +29,16 @@ class Lobby implements RaceFinishedListener {
     this.lobbyId = lobbyId;
     this.pushService = pushService;
     this.database = database;
+    this.finishedRaces = new ArrayList<>();
     this.name = name;
   }
 
   @Override
   public void raceFinished() {
     broadcastLobbyUpdate();
+    finishedRaces.add(race);
+    Response resultResponse = ResponseFactory.makeRaceResultResponse(race.getRaceResult());
+    broadcast(resultResponse);
   }
 
   void join(String connectionId, String userId, String iconId) {
@@ -111,6 +116,16 @@ class Lobby implements RaceFinishedListener {
 
   void sendUpdate(String connectionId) {
     Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());
+    pushService.sendResponse(connectionId, response);
+  }
+
+  void sendPreviousRaceResult(String connectionId) {
+    if (finishedRaces.size() == 0) {
+      Logger.logError("Tried retrieving non existing previous race");
+      return;
+    }
+    Race race = finishedRaces.get(finishedRaces.size() - 1);
+    Response response = ResponseFactory.makeRaceResultResponse(race.getRaceResult());
     pushService.sendResponse(connectionId, response);
   }
 

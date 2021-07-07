@@ -89,6 +89,11 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
+  public void requestPreviousRaceResult() {
+    sendRequest(RequestFactory.makePreviousRaceResultRequest());
+  }
+
+  @Override
   public void subscribe(ClientObserver observer) {
     responseHandler.subscribe(observer);
   }
@@ -126,6 +131,16 @@ public class ClientImpl implements Closeable, Client {
   @Override
   public void unsubscribeErrors(ErrorObserver observer) {
     responseHandler.unsubscribeErrors(observer);
+  }
+
+  @Override
+  public void subscribeResults(RaceResultObserver observer) {
+    responseHandler.subscribeResults(observer);
+  }
+
+  @Override
+  public void unsubscribeResults(RaceResultObserver observer) {
+    responseHandler.unsubscribeResults(observer);
   }
 
   private void sendRequest(Request request) {

@@ -4,6 +4,8 @@ import app.ApplicationState;
 import client.Client;
 import client.RaceObserver;
 import java.util.List;
+
+import client.RaceResultObserver;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -15,10 +17,11 @@ import model.Typeracer;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
+import protocol.RaceResult;
 import util.Timestamp;
 
 /** Model for Multiplayer View. */
-public class MultiplayerModel implements RaceObserver {
+public class MultiplayerModel implements RaceObserver, RaceResultObserver {
 
   private MultiplayerModelObserver observer;
 
@@ -42,6 +45,7 @@ public class MultiplayerModel implements RaceObserver {
     this.notifyCounter = 0;
     ApplicationState.getInstance().getClient().subscribeRaceUpdates(this);
     timer();
+    ApplicationState.getInstance().getClient().subscribeResults(this);
   }
 
   /**
@@ -83,6 +87,7 @@ public class MultiplayerModel implements RaceObserver {
 
   public void leaveRace() {
     ApplicationState.getInstance().getClient().unsubscribeRaceUpdates(this);
+    ApplicationState.getInstance().getClient().unsubscribeResults(this);
   }
 
   /*
@@ -144,5 +149,12 @@ public class MultiplayerModel implements RaceObserver {
         },
         60 * 60,
         TimeUnit.SECONDS);
+  }
+
+  @Override
+  public void receivedRaceResult(RaceResult result) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedRaceResult(result));
+    }
   }
 }

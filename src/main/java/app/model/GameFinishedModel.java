@@ -6,11 +6,18 @@ import client.LobbyObserver;
 import javafx.application.Platform;
 import protocol.LobbyData;
 import protocol.RaceData;
+import protocol.RaceResult;
 
 /** Model for GameFinished View. */
 public class GameFinishedModel implements LobbyObserver {
 
   private GameFinishedModelObserver observer;
+
+  private RaceResult result;
+
+  public GameFinishedModel(RaceResult result) {
+    this.result = result;
+  }
 
   /**
    * Set Observer.
@@ -19,6 +26,15 @@ public class GameFinishedModel implements LobbyObserver {
    */
   public void setObserver(GameFinishedModelObserver observer) {
     this.observer = observer;
+  }
+
+  /**
+   * Get result of previous race.
+   *
+   * @return {@link RaceResult}
+   */
+  public RaceResult getRaceResult() {
+    return this.result;
   }
 
   /** Request a lobby updated. */

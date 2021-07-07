@@ -1,5 +1,7 @@
 package app.model;
 
+import protocol.RaceResult;
+
 /** Observer for MultiplayerModel. */
 public interface MultiplayerModelObserver {
 
@@ -8,4 +10,6 @@ public interface MultiplayerModelObserver {
   void checkeredFlag(long raceEndTimestamp);
 
   void updatedTimer(long time);
+
+  void receivedRaceResult(RaceResult result);
 }

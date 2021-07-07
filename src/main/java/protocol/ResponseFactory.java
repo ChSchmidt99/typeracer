@@ -89,4 +89,10 @@ public class ResponseFactory {
     response.raceStop = raceStop;
     return response;
   }
+
+  public static Response makeRaceResultResponse(RaceResult result) {
+    Response response = new Response(Response.Types.RACE_RESULT);
+    response.raceResult = result;
+    return response;
+  }
 }

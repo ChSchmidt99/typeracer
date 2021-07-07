@@ -1,7 +1,7 @@
 package protocol;
 
-/** Representing JSON Model of a Player. */
-public class PlayerData {
+/** Representing JSON Model of a User. */
+public class User {
 
   public final String name;
 
@@ -16,7 +16,7 @@ public class PlayerData {
    * @param name of user
    * @param iconId local Icon Id
    */
-  public PlayerData(String userId, String name, String iconId) {
+  public User(String userId, String name, String iconId) {
     this.name = name;
     this.userId = userId;
     this.iconId = iconId;
