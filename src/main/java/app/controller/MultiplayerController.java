@@ -5,6 +5,7 @@ import app.elements.RaceTrack;
 import client.Client;
 import client.RaceObserver;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ class MultiplayerController extends Controller implements RaceObserver {
    * @param client for server communication
    * @param userId id of user
    */
-  public MultiplayerController(Stage stage, RaceModel race, Client client, String userId) {
+  public MultiplayerController(Stage stage, RaceModel race, Client client, String userId) throws IOException {
     super(stage, FXMLPATH);
     this.client = client;
     this.userId = userId;
@@ -206,6 +207,7 @@ class MultiplayerController extends Controller implements RaceObserver {
 
   @Override
   public void receivedCheckeredFlag(long raceStop) {
+    System.out.println("Received Checkered Flag");
     Platform.runLater(
         () -> {
           SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
@@ -214,7 +216,11 @@ class MultiplayerController extends Controller implements RaceObserver {
           checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
           checkeredFlagLabel.setDisable(false);
           checkeredFlagLabel.setText("Race Ending: " + stopTime);
-          new GameFinishedController(stage, client, userId);
+          try{
+            new GameFinishedController(stage, client, userId).show();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         });
   }
 }

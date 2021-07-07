@@ -1,5 +1,6 @@
 package app.controller;
 
+import java.io.IOException;
 import java.util.Objects;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,26 +11,20 @@ import javafx.stage.Stage;
 abstract class Controller {
 
   protected Stage stage;
+  private final Parent root;
   private static final String ERROR = "Failed to load .fxml file";
   private static final String ALERT_HEADER = "Error";
 
-  Controller(Stage stage, String fxmlpath) {
-    try {
-      this.stage = stage;
-      FXMLLoader loader =
-          new FXMLLoader(
-              (Objects.requireNonNull(
-                  getClass().getProtectionDomain().getClassLoader().getResource(fxmlpath))));
-      loader.setController(this);
-      Parent root = loader.load();
+  Controller(Stage stage, String fxmlpath) throws IOException {
+    this.stage = stage;
+    FXMLLoader loader =
+        new FXMLLoader(
+            (Objects.requireNonNull(
+                getClass().getProtectionDomain().getClassLoader().getResource(fxmlpath))));
+    loader.setController(this) ;
+    this.root = loader.load();
+    if (stage.getScene() == null) {
       stage.setScene(new Scene(root, 1280, 720));
-      stage.setMaxHeight(1080);
-      stage.setMaxWidth(1920);
-      stage.setMinHeight(540);
-      stage.setMinWidth(960);
-    } catch (Exception e) {
-      System.out.println(ERROR);
-      e.printStackTrace();
     }
   }
 
@@ -49,6 +44,7 @@ abstract class Controller {
    * Displays current stage.
    */
   public void show() {
+    stage.getScene().setRoot(root);
     stage.show();
   }
 }

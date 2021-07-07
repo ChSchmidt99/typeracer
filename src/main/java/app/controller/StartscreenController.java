@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -33,7 +34,7 @@ public class StartscreenController extends Controller implements ClientObserver 
    *
    * @param stage JavaFx stage to host the view in
    */
-  public StartscreenController(Stage stage) {
+  public StartscreenController(Stage stage) throws IOException {
     super(stage, FXMLPATH);
     IconPicker iconPicker = new IconPicker(4);
     iconPicker.setAlignment(Pos.CENTER);
@@ -71,14 +72,23 @@ public class StartscreenController extends Controller implements ClientObserver 
 
   @FXML
   private void switchToSingleplayer() {
-    new SingleplayerController(stage);
+    try {
+      new SingleplayerController(stage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
   public void registered(String userId) {
     Platform.runLater(
         () -> {
-          new OpenLobbiesController(stage, client, userId);
+          try {
+            client.unsubscribe(this);
+            new OpenLobbiesController(stage, client, userId).show();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         });
   }
 

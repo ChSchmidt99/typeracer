@@ -101,7 +101,7 @@ class ResponseHandler implements Closeable {
       case Response.Types.ERROR:
         errorObservers.forEach(
             (observer) -> {
-              observer.receivedError(response.message);
+              observer.receivedError("SERVER ERROR: " + response.message);
             });
         break;
       case Response.Types.GAME_STARTING:
