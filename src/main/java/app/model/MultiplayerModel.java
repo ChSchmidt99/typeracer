@@ -4,6 +4,10 @@ import app.ApplicationState;
 import client.Client;
 import client.RaceObserver;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import model.CheckResult;
 import model.GamePhase;
@@ -23,6 +27,8 @@ public class MultiplayerModel implements RaceObserver {
   private final RaceData raceData;
   private List<PlayerUpdate> updates;
   private int notifyCounter;
+  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+  private Boolean gameRunning = true;
 
   /**
    * Create Model for Multiplayer View.
@@ -35,6 +41,7 @@ public class MultiplayerModel implements RaceObserver {
     this.typeracer = new Typeracer(race.textToType);
     this.notifyCounter = 0;
     ApplicationState.getInstance().getClient().subscribeRaceUpdates(this);
+    timer();
   }
 
   /**
@@ -115,5 +122,27 @@ public class MultiplayerModel implements RaceObserver {
     if (observer != null) {
       Platform.runLater(() -> observer.checkeredFlag(raceStop));
     }
+  }
+
+  public void timer() {
+    final Runnable timer =
+        new Runnable() {
+          public void run() {
+            long time = Timestamp.currentTimestamp() - raceStart;
+            if (observer != null) {
+              observer.updatedTimer(time);
+            }
+          }
+        };
+    final ScheduledFuture<?> timerHandle =
+        scheduler.scheduleAtFixedRate(timer, 0, 1, TimeUnit.SECONDS);
+    scheduler.schedule(
+        new Runnable() {
+          public void run() {
+            timerHandle.cancel(true);
+          }
+        },
+        60 * 60,
+        TimeUnit.SECONDS);
   }
 }

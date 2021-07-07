@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -44,6 +45,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @FXML Label checkeredFlagLabel;
 
+  @FXML Label timerLabel;
+
   /**
    * Controller for Multiplayer game screen.
    *
@@ -74,8 +77,12 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     String stopTime = format.format(end);
     checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
     checkeredFlagLabel.setDisable(false);
-    checkeredFlagLabel.setText("Race Ending: " + stopTime);
-    openGameOverScreen();
+    checkeredFlagLabel.setText("End: " + stopTime);
+  }
+
+  @Override
+  public void updatedTimer(long time) {
+    Platform.runLater(() -> timerLabel.setText("Time: " + time + "s"));
   }
 
   private void openGameOverScreen() {
@@ -112,7 +119,6 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     for (PlayerData player : players) {
 
       VBox userVbox = new VBox();
-
       wpmCreator(player.userId);
       userVbox.getChildren().add(userLabelCreator(player.name));
       userVbox.getChildren().add(wpmLabels.get(player.userId));

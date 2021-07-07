@@ -5,11 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" text="TypeRacer" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="4">
       <styleClass>
          <String fx:value="title" />
@@ -21,15 +22,20 @@
       </GridPane.margin></VBox>
    <TextFlow fx:id="textToType" maxWidth="720.0" styleClass="textToType" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    <TextFlow fx:id="enteredText" maxWidth="720.0" styleClass="enteredtext" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER" />
-   <Label fx:id="checkeredFlagLabel" styleClass="raceOverTimer" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   <HBox maxWidth="720.0" prefHeight="30.0" prefWidth="720.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+      <children>
+         <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="TOP" prefWidth="350.0" styleClass="timeDisplay" text="Time: 0 s" textAlignment="CENTER" />
+         <Label fx:id="checkeredFlagLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="350.0" styleClass="timeDisplay" text="End: " textAlignment="CENTER" />
+      </children>
+   </HBox>
     <columnConstraints>
       <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
         <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="1080.0" minHeight="300.0" valignment="CENTER" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="600.0" minHeight="100.0" prefHeight="100.0" />
-      <RowConstraints maxHeight="200.0" minHeight="100.0" prefHeight="100.0" />
-      <RowConstraints minHeight="40.0" />
+        <RowConstraints maxHeight="1080.0" minHeight="300.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints maxHeight="600.0" minHeight="100.0" prefHeight="100.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="200.0" minHeight="100.0" prefHeight="100.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" valignment="TOP" />
     </rowConstraints>
 </GridPane>
