@@ -20,7 +20,7 @@ class Lobby implements RaceFinishedListener {
   private final PushService pushService;
   private final Database database;
   private final String name;
-  private final int maxPlayers = 4;
+  private static final int maxPlayers = 4;
   private Race race;
 
   Lobby(String lobbyId, String name, Database database, PushService pushService) {

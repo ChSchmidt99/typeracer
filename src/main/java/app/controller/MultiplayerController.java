@@ -111,7 +111,6 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   private void setupTracks(List<PlayerData> players) {
     for (PlayerData player : players) {
       HBox userHbox = new HBox();
-      VBox userVbox = new VBox();
       userHbox.setSpacing(20);
       wpmCreator(player.userId);
       wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7;");
@@ -119,8 +118,11 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
       userHbox.getChildren().add(wpmLabels.get(player.userId));
       userList.getChildren().add(userHbox);
       RaceTrack track = trackCreator(player);
-      wpmLabels.get(player.userId).setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
+      wpmLabels
+          .get(player.userId)
+          .setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
 
+      VBox userVbox = new VBox();
       userVbox.getChildren().add(userLabelCreator(player.name));
       userVbox.getChildren().add(wpmLabels.get(player.userId));
 
@@ -129,7 +131,6 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
       userList.getChildren().add(userHbox);
       userProgress.put(player.userId, track);
-
     }
   }
 
@@ -166,17 +167,21 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   private Label userLabelCreator(String user) {
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
-    label.setStyle("-fx-font-size: 25px; -fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-min-width: 150px;");
+    label.setStyle(
+        "-fx-font-size: 25px; -fx-background-color: #ffffff; "
+            + "-fx-text-fill: #000000; -fx-min-width: 150px;");
     return label;
   }
 
   private RaceTrack trackCreator(PlayerData playerData) {
     try {
       colorAlternateCounter++;
-      if (colorAlternateCounter%2 == 0) {
-        return new RaceTrack(IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#fe55f7"));
+      if (colorAlternateCounter % 2 == 0) {
+        return new RaceTrack(
+            IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#fe55f7"));
       } else {
-        return new RaceTrack(IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#62fbf7"));
+        return new RaceTrack(
+            IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
