@@ -69,7 +69,6 @@ public class StartscreenController extends Controller implements StartScreenMode
   public void registered() {
     try {
       new OpenLobbiesController(stage, new OpenLobbiesModel()).show();
-      model.setObserver(null);
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -61,9 +61,6 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
 
   @FXML
   private void backToStartscreen() throws IOException {
-    Client client = ApplicationState.getInstance().getClient();
-    client.close();
-    ApplicationState.getInstance().setClient(null);
     new StartscreenController(stage, new StartScreenModel()).show();
   }
 

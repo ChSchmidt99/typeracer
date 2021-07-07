@@ -15,6 +15,11 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
 
   private OpenLobbiesModelObserver observer;
 
+  public OpenLobbiesModel() {
+    ApplicationState.getInstance().getClient().subscribeLobbyUpdates(this);
+    ApplicationState.getInstance().getClient().subscribe(this);
+  }
+
   /**
    * Set Observer.
    *

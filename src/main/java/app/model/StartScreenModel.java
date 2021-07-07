@@ -34,11 +34,11 @@ public class StartScreenModel implements ClientObserver {
 
   @Override
   public void registered(String userId) {
+    ApplicationState.getInstance().getClient().unsubscribe(this);
     ApplicationState.getInstance().setUserId(userId);
     if (observer != null) {
       Platform.runLater(() -> observer.registered());
     }
-    ApplicationState.getInstance().getClient().unsubscribe(this);
   }
 
   @Override

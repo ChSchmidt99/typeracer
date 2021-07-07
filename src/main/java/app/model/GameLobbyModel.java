@@ -22,7 +22,7 @@ public class GameLobbyModel implements LobbyObserver {
   /**
    * Set Observer.
    *
-   * @param observer ovserver
+   * @param observer observer
    */
   public void setObserver(GameLobbyModelObserver observer) {
     this.observer = observer;
