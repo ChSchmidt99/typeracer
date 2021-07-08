@@ -21,11 +21,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import typeracer.CheckResult;
-import protocol.RaceResult;
-import protocol.User;
 import protocol.PlayerUpdate;
+import protocol.RaceResult;
+import protocol.UserData;
 import protocol.UserResult;
+import typeracer.CheckResult;
 import util.Timestamp;
 
 /** Handles all gui functionality associated with gameplay. */
@@ -76,8 +76,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   public void receivedRaceResult(RaceResult result) {
     openGameOverScreen(result);
     System.out.println("Duration: " + result.duration);
-    for (UserResult res: result.classification) {
-      System.out.println(res.user.name);
+    for (UserResult res : result.classification) {
+      System.out.println(res.userData.name);
       System.out.println(res.wpm);
     }
   }
@@ -128,8 +128,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   /*
    * Adds the user list along with progress bars and wpm to game screen.
    */
-  private void setupTracks(List<User> players) {
-    for (User player : players) {
+  private void setupTracks(List<UserData> players) {
+    for (UserData player : players) {
 
       VBox userVbox = new VBox();
       wpmCreator(player.userId);
@@ -190,15 +190,13 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     return label;
   }
 
-  private RaceTrack trackCreator(User user) {
+  private RaceTrack trackCreator(UserData userData) {
     try {
       colorAlternateCounter++;
       if (colorAlternateCounter % 2 == 0) {
-        return new RaceTrack(
-            IconManager.iconForId(user.iconId), 450, 20, Color.web("#fe55f7"));
+        return new RaceTrack(IconManager.iconForId(userData.iconId), 450, 20, Color.web("#fe55f7"));
       } else {
-        return new RaceTrack(
-            IconManager.iconForId(user.iconId), 450, 20, Color.web("#62fbf7"));
+        return new RaceTrack(IconManager.iconForId(userData.iconId), 450, 20, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();

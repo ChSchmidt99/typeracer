@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import typeracer.GamePhase;
 import typeracer.TextToType;
 import typeracer.Typeracer;
-import protocol.User;
+import protocol.UserData;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
@@ -61,7 +61,7 @@ class MultiplayerController extends Controller implements RaceObserver {
 <span class="nc" id="L61">  }</span>
 
   /**
-   * Keylistener for user input. Checks input, colors text green if correct, red if not in method
+   * Keylistener for userData input. Checks input, colors text green if correct, red if not in method
    * charLabel.
    */
   private void setupKeyHandler() {
@@ -79,7 +79,7 @@ class MultiplayerController extends Controller implements RaceObserver {
 <span class="nc" id="L79">            });</span>
 <span class="nc" id="L80">  }</span>
 
-  /** Creates labels for user input which will be added to hbox enteredText. */
+  /** Creates labels for userData input which will be added to hbox enteredText. */
   private Label charLabelCreator(boolean charCorrect, String letter) {
 <span class="nc" id="L84">    Label label = new Label(letter);</span>
 <span class="nc bnc" id="L85" title="All 2 branches missed.">    if (charCorrect) {</span>
@@ -115,7 +115,7 @@ class MultiplayerController extends Controller implements RaceObserver {
 <span class="nc" id="L115">  }</span>
 
   /*
-   * Adds the user list along with progress bars and wpm to game screen.
+   * Adds the userData list along with progress bars and wpm to game screen.
    */
   private void setUsers() {
 <span class="nc" id="L121">    System.out.println(players);</span>
@@ -126,8 +126,8 @@ class MultiplayerController extends Controller implements RaceObserver {
 <span class="nc" id="L126">    }</span>
 <span class="nc" id="L127">  }</span>
 
-  private Label userLabelCreator(String user) {
-<span class="nc" id="L130">    Label label = new Label(user);</span>
+  private Label userLabelCreator(String userData) {
+<span class="nc" id="L130">    Label label = new Label(userData);</span>
 <span class="nc" id="L131">    label.setTextFill(Color.WHITE);</span>
 <span class="nc" id="L132">    return label;</span>
   }

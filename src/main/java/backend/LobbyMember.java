@@ -3,50 +3,38 @@ package backend;
 /** Used to represent a User connected to a lobby. */
 class LobbyMember {
 
-  private boolean isReady;
-  // TODO: Collect Userinfo in abstract class
-  private final String userId;
   private final String connectionId;
-  private final String name;
-  private final String iconId;
-  private boolean inRace;
+  private final User user;
 
   /**
    * Create a new LobbyMember.
    *
-   * @param userId id of user
-   * @param name name of user
+   * @param connectionId id of connection
+   * @param user {@link User}
    */
-  LobbyMember(String userId, String connectionId, String name, String iconId) {
-    this.isReady = false;
-    this.userId = userId;
+  LobbyMember(String connectionId, User user) {
     this.connectionId = connectionId;
-    this.name = name;
-    this.iconId = iconId;
-    this.inRace = false;
+    this.user = user;
   }
 
-  void setIsReady(boolean isReady) {
-    this.isReady = isReady;
-  }
-
-  String getName() {
-    return name;
-  }
-
-  boolean getIsReady() {
-    return isReady;
+  User getUser() {
+    return user;
   }
 
   Player toPlayer() {
-    return new Player(this.userId, this.connectionId, this.name, this.iconId);
+    this.user.setState(User.State.IN_RACE);
+    return new Player(this.connectionId, this.user);
   }
 
-  boolean isInRace() {
-    return inRace;
+  boolean isReady() {
+    return user.getState().equals(User.State.READY);
   }
 
-  void setInRace(boolean isInRace) {
-    this.inRace = isInRace;
+  void setReady(boolean isReady) {
+    if (isReady) {
+      this.user.setState(User.State.READY);
+    } else {
+      this.user.setState(User.State.NOT_READY);
+    }
   }
 }

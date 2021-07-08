@@ -1,13 +1,15 @@
 package protocol;
 
 /** Representing JSON Model of a User. */
-public class User {
+public class UserData {
 
   public final String name;
 
   public final String userId;
 
   public final String iconId;
+
+  public final String state;
 
   /**
    * Create new user Model.
@@ -16,9 +18,10 @@ public class User {
    * @param name of user
    * @param iconId local Icon Id
    */
-  public User(String userId, String name, String iconId) {
+  public UserData(String userId, String name, String iconId, String state) {
     this.name = name;
     this.userId = userId;
     this.iconId = iconId;
+    this.state = state;
   }
 }

@@ -3,21 +3,20 @@ package app.model;
 import app.ApplicationState;
 import client.Client;
 import client.RaceObserver;
-import java.util.List;
-
 import client.RaceResultObserver;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
-import typeracer.CheckResult;
-import typeracer.GamePhase;
-import typeracer.Typeracer;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
 import protocol.RaceResult;
+import typeracer.CheckResult;
+import typeracer.GamePhase;
+import typeracer.Typeracer;
 import util.Timestamp;
 
 /** Model for Multiplayer View. */

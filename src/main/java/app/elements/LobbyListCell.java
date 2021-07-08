@@ -76,10 +76,14 @@ public class LobbyListCell extends ListCell<LobbyData> {
   }
 
   private void setContent(LobbyData model) {
-    joinButton.setDisable(model.isRunning);
+    joinButton.setDisable(false);
     joinButton.setVisible(true);
     lobbyNameLabel.setText(model.name);
     statusLabel.setText("Players: " + model.players.size());
-    idLabel.setText("ID: " + model.id);
+    if (model.isRunning) {
+      idLabel.setText("In Race");
+    } else {
+      idLabel.setText("In Lobby");
+    }
   }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
+import protocol.UserData;
 import server.PushService;
 import util.Logger;
 
@@ -21,7 +22,7 @@ class Lobby implements RaceFinishedListener {
   private final Database database;
   private final String name;
   private static final int maxPlayers = 4;
-  private List<Race> finishedRaces;
+  private final List<Race> finishedRaces;
   private Race race;
 
   Lobby(String lobbyId, String name, Database database, PushService pushService) {
@@ -45,7 +46,7 @@ class Lobby implements RaceFinishedListener {
     try {
       if (members.size() < maxPlayers) {
         String username = this.database.getUsername(userId);
-        LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
+        LobbyMember lobbyMember = new LobbyMember(connectionId, new User(userId, username, iconId));
         members.put(connectionId, lobbyMember);
         broadcastLobbyUpdate();
       } else {
@@ -64,7 +65,7 @@ class Lobby implements RaceFinishedListener {
       return;
     }
     LobbyMember member = members.get(connectionId);
-    if (member.isInRace()) {
+    if (member.getUser().getState().equals(User.State.IN_RACE)) {
       this.race.removePlayer(connectionId);
     }
     members.remove(connectionId);
@@ -84,15 +85,16 @@ class Lobby implements RaceFinishedListener {
   }
 
   LobbyData lobbyModel() {
-    List<String> playerNames = new ArrayList<>();
+    List<UserData> playerData = new ArrayList<>();
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      playerNames.add(entry.getValue().getName());
+      playerData.add(entry.getValue().getUser().getUserData());
     }
-    return new LobbyData(lobbyId, playerNames, name, isRunning());
+    return new LobbyData(lobbyId, playerData, name, isRunning());
   }
 
   void setPlayerReady(String connectionId, boolean isReady) {
-    members.get(connectionId).setIsReady(isReady);
+    members.get(connectionId).setReady(isReady);
+    broadcastLobbyUpdate();
   }
 
   boolean isRunning() {
@@ -132,7 +134,7 @@ class Lobby implements RaceFinishedListener {
   private Map<String, Player> getReadyPlayers() {
     Map<String, Player> readyPlayers = new HashMap<>();
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      if (entry.getValue().getIsReady()) {
+      if (entry.getValue().isReady()) {
         LobbyMember member = entry.getValue();
         readyPlayers.put(entry.getKey(), member.toPlayer());
       }

@@ -1,15 +1,13 @@
 package backend;
 
-import protocol.User;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
+import protocol.UserData;
 
 /** Used to represent a Player in an ongoing race. */
 public class Player {
 
-  private final String userId;
-  private final String name;
-  private final String iconId;
+  private final User user;
   private final String connectionId;
   private int wpm;
   private float progress;
@@ -17,11 +15,9 @@ public class Player {
   private long lastUpdateTime;
   private int mistakes;
 
-  Player(String userId, String connectionId, String name, String iconId) {
-    this.userId = userId;
+  Player(String connectionId, User user) {
+    this.user = user;
     this.connectionId = connectionId;
-    this.name = name;
-    this.iconId = iconId;
     this.wpm = 0;
     this.progress = 0;
     this.raceStartTime = 0;
@@ -33,12 +29,8 @@ public class Player {
     return connectionId;
   }
 
-  String getUserId() {
-    return userId;
-  }
-
-  String getName() {
-    return name;
+  User getUser() {
+    return user;
   }
 
   void updateProgress(ProgressSnapshot snapshot, int textLength) {
@@ -56,7 +48,7 @@ public class Player {
   }
 
   PlayerUpdate getUpdate() {
-    return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());
+    return new PlayerUpdate(this.user.getId(), wpm, progress, isFinished(), this.raceDuration());
   }
 
   int getWpm() {
@@ -67,8 +59,8 @@ public class Player {
     return this.mistakes;
   }
 
-  User getUser() {
-    return new User(this.userId, this.name, this.iconId);
+  UserData getUserData() {
+    return user.getUserData();
   }
 
   long raceDuration() {

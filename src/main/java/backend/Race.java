@@ -1,7 +1,6 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +8,13 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import protocol.RaceResult;
-import protocol.User;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
+import protocol.RaceResult;
 import protocol.Response;
 import protocol.ResponseFactory;
+import protocol.UserData;
 import protocol.UserResult;
 import server.PushService;
 import util.Logger;
@@ -62,9 +60,9 @@ class Race {
   }
 
   RaceData getModel() {
-    List<User> out = new ArrayList<>();
+    List<UserData> out = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
-      out.add(entry.getValue().getUser());
+      out.add(entry.getValue().getUserData());
     }
     return new RaceData(this.textToType, out);
   }
@@ -91,15 +89,15 @@ class Race {
 
   RaceResult getRaceResult() {
     List<Player> p = new ArrayList<>();
-    for (Map.Entry<String, Player> entry: players.entrySet()) {
+    for (Map.Entry<String, Player> entry : players.entrySet()) {
       p.add(entry.getValue());
     }
     p.sort(Comparator.comparing(Player::raceDuration));
     List<UserResult> classification = new ArrayList<>();
     for (int i = 0; i < p.size(); i++) {
       Player player = p.get(i);
-      UserResult result = new UserResult(player.getUser(), player.getWpm(),
-              player.getMistakes(), i+1);
+      UserResult result =
+          new UserResult(player.getUserData(), player.getWpm(), player.getMistakes(), i + 1);
       classification.add(result);
     }
     long duration = p.get(0).raceDuration();

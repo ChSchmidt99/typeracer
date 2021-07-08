@@ -19,24 +19,17 @@ public class GameFinishedController extends Controller implements GameFinishedMo
 
   private final GameFinishedModel model;
 
-  @FXML
-  Label firstPlace;
+  @FXML Label firstPlace;
 
-  @FXML
-  Label secondPlace;
+  @FXML Label secondPlace;
 
-  @FXML
-  Label thirdPlace;
+  @FXML Label thirdPlace;
 
-  @FXML
-  ImageView firstPlaceImage;
+  @FXML ImageView firstPlaceImage;
 
-  @FXML
-  ImageView secondPlaceImage;
+  @FXML ImageView secondPlaceImage;
 
-  @FXML
-  ImageView thirdPlaceImage;
-
+  @FXML ImageView thirdPlaceImage;
 
   /**
    * Controller for podium screen.
@@ -62,20 +55,22 @@ public class GameFinishedController extends Controller implements GameFinishedMo
 
   private void setPlacementOrder() throws FileNotFoundException {
 
-    firstPlace.setText(model.getRaceResult().classification.get(0).user.name);
-    firstPlaceImage.setImage(IconManager.iconForId(model.getRaceResult().classification.get(0).user.iconId).getImage());
+    firstPlace.setText(model.getRaceResult().classification.get(0).userData.name);
+    firstPlaceImage.setImage(
+        IconManager.iconForId(model.getRaceResult().classification.get(0).userData.iconId)
+            .getImage());
 
-    if(model.getRaceResult().classification.size() >= 2) {
-      secondPlace.setText(model.getRaceResult().classification.get(1).user.name);
+    if (model.getRaceResult().classification.size() >= 2) {
+      secondPlace.setText(model.getRaceResult().classification.get(1).userData.name);
       secondPlaceImage.setImage(
-          IconManager.iconForId(model.getRaceResult().classification.get(1).user.iconId)
+          IconManager.iconForId(model.getRaceResult().classification.get(1).userData.iconId)
               .getImage());
     }
 
-    if(model.getRaceResult().classification.size() == 3) {
-      thirdPlace.setText(model.getRaceResult().classification.get(2).user.name);
+    if (model.getRaceResult().classification.size() == 3) {
+      thirdPlace.setText(model.getRaceResult().classification.get(2).userData.name);
       thirdPlaceImage.setImage(
-          IconManager.iconForId(model.getRaceResult().classification.get(2).user.iconId)
+          IconManager.iconForId(model.getRaceResult().classification.get(2).userData.iconId)
               .getImage());
     }
   }

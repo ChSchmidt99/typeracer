@@ -2,7 +2,7 @@ package protocol;
 
 public class UserResult {
 
-  public final User user;
+  public final UserData userData;
 
   public final int wpm;
 
@@ -10,11 +10,10 @@ public class UserResult {
 
   public final int place;
 
-  public UserResult(User user, int wpm, int mistakes, int place) {
-    this.user = user;
+  public UserResult(UserData userData, int wpm, int mistakes, int place) {
+    this.userData = userData;
     this.wpm = wpm;
     this.mistakes = mistakes;
     this.place = place;
   }
-
 }

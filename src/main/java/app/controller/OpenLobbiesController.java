@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.ApplicationState;
 import app.elements.JoinHandler;
 import app.elements.LobbyListCell;
 import app.model.CreateModel;
@@ -8,7 +7,6 @@ import app.model.GameLobbyModel;
 import app.model.OpenLobbiesModel;
 import app.model.OpenLobbiesModelObserver;
 import app.model.StartScreenModel;
-import client.Client;
 import java.io.IOException;
 import java.util.List;
 import javafx.fxml.FXML;
