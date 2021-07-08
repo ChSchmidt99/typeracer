@@ -9,5 +9,7 @@ public interface MultiplayerModelObserver {
 
   void checkeredFlag(long raceEndTimestamp);
 
+  void updatedTimer(long time);
+
   void receivedRaceResult(RaceResult result);
 }

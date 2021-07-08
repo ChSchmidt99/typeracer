@@ -78,7 +78,7 @@
     -fx-background-radius: 0px;
 }
 
-.raceOverTimer {
+.timeDisplay {
     -fx-font-size: 30px;
     -fx-text-fill: #fe55f7;
     -fx-background-color: transparent;
@@ -87,12 +87,12 @@
 
 .textToType {
   -fx-text-fill: #62fbf7;
-  -fx-font-size: 25px;
+  -fx-font-size: 20px;
   -padding: 15px;
 }
 
 .enteredtext {
-  -fx-font-size: 25px;
+  -fx-font-size: 20px;
 }
 
 .ingameUserlabel {

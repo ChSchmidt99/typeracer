@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -45,6 +46,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   @FXML VBox userList;
 
   @FXML Label checkeredFlagLabel;
+
+  @FXML Label timerLabel;
 
   /**
    * Controller for Multiplayer game screen.
@@ -86,7 +89,13 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     String stopTime = format.format(end);
     checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
     checkeredFlagLabel.setDisable(false);
-    checkeredFlagLabel.setText("Race Ending: " + stopTime);
+    checkeredFlagLabel.setText("End: " + stopTime);
+    model.shutdownTimerScheduler();
+  }
+
+  @Override
+  public void updatedTimer(long time) {
+    Platform.runLater(() -> timerLabel.setText("Time: " + time + "s"));
   }
 
   private void openGameOverScreen(RaceResult result) {
@@ -123,7 +132,6 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     for (User player : players) {
 
       VBox userVbox = new VBox();
-
       wpmCreator(player.userId);
       userVbox.getChildren().add(userLabelCreator(player.name));
       userVbox.getChildren().add(wpmLabels.get(player.userId));
@@ -177,7 +185,7 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
     label.setStyle(
-        "-fx-font-size: 25px; -fx-background-color: #ffffff; "
+        "-fx-font-size: 20px; -fx-background-color: #ffffff; "
             + "-fx-text-fill: #000000; -fx-min-width: 150px;");
     return label;
   }
@@ -187,10 +195,10 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
       colorAlternateCounter++;
       if (colorAlternateCounter % 2 == 0) {
         return new RaceTrack(
-            IconManager.iconForId(user.iconId), 450, 25, Color.web("#fe55f7"));
+            IconManager.iconForId(user.iconId), 450, 20, Color.web("#fe55f7"));
       } else {
         return new RaceTrack(
-            IconManager.iconForId(user.iconId), 450, 25, Color.web("#62fbf7"));
+            IconManager.iconForId(user.iconId), 450, 20, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
