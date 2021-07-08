@@ -46,8 +46,8 @@ class ResponseHandler implements Closeable {
    */
   @Override
   public void close() throws IOException {
-    this.executorService.shutdownNow();
     this.reader.close();
+    this.executorService.shutdownNow();
   }
 
   void subscribe(ClientObserver observer) {

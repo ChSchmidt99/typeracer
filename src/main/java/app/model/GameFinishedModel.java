@@ -17,6 +17,7 @@ public class GameFinishedModel implements LobbyObserver {
 
   public GameFinishedModel(RaceResult result) {
     this.result = result;
+    ApplicationState.getInstance().getClient().setIsReady(false);
   }
 
   /**

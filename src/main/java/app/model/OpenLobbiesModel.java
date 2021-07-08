@@ -54,7 +54,9 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
   @Override
   public void receivedLobbyUpdate(LobbyData lobby) {
     ApplicationState.getInstance().getClient().unsubscribeLobbyUpdates(this);
-    Platform.runLater(() -> observer.joinedLobby(lobby));
+    if (observer != null) {
+      Platform.runLater(() -> observer.joinedLobby(lobby));
+    }
   }
 
   @Override
@@ -64,6 +66,8 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver {
 
   @Override
   public void receivedOpenLobbies(List<LobbyData> lobbies) {
-    Platform.runLater(() -> observer.receivedOpenLobbies(lobbies));
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedOpenLobbies(lobbies));
+    }
   }
 }

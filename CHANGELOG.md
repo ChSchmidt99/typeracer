@@ -25,7 +25,7 @@ and this project adheres to
 - progress indicator during gameplay
 - color indicator for correctly/wrongly typed letters  
 - username requirement for entering multiplayer
-- connection of gui, database and model
+- connection of gui, database and typeracer
 
 ### Changed
 - List View Actions to Interface callback on cell button click

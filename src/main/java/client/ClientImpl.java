@@ -39,8 +39,8 @@ public class ClientImpl implements Closeable, Client {
   @Override
   public void close() throws IOException {
     writer.close();
-    socket.close();
     responseHandler.close();
+    socket.close();
   }
 
   @Override

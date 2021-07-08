@@ -39,11 +39,13 @@ class SessionStore {
 
   void leaveLobby(String connectionId) {
     Lobby lobby = getLobby(connectionId);
-    lobby.leave(connectionId);
-    connectionIds.remove(connectionId);
-    if (lobby.isEmpty()) {
-      lobbies.remove(lobby.getLobbyId());
+    if (lobby != null) {
+      lobby.leave(connectionId);
+      if (lobby.isEmpty()) {
+        lobbies.remove(lobby.getLobbyId());
+      }
     }
+    connectionIds.remove(connectionId);
   }
 
   void startGame(String connectionId, RaceSettings raceSettings) {

@@ -21,7 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import model.CheckResult;
+import typeracer.CheckResult;
 import protocol.RaceResult;
 import protocol.User;
 import protocol.PlayerUpdate;
