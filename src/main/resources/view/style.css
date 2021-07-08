@@ -46,6 +46,11 @@
     -fx-text-fill: #fe55f7;
 }
 
+.countdownLabel {
+    -fx-text-fill: #fe55f7;
+    -fx-font-size: 80px;
+}
+
 .title {
     -fx-font-size: 80px;
     -fx-padding: 15px;

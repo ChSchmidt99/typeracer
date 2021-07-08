@@ -12,16 +12,19 @@ import protocol.ResponseFactory;
 import protocol.UserData;
 import server.PushService;
 import util.Logger;
+import util.Timestamp;
 
 /** Represents one game currently managed by the server. */
 class Lobby implements RaceFinishedListener {
+
+  private static final int START_DELAY = 3;
+  private static final int MAX_PLAYERS = 4;
 
   private final String lobbyId;
   private final HashMap<String, LobbyMember> members;
   private final PushService pushService;
   private final Database database;
   private final String name;
-  private static final int maxPlayers = 4;
   private final List<Race> finishedRaces;
   private Race race;
 
@@ -44,7 +47,7 @@ class Lobby implements RaceFinishedListener {
 
   void join(String connectionId, String userId, String iconId) {
     try {
-      if (members.size() < maxPlayers) {
+      if (members.size() < MAX_PLAYERS) {
         String username = this.database.getUsername(userId);
         LobbyMember lobbyMember = new LobbyMember(connectionId, new User(userId, username, iconId));
         members.put(connectionId, lobbyMember);
@@ -80,7 +83,8 @@ class Lobby implements RaceFinishedListener {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService, this);
+    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService, this,
+            Timestamp.currentTimestamp() + START_DELAY);
     broadcastLobbyUpdate();
   }
 

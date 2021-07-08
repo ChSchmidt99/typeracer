@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.ApplicationState;
 import app.elements.IconPicker;
 import app.model.OpenLobbiesModel;
 import app.model.StartScreenModel;
@@ -37,14 +38,17 @@ public class StartscreenController extends Controller implements StartScreenMode
 
   @FXML
   private void switchToLobbyBrowser() {
-    try {
-      if (username.getText().equals("")) {
-        displayError(USERNAME_ERROR);
-      } else {
-        model.register(username.getText());
+    if (ApplicationState.getInstance().getClient() == null) {
+      try {
+        ApplicationState.getInstance().newClient();
+        if (username.getText().equals("")) {
+          displayError(USERNAME_ERROR);
+        } else {
+          model.register(username.getText());
+        }
+      } catch (IOException e) {
+        displayError(e.getMessage());
       }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 

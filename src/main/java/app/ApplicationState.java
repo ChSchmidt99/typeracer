@@ -60,21 +60,23 @@ public class ApplicationState {
     }
   }
 
+  public Client newClient() throws IOException {
+    if (this.client != null) {
+     client.close();
+     this.removeCloseable(this.client);
+    }
+    // TODO: Add address/port to config
+    client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
+    closeables.add(client);
+    return client;
+  }
+
   /**
    * Get client or create a new one, if non exists.
    *
    * @return {@link Client}
    */
   public Client getClient() {
-    if (client == null) {
-      // TODO: Add address/port to config
-      try {
-        client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
-        closeables.add(client);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return client;
+    return this.client;
   }
 }

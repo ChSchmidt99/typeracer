@@ -28,6 +28,7 @@ class Race {
   private final Map<String, Player> players;
   private final PushService pushService;
   private final RaceFinishedListener listener;
+  private final long raceStart;
   private ScheduledExecutorService scheduler;
   private RaceState state;
 
@@ -48,13 +49,15 @@ class Race {
       String textToType,
       Map<String, Player> players,
       PushService pushService,
-      RaceFinishedListener listener) {
+      RaceFinishedListener listener,
+      long raceStart) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
     this.state = RaceState.RUNNING;
     this.settings = settings;
     this.listener = listener;
+    this.raceStart = raceStart;
     broadcastGameStarting();
     startUpdates();
   }
@@ -64,7 +67,7 @@ class Race {
     for (Map.Entry<String, Player> entry : players.entrySet()) {
       out.add(entry.getValue().getUserData());
     }
-    return new RaceData(this.textToType, out);
+    return new RaceData(this.textToType, out, raceStart);
   }
 
   boolean getIsRunning() {
@@ -106,9 +109,9 @@ class Race {
 
   private void checkeredFlag() {
     if (this.state == RaceState.CHECKERED_FLAG) {
-      Logger.logError("Race already in checkered flag state");
       return;
     }
+    this.state = RaceState.CHECKERED_FLAG;
     long raceStop = Timestamp.currentTimestamp() + settings.checkeredFlagDuration;
     broadcastCheckeredFlag(raceStop);
     ScheduledExecutorService s = Executors.newScheduledThreadPool(1);

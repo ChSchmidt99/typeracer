@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import protocol.ProgressSnapshot;
 import protocol.Response;
 import server.PushService;
+import util.Timestamp;
 
 /** Tests for Race class. */
 public class RaceTest implements PushService {
@@ -24,7 +25,7 @@ public class RaceTest implements PushService {
     String text = "some text";
     long duration = 1;
     RaceSettings settings = new RaceSettings(duration, 1);
-    Race race = new Race(settings, text, players, this, null);
+    Race race = new Race(settings, text, players, this, null, Timestamp.currentTimestamp());
     assertTrue(race.getIsRunning());
     race.updateProgress(connectionId, new ProgressSnapshot(0, 5, text.length(), 0));
     try {

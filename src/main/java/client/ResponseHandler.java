@@ -44,6 +44,7 @@ class ResponseHandler implements Closeable {
    */
   @Override
   public void close() throws IOException {
+    this.errorObservers.clear();
     this.reader.close();
     this.executorService.shutdownNow();
   }
@@ -95,10 +96,16 @@ class ResponseHandler implements Closeable {
         Response response = gson.fromJson(line, Response.class);
         receivedResponse(response);
       }
+      disconnected();
     } catch (IOException e) {
-      // TODO: Handle lost Server connection
-      System.out.println(e.getMessage());
+      disconnected();
     }
+  }
+
+  private void disconnected() {
+    errorObservers.forEach((observer) -> {
+      observer.receivedError("Lost server connection");
+    });
   }
 
   private void receivedResponse(Response response) {

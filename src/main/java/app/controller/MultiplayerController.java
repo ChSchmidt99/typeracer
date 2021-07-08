@@ -7,8 +7,6 @@ import app.model.MultiplayerModel;
 import app.model.MultiplayerModelObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
@@ -26,7 +24,6 @@ import protocol.RaceResult;
 import protocol.UserData;
 import protocol.UserResult;
 import typeracer.CheckResult;
-import util.Timestamp;
 
 /** Handles all gui functionality associated with gameplay. */
 class MultiplayerController extends Controller implements MultiplayerModelObserver {
@@ -45,9 +42,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @FXML VBox userList;
 
-  @FXML Label checkeredFlagLabel;
-
   @FXML Label timerLabel;
+
+  @FXML Label countdownLabel;
 
   /**
    * Controller for Multiplayer game screen.
@@ -61,6 +58,12 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     setupText(model.getRaceData().textToType);
     setupKeyHandler();
     setupTracks(model.getRaceData().players);
+    model.initRaceStart();
+  }
+
+  @Override
+  public void raceStarted() {
+    countdownLabel.setVisible(false);
   }
 
   @Override
@@ -84,13 +87,8 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @Override
   public void checkeredFlag(long raceEndTimestamp) {
-    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-    Date end = Timestamp.timestampToDate(raceEndTimestamp);
-    String stopTime = format.format(end);
-    checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
-    checkeredFlagLabel.setDisable(false);
-    checkeredFlagLabel.setText("End: " + stopTime);
-    model.shutdownTimerScheduler();
+    countdownLabel.setText("Hurry!");
+    countdownLabel.setVisible(true);
   }
 
   @Override
@@ -98,8 +96,13 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     Platform.runLater(() -> timerLabel.setText("Time: " + time + "s"));
   }
 
+  @Override
+  public void updatedCountDown(long time) {
+    countdownLabel.setText(Long.toString(time));
+  }
+
   private void openGameOverScreen(RaceResult result) {
-    model.leaveRace();
+    model.leftScreen();
     try {
       new GameFinishedController(stage, new GameFinishedModel(result)).show();
     } catch (IOException e) {
