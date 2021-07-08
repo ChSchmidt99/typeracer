@@ -49,6 +49,9 @@
 .countdownLabel {
     -fx-text-fill: #fe55f7;
     -fx-font-size: 80px;
+    -fx-border-color: #fe55f7;
+    -fx-border-width: 5px 5px 5px 5px;
+    -fx-padding: 5px;
 }
 
 .title {
@@ -105,13 +108,6 @@
   -fx-background-color: #ffffff;
 }
 
-.gameLobbyScrollpane {
-    -fx-max-height: 300px;
-    -fx-max-width: 640px;
-    -fx-min-height: 200px;
-    -fx-font-size: 20px;
-}
-
 .inputfield {
     -fx-max-width: 400px;
     -fx-min-height: 40px;
@@ -121,11 +117,16 @@
     -fx-text-fill: #000000;
 }
 
-.userlist .list-cell {
-    -fx-font-size: 30px;
+.list-cell {
+    -fx-font-size: 20px;
 }
 
 .lobbylist {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+}
+
+.lobbychat {
     -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
 }
@@ -190,6 +191,24 @@
   -fx-shape: none;
 }
 
+.buttonGamescreen {
+   -fx-text-fill: #62fbf7;
+   -fx-border-color: #fe55f7;
+   -fx-font-size: 30px;
+   -fx-padding: 5px;
+   -fx-border-width: 3px 3px 3px 3px;
+   -fx-background-color: transparent;
+}
+
+.buttonGamescreen:hover {
+   -fx-border-color: #62fbf7;
+   -fx-text-fill: #fe55f7;
+}
+
+.gameLabel {
+   -fx-text-fill: #62fbf7;
+   -fx-font-size: 30px;
+}
 
 
 

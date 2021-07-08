@@ -6,38 +6,64 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="GameLobby" textAlignment="CENTER" wrapText="true" />
-    <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
-        <ScrollPane focusTraversable="false" maxWidth="700.0" minWidth="700.0" prefHeight="200.0" prefWidth="700.0" styleClass="gameLobbyScrollpane">
-            <VBox.margin>
-                <Insets top="30.0" />
-            </VBox.margin>
-            <AnchorPane prefHeight="197.0" prefWidth="660.0">
+   <HBox alignment="TOP_CENTER" minHeight="500.0" prefHeight="500.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
+      <children>
+         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
             <children>
-               <ListView fx:id="userlist" focusTraversable="false" prefHeight="197.0" prefWidth="672.0" styleClass="lobbylist" />
+               <ScrollPane focusTraversable="false" maxWidth="350.0" minHeight="280.0" minWidth="350.0" prefHeight="180.0" prefWidth="350.0" styleClass="gameLobbyScrollpane" vbarPolicy="ALWAYS">
+                  <content>
+                     <AnchorPane minHeight="280.0" minWidth="330.0" prefHeight="280.0" prefWidth="330.0" style="-fx-background-color: #ffffff;">
+                        <children>
+                           <ListView fx:id="userlist" fixedCellSize="30.0" focusTraversable="false" minHeight="280.0" minWidth="330.0" prefHeight="280.0" prefWidth="330.0" styleClass="lobbylist" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </ScrollPane>
+                     <Button fx:id="startButton" onAction="#startGame" styleClass="gamebutton" text="Start Game">
+                  <VBox.margin>
+                     <Insets top="10.0" />
+                  </VBox.margin>
+               </Button>
+               <Button fx:id="backToLobbyBrowser" mnemonicParsing="false" onAction="#backToLobbyBrowser" styleClass="gamebutton" text="Back" />
+                     <CheckBox fx:id="lobbyCheckbox" onAction="#checkedReady" styleClass="checkbox" text="Ready" />
             </children>
-            </AnchorPane>
-        </ScrollPane>
-            <Button fx:id="startButton" onAction="#startGame" styleClass="gamebutton" text="Start Game">
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin>
-      </Button>
-      <Button fx:id="backToLobbyBrowser" mnemonicParsing="false" onAction="#backToLobbyBrowser" styleClass="gamebutton" text="Back" />
-            <CheckBox fx:id="lobbyCheckbox" onAction="#checkedReady" styleClass="checkbox" text="Ready" />
-    </VBox>
+         </VBox>
+         <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+                 <ScrollPane focusTraversable="false" maxWidth="330.0" minHeight="400.0" minWidth="330.0" prefHeight="400.0" prefWidth="330.0" styleClass="gameLobbyScrollpane" vbarPolicy="ALWAYS">
+                     <AnchorPane minHeight="400.0" minWidth="310.0" prefHeight="400.0" prefWidth="310.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <ListView fx:id="lobbychat" focusTraversable="false" minHeight="400.0" minWidth="310.0" prefHeight="400.0" prefWidth="310.0" styleClass="lobbychat" />
+                     </children>
+                     </AnchorPane>
+                 </ScrollPane>
+               <TextField fx:id="lobbychatInput" styleClass="inputfield">
+                  <VBox.margin>
+                     <Insets top="20.0" />
+                  </VBox.margin>
+               </TextField>
+            </children>
+         </VBox>
+      </children>
+      <GridPane.margin>
+         <Insets top="40.0" />
+      </GridPane.margin>
+   </HBox>
     <columnConstraints>
       <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints fillHeight="false" maxHeight="600.0" minHeight="180.0" prefHeight="540.0" />
+        <RowConstraints fillHeight="false" maxHeight="600.0" minHeight="180.0" prefHeight="540.0" valignment="CENTER" />
     </rowConstraints>
 </GridPane>
