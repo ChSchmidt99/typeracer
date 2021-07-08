@@ -9,6 +9,8 @@ import app.model.OpenLobbiesModelObserver;
 import app.model.StartScreenModel;
 import java.io.IOException;
 import java.util.List;
+
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -19,7 +21,7 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
 
   private static final String FXMLPATH = "view/openlobbies.fxml";
 
-  private OpenLobbiesModel model;
+  private final OpenLobbiesModel model;
 
   @FXML ListView<LobbyData> lobbylist;
 
@@ -28,9 +30,9 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
   OpenLobbiesController(Stage stage, OpenLobbiesModel model) throws IOException {
     super(stage, FXMLPATH);
     this.model = model;
-    initActions();
+    initListView();
     model.setObserver(this);
-    model.requestLobbyList();
+    model.createdView();
   }
 
   @Override
@@ -51,6 +53,7 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
   @FXML
   private void switchToCreateScreen() {
     try {
+      model.leftScreen();
       new CreateController(stage, new CreateModel()).show();
     } catch (IOException e) {
       e.printStackTrace();
@@ -59,25 +62,29 @@ class OpenLobbiesController extends Controller implements JoinHandler, OpenLobbi
 
   @FXML
   private void backToStartscreen() throws IOException {
+    model.leftScreen();
     new StartscreenController(stage, new StartScreenModel()).show();
   }
 
-  private void addLobbiesToList(List<LobbyData> idList) {
-    for (int i = 0; i < idList.size(); i++) {
-      lobbylist.getItems().add(i, idList.get(i));
-    }
+  private void addLobbiesToList(List<LobbyData> lobbies) {
+    lobbylist.setItems(FXCollections.observableArrayList(lobbies));
   }
 
-  private void initActions() {
+  private void initListView() {
     lobbylist.setCellFactory(lobbyListView -> new LobbyListCell(this));
   }
 
   private void changeToGameLobbyScreen(LobbyData lobby) {
     try {
       new GameLobbyController(stage, new GameLobbyModel(lobby)).show();
-      model.setObserver(null);
+      model.leftScreen();
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
   }
 }

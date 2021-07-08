@@ -8,4 +8,6 @@ public interface GameLobbyModelObserver {
   void updatedLobby();
 
   void startedRace(RaceData model);
+
+  void receivedError(String message);
 }

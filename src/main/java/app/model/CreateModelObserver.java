@@ -6,4 +6,6 @@ import protocol.LobbyData;
 public interface CreateModelObserver {
 
   void joinedLobby(LobbyData lobby);
+
+  void receivedError(String message);
 }

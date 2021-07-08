@@ -2,6 +2,7 @@ package app.model;
 
 import app.ApplicationState;
 import client.Client;
+import client.ErrorObserver;
 import client.RaceObserver;
 import client.RaceResultObserver;
 import java.util.List;
@@ -20,7 +21,7 @@ import typeracer.Typeracer;
 import util.Timestamp;
 
 /** Model for Multiplayer View. */
-public class MultiplayerModel implements RaceObserver, RaceResultObserver {
+public class MultiplayerModel implements RaceObserver, RaceResultObserver, ErrorObserver {
 
   private MultiplayerModelObserver observer;
 
@@ -41,9 +42,8 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver {
     this.raceStart = Timestamp.currentTimestamp();
     this.typeracer = new Typeracer(race.textToType);
     this.notifyCounter = 0;
-    ApplicationState.getInstance().getClient().subscribeRaceUpdates(this);
+    subscribe();
     timer();
-    ApplicationState.getInstance().getClient().subscribeResults(this);
   }
 
   /**
@@ -84,8 +84,7 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver {
   }
 
   public void leaveRace() {
-    ApplicationState.getInstance().getClient().unsubscribeRaceUpdates(this);
-    ApplicationState.getInstance().getClient().unsubscribeResults(this);
+    unsubscribe();
   }
 
   /*
@@ -158,5 +157,26 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver {
     if (observer != null) {
       Platform.runLater(() -> observer.receivedRaceResult(result));
     }
+  }
+
+  @Override
+  public void receivedError(String message) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedError(message));
+    }
+  }
+
+  private void subscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.subscribeErrors(this);
+    client.subscribeResults(this);
+    client.subscribeRaceUpdates(this);
+  }
+
+  private void unsubscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.unsubscribeErrors(this);
+    client.unsubscribeResults(this);
+    client.unsubscribeRaceUpdates(this);
   }
 }

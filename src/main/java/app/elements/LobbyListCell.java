@@ -56,9 +56,11 @@ public class LobbyListCell extends ListCell<LobbyData> {
 
   @Override
   public void updateItem(LobbyData model, boolean empty) {
-    if (empty) {
+    if (empty || model == null) {
       clearContent();
     } else {
+      System.out.println("Empty: " + empty);
+      System.out.println("LobbyData: " + model);
       lobbyId = model.id;
       setContent(model);
     }
@@ -70,20 +72,24 @@ public class LobbyListCell extends ListCell<LobbyData> {
   }
 
   private void clearContent() {
-    joinButton.setDisable(true);
     joinButton.setVisible(false);
+    lobbyNameLabel.setVisible(false);
+    idLabel.setVisible(false);
+    statusLabel.setVisible(false);
     setText(null);
   }
 
   private void setContent(LobbyData model) {
-    joinButton.setDisable(false);
     joinButton.setVisible(true);
     lobbyNameLabel.setText(model.name);
+    lobbyNameLabel.setVisible(true);
     statusLabel.setText("Players: " + model.players.size());
+    statusLabel.setVisible(true);
     if (model.isRunning) {
       idLabel.setText("In Race");
     } else {
       idLabel.setText("In Lobby");
     }
+    idLabel.setVisible(true);
   }
 }

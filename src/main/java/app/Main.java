@@ -21,14 +21,7 @@ public class Main extends Application {
             @Override
             public void handle(WindowEvent event) {
               Platform.exit();
-              try {
-                Client client = ApplicationState.getInstance().getClient();
-                if (client != null) {
-                  client.close();
-                }
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
+              ApplicationState.getInstance().close();
             }
           });
       stage.setTitle("TypeRacer");

@@ -12,4 +12,6 @@ public interface MultiplayerModelObserver {
   void updatedTimer(long time);
 
   void receivedRaceResult(RaceResult result);
+
+  void receivedError(String message);
 }

@@ -79,4 +79,9 @@ public class GameFinishedController extends Controller implements GameFinishedMo
   private void returnToLobby() {
     model.requestLobby();
   }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
+  }
 }

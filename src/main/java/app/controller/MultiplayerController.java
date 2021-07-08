@@ -218,4 +218,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   private void trackUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).updateProgress(update.percentProgress);
   }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
+  }
 }

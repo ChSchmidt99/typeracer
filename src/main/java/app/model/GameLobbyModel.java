@@ -2,13 +2,14 @@ package app.model;
 
 import app.ApplicationState;
 import client.Client;
+import client.ErrorObserver;
 import client.LobbyObserver;
 import javafx.application.Platform;
 import protocol.LobbyData;
 import protocol.RaceData;
 
 /** Model for GameLobby View. */
-public class GameLobbyModel implements LobbyObserver {
+public class GameLobbyModel implements LobbyObserver, ErrorObserver {
 
   private LobbyData lobby;
 
@@ -16,7 +17,7 @@ public class GameLobbyModel implements LobbyObserver {
 
   public GameLobbyModel(LobbyData lobby) {
     this.lobby = lobby;
-    ApplicationState.getInstance().getClient().subscribeLobbyUpdates(this);
+    subscribe();
   }
 
   /**
@@ -41,7 +42,7 @@ public class GameLobbyModel implements LobbyObserver {
   public void leaveLobby() {
     Client client = ApplicationState.getInstance().getClient();
     client.leaveLobby();
-    client.unsubscribeLobbyUpdates(this);
+    unsubscribe();
   }
 
   /**
@@ -50,25 +51,22 @@ public class GameLobbyModel implements LobbyObserver {
    * @param isReady whether or not player is ready
    */
   public void setReady(boolean isReady) {
-    System.out.println("Set Ready: " + isReady);
     Client client = ApplicationState.getInstance().getClient();
     client.setIsReady(isReady);
   }
 
   /** Call to start the race. */
   public void startRace() {
-    System.out.println("Start Race");
     Client client = ApplicationState.getInstance().getClient();
     client.startRace();
   }
 
   @Override
   public void gameStarting(RaceData race) {
-    System.out.println("Race starting");
     if (observer != null) {
       Platform.runLater(() -> observer.startedRace(race));
     }
-    ApplicationState.getInstance().getClient().unsubscribeLobbyUpdates(this);
+    unsubscribe();
   }
 
   @Override
@@ -77,5 +75,24 @@ public class GameLobbyModel implements LobbyObserver {
     if (observer != null) {
       Platform.runLater(() -> observer.updatedLobby());
     }
+  }
+
+  @Override
+  public void receivedError(String message) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedError(message));
+    }
+  }
+
+  private void subscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.subscribeErrors(this);
+    client.subscribeLobbyUpdates(this);
+  }
+
+  private void unsubscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.unsubscribeErrors(this);
+    client.unsubscribeLobbyUpdates(this);
   }
 }

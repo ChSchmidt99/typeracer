@@ -31,10 +31,14 @@ class SessionStore {
     return lobbyId;
   }
 
-  void joinLobby(String lobbyId, String connectionId, String userId, String iconId) {
-    connectionIds.put(connectionId, lobbyId);
+  void joinLobby(String lobbyId, String connectionId, String userId, String iconId)
+          throws Exception {
+    if (!lobbies.containsKey(lobbyId)) {
+      throw new Exception("Lobby does not exist.");
+    }
     Lobby lobby = lobbies.get(lobbyId);
     lobby.join(connectionId, userId, iconId);
+    connectionIds.put(connectionId, lobbyId);
   }
 
   void leaveLobby(String connectionId) {

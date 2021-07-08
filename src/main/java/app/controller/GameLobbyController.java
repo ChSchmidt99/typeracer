@@ -89,4 +89,9 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
     String skeleton = "%s (%s)";
     return String.format(skeleton, userData.name, userData.state);
   }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
+  }
 }

@@ -73,4 +73,9 @@ public class StartscreenController extends Controller implements StartScreenMode
       e.printStackTrace();
     }
   }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
+  }
 }

@@ -2,8 +2,12 @@ package app;
 
 import client.Client;
 import client.ClientImpl;
+
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Singleton holding the applications state. */
 public class ApplicationState {
@@ -12,8 +16,11 @@ public class ApplicationState {
 
   private String userId;
   private Client client;
+  private final List<Closeable> closeables;
 
-  private ApplicationState() {}
+  private ApplicationState() {
+    closeables = new ArrayList<>();
+  }
 
   /**
    * Creates new instance or returns existing one.
@@ -35,13 +42,22 @@ public class ApplicationState {
     return userId;
   }
 
-  /**
-   * Set Client.
-   *
-   * @param client client
-   */
-  public void setClient(Client client) {
-    this.client = client;
+  public void addCloseable(Closeable closeable) {
+    closeables.add(closeable);
+  }
+
+  public void removeCloseable(Closeable closeable) {
+    closeables.remove(closeable);
+  }
+
+  public void close() {
+    for (Closeable closeable: closeables) {
+      try {
+        closeable.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /**
@@ -54,6 +70,7 @@ public class ApplicationState {
       // TODO: Add address/port to config
       try {
         client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
+        closeables.add(client);
       } catch (IOException e) {
         e.printStackTrace();
       }
