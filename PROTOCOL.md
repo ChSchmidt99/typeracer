@@ -80,7 +80,12 @@ After processing, a Response including all lobbies will be sent back.
     "type" : "open lobbies",
     "lobbies" : [{
       "id" : "<some lobbyId>",
-      "players" : ["<string list of player names>"],
+      "players" : [{
+        "name" : "<some name>",
+        "userId" : "<some user id>",
+        "iconId" : "<some icon id>",
+        "state" : "<player state as string>"
+      }],
       "isRunning" : "<boolean>"
     }]
 }
@@ -153,7 +158,34 @@ After the first player reached the finish line, the server will send a Checkered
     "raceStop" : "<timestamp of last update as unix epoch long>"
 }
 ```
-
+### Request Race result
+The result of the previous game in a lobby can be requested as follows: 
+```json
+{
+    "type" : "previous race result"
+}
+```
+### Race results
+After a race was finished, or the result was requested, the following response will be sent be the server.
+```json
+{
+  "type" : "race result",
+  "raceResult" : {
+    "duration" : "<duration until first player finished as unix epoch long in sec>",
+    "classification" : [{
+        "userData" : {
+          "name" : "<some name>",
+          "userId" : "<some user id>",
+          "iconId" : "<some icon id>",
+          "state" : "<state as string>"
+        },
+        "wpm" : "<words per minute>",
+        "mistakes" : "<number of mistakes>",
+        "place" : "<place the player ended up in>"
+      }]
+  }  
+}
+```
 ## Error Handling
 ### Error Response
 In case there is something wrong with the request, or an internal server error occures.
