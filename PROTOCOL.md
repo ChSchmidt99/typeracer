@@ -7,7 +7,8 @@ Send request to register a new userData with the given name:
 ```json
 {
     "type" : "register",
-    "playerName" : "<some username>"
+    "playerName" : "<some username>",
+    "iconId" : "<id of selected icon>"
 }
 ```
 If the registration process was successful, a Request with the assigned userData id is sent back:
@@ -23,8 +24,6 @@ Send request to create a new lobby and join as host.
 ```json
 {
     "type" : "new lobby",
-    "userId" : "<some userId>",
-    "iconId" : "<id of selected icon>",
     "lobbyName" : "<some name>"
 }
 ```
@@ -34,8 +33,6 @@ Send request to join an existing lobby with the provided lobby id.
 ```json
 {
     "type" : "join lobby",
-    "userId" : "<some userId>",
-    "iconId" : "<id of selected icon>",
     "lobbyId" : "<some lobbyId>"
 }
 ```
@@ -186,12 +183,43 @@ After a race was finished, or the result was requested, the following response w
   }  
 }
 ```
+## Chat
+### Send Chat Message
+Will send a chat message to current lobby.
+```json
+{
+  "type" : "chat message",
+  "message" : "<some chat message>"
+}
+```
+### Request Chat History
+```json
+{
+  "type" : "chat history"
+}
+```
+### Receive Chat history
+Will be sent to all clients when new chat messages are added.
+```json
+{
+  "type" : "chat history",
+  "message" : [{
+    "user" : {
+      "name": "<some name>",
+      "userId": "<some user id>",
+      "iconId": "<some icon id>",
+      "state": "<state as string>"
+    },
+    "message" : "<some chat message>"
+  }]
+}
+```
 ## Error Handling
 ### Error Response
 In case there is something wrong with the request, or an internal server error occures.
 ```json
 {
   "type" : "error",
-  "message" : "*some error message*"
+  "message" : "<some error message>"
 }
 ```

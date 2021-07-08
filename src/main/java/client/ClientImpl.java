@@ -44,18 +44,18 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
-  public void registerUser(String userName) {
-    sendRequest(RequestFactory.makeRegisterRequest(userName));
+  public void registerUser(String userName, String iconId) {
+    sendRequest(RequestFactory.makeRegisterRequest(userName, iconId));
   }
 
   @Override
-  public void newLobby(String userId, String lobbyName, String iconId) {
-    sendRequest(RequestFactory.makeNewLobbyRequest(userId, lobbyName, iconId));
+  public void newLobby(String lobbyName) {
+    sendRequest(RequestFactory.makeNewLobbyRequest(lobbyName));
   }
 
   @Override
-  public void joinLobby(String userId, String gameId, String iconId) {
-    sendRequest(RequestFactory.makeJoinLobbyRequest(userId, gameId, iconId));
+  public void joinLobby(String gameId) {
+    sendRequest(RequestFactory.makeJoinLobbyRequest(gameId));
   }
 
   @Override
@@ -89,8 +89,13 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
-  public void requestPreviousRaceResult() {
-    sendRequest(RequestFactory.makePreviousRaceResultRequest());
+  public void sendChatMessage(String message) {
+    sendRequest(RequestFactory.makeChatRequest(message));
+  }
+
+  @Override
+  public void requestChatHistory() {
+    sendRequest(RequestFactory.makeChatHistoryRequest());
   }
 
   @Override

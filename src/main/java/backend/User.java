@@ -1,12 +1,16 @@
 package backend;
 
+import protocol.Response;
 import protocol.UserData;
+import server.PushService;
 
 class User {
 
   private final String userId;
   private final String name;
   private final String iconId;
+  private final String connectionId;
+  private final PushService pushService;
   private String state;
 
   static class State {
@@ -16,11 +20,17 @@ class User {
     public static final String UNKNOWN = "unkown";
   }
 
-  User(String userId, String name, String iconId) {
+  User(String userId, String name, String iconId, String connectionId, PushService pushService) {
     this.userId = userId;
     this.name = name;
     this.iconId = iconId;
     this.state = State.UNKNOWN;
+    this.connectionId = connectionId;
+    this.pushService = pushService;
+  }
+
+  void sendResponse(Response response) {
+    pushService.sendResponse(connectionId, response);
   }
 
   String getId() {

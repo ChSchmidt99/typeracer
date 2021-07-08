@@ -25,6 +25,8 @@ public class GameFinishedController extends Controller implements GameFinishedMo
 
   @FXML Label thirdPlace;
 
+  @FXML Label duration;
+
   @FXML ImageView firstPlaceImage;
 
   @FXML ImageView secondPlaceImage;
@@ -41,6 +43,7 @@ public class GameFinishedController extends Controller implements GameFinishedMo
     this.model = model;
     this.model.setObserver(this);
     setPlacementOrder();
+    duration.setText("Time: " + model.getRaceResult().duration + " s");
   }
 
   @Override
@@ -54,7 +57,7 @@ public class GameFinishedController extends Controller implements GameFinishedMo
   }
 
   private void setPlacementOrder() throws FileNotFoundException {
-
+    System.out.println(model.getRaceResult().classification);
     firstPlace.setText(model.getRaceResult().classification.get(0).userData.name);
     firstPlaceImage.setImage(
         IconManager.iconForId(model.getRaceResult().classification.get(0).userData.iconId)

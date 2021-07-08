@@ -19,15 +19,16 @@ public class RaceTest implements PushService {
   @Test
   void finishRace() {
     String connectionId = "some id";
-    Player player = new Player("userId", new User(connectionId, "some name", "iconId"));
+    User user = new User(connectionId, "some name", "iconId", connectionId, this);
+    Player player = new Player(user);
     Map<String, Player> players = new HashMap<>();
     players.put(connectionId, player);
     String text = "some text";
     long duration = 1;
     RaceSettings settings = new RaceSettings(duration, 1);
-    Race race = new Race(settings, text, players, this, null, Timestamp.currentTimestamp());
+    Race race = new Race(settings, text, players, null, Timestamp.currentTimestamp());
     assertTrue(race.getIsRunning());
-    race.updateProgress(connectionId, new ProgressSnapshot(0, 5, text.length(), 0));
+    race.updateProgress(user, new ProgressSnapshot(0, 5, text.length(), 0));
     try {
       Thread.sleep(duration * 1000 + 100);
       assertFalse(race.getIsRunning());

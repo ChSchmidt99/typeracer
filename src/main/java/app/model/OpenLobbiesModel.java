@@ -1,7 +1,6 @@
 package app.model;
 
 import app.ApplicationState;
-import app.IconManager;
 import client.Client;
 import client.ClientObserver;
 import client.ErrorObserver;
@@ -13,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 
@@ -20,7 +20,7 @@ import protocol.RaceData;
 public class OpenLobbiesModel implements LobbyObserver, ClientObserver, ErrorObserver, Closeable {
 
   /** Update interval in seconds. */
-  private static final long UPDATE_INTERVAL = 5;
+  private static final long UPDATE_INTERVAL = 1;
 
   private OpenLobbiesModelObserver observer;
   private final ScheduledExecutorService scheduler;
@@ -66,9 +66,7 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver, ErrorObs
    */
   public void joinLobby(String lobbyId) {
     Client client = ApplicationState.getInstance().getClient();
-    String userId = ApplicationState.getInstance().getUserId();
-    String iconId = IconManager.getSelectedIcon().getId();
-    client.joinLobby(userId, lobbyId, iconId);
+    client.joinLobby(lobbyId);
   }
 
   @Override
@@ -82,6 +80,9 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver, ErrorObs
       Platform.runLater(() -> observer.joinedLobby(lobby));
     }
   }
+
+  @Override
+  public void receivedChatHistory(List<ChatMessageData> chatHistory) {}
 
   @Override
   public void registered(String userId) {

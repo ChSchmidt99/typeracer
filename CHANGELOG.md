@@ -8,16 +8,18 @@ and this project adheres to
 
 ## [Abgabe 4] - 2021-07-07
 ### Added
-- Added custom Icon picker
-- Added custom Racetrack
-- Added race results after game screen
-- Added countdown before race start
+- Custom Icon picker
+- Custom Racetrack
+- Race results after game screen
+- Countdown before race start
+- Chat on Lobby screen
+- Leave button on game screen
 
 ### Changed
 - Closing Client on Window Close
-- Lobby list now refreshes automatically in set interval (5 sec)
+- Lobby list now refreshes automatically in set interval (1 sec)
 - Smoother updates on game screen (time based instead of character based)
-- Now showing player state on lobby screen 
+- Now showing player state on lobby screen
 
 ## [Abgabe 3] - 2021-07-04
 ### Added

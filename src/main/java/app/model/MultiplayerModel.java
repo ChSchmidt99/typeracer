@@ -29,16 +29,19 @@ public class MultiplayerModel
   private static final long POLLING_INTERVAL = 1;
 
   private static final long FALL_BACK_START_DELAY = 3;
+  private static final FinishedMessage FINISHED =
+      new FinishedMessage("FINISHED", "waiting for race end");
+  private static final FinishedMessage NOT_FINISHED = new FinishedMessage("HURRY!", "");
 
   private MultiplayerModelObserver observer;
 
   private long raceStart;
-  private long raceEnd;
   private final Typeracer typeracer;
   private final RaceData raceData;
   private List<PlayerUpdate> updates;
   private State state;
   private final ScheduledExecutorService scheduler;
+  private FinishedMessage finishedMessage;
 
   private enum State {
     PRE_START,
@@ -92,14 +95,22 @@ public class MultiplayerModel
     CheckResult check = typeracer.check(key.charAt(0));
     if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
       sendProgress();
+      this.finishedMessage = FINISHED;
       this.state = State.CHECKERED_FLAG;
-      this.raceEnd = Timestamp.currentTimestamp();
+    } else {
+      this.finishedMessage = NOT_FINISHED;
     }
     return check;
   }
 
   public List<PlayerUpdate> getRaceUpdate() {
     return updates;
+  }
+
+  /** Call to leave the race. */
+  public void leaveRace() {
+    ApplicationState.getInstance().getClient().leaveLobby();
+    leftScreen();
   }
 
   /** Call on screen exit. */
@@ -153,11 +164,9 @@ public class MultiplayerModel
   @Override
   public void receivedCheckeredFlag(long raceStop) {
     this.state = State.CHECKERED_FLAG;
-    this.raceEnd = raceStop;
     if (observer != null) {
       Platform.runLater(
           () -> {
-            observer.updatedCountDown(this.raceEnd - Timestamp.currentTimestamp());
             observer.checkeredFlag(raceStop);
           });
     }
@@ -220,5 +229,13 @@ public class MultiplayerModel
   @Override
   public void close() throws IOException {
     scheduler.shutdownNow();
+  }
+
+  public int getPosition() {
+    return typeracer.getState().getTypeChar().getCounter();
+  }
+
+  public FinishedMessage getFinishedText() {
+    return this.finishedMessage;
   }
 }

@@ -11,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 import protocol.UserData;
@@ -29,10 +31,15 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
 
   @FXML ListView<String> userlist;
 
+  @FXML ListView<String> chatListView;
+
+  @FXML TextField chatInputTextField;
+
   GameLobbyController(Stage stage, GameLobbyModel model) throws IOException {
     super(stage, FXMLPATH);
     this.model = model;
     this.model.setObserver(this);
+    this.model.requestHistory();
     displayLobby(model.getLobby());
     model.setReady(lobbyCheckbox.isSelected());
   }
@@ -59,6 +66,16 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  @FXML
+  void sendMessage() {
+    String message = chatInputTextField.getText();
+    if (message.equals("")) {
+      return;
+    }
+    model.sendMessage(message);
+    chatInputTextField.setText("");
   }
 
   @Override
@@ -93,5 +110,13 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
   @Override
   public void receivedError(String message) {
     displayError(message);
+  }
+
+  @Override
+  public void receivedChatHistory(List<ChatMessageData> chatHistory) {
+    chatListView.getItems().clear();
+    for (ChatMessageData message : chatHistory) {
+      chatListView.getItems().add(message.user.name + ": " + message.message);
+    }
   }
 }

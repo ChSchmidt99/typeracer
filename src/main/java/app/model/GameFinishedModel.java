@@ -4,7 +4,9 @@ import app.ApplicationState;
 import client.Client;
 import client.ErrorObserver;
 import client.LobbyObserver;
+import java.util.List;
 import javafx.application.Platform;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 import protocol.RaceResult;
@@ -58,6 +60,9 @@ public class GameFinishedModel implements LobbyObserver, ErrorObserver {
     }
     unsubscribe();
   }
+
+  @Override
+  public void receivedChatHistory(List<ChatMessageData> chatHistory) {}
 
   @Override
   public void receivedError(String message) {

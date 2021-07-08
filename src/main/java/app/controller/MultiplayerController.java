@@ -2,11 +2,14 @@ package app.controller;
 
 import app.IconManager;
 import app.elements.RaceTrack;
+import app.model.FinishedMessage;
 import app.model.GameFinishedModel;
 import app.model.MultiplayerModel;
 import app.model.MultiplayerModelObserver;
+import app.model.StartScreenModel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
@@ -16,7 +19,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import protocol.PlayerUpdate;
@@ -33,18 +35,20 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   // TODO: Combine in auxiliary class
   HashMap<String, Label> wpmLabels = new HashMap<>();
   HashMap<String, RaceTrack> userProgress = new HashMap<>();
+  List<Label> textLabels = new ArrayList<>();
+
   private final MultiplayerModel model;
   private int colorAlternateCounter = 0;
 
   @FXML TextFlow textToType;
-
-  @FXML TextFlow enteredText;
 
   @FXML VBox userList;
 
   @FXML Label timerLabel;
 
   @FXML Label countdownLabel;
+
+  @FXML Label countdownSubtitle;
 
   /**
    * Controller for Multiplayer game screen.
@@ -87,8 +91,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @Override
   public void checkeredFlag(long raceEndTimestamp) {
-    countdownLabel.setText("Hurry!");
+    setFinishedMessage();
     countdownLabel.setVisible(true);
+    countdownSubtitle.setVisible(true);
   }
 
   @Override
@@ -99,6 +104,12 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   @Override
   public void updatedCountDown(long time) {
     countdownLabel.setText(Long.toString(time));
+  }
+
+  private void setFinishedMessage() {
+    FinishedMessage message = model.getFinishedText();
+    countdownLabel.setText(message.getMainMessage());
+    countdownSubtitle.setText(message.getSubMessage());
   }
 
   private void openGameOverScreen(RaceResult result) {
@@ -122,8 +133,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
             event -> {
               String typed = event.getCharacter();
               CheckResult check = model.typed(typed);
+              setFinishedMessage();
               if (check != null) {
-                enteredText.getChildren().add(charLabelCreator(check));
+                showTextProgess(check);
               }
             });
   }
@@ -155,29 +167,26 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   }
 
   private void setupText(String t) {
-    Text text = new Text(t);
-    text.setFill(Color.web("#62fbf7"));
-    textToType.getChildren().addAll(text);
+    for (int i = 0; i < t.length(); i++) {
+      Label character = new Label(Character.toString(t.charAt(i)));
+      character.setStyle("-fx-text-fill: #ffffff");
+      textLabels.add(character);
+      textToType.getChildren().addAll(character);
+    }
   }
 
   /** Creates labels for user input which will be added to hbox enteredText. */
-  private Label charLabelCreator(CheckResult check) {
+  private Label showTextProgess(CheckResult check) {
     Label label = new Label();
-    switch (check.state) {
+    switch (check.getState()) {
       case CORRECT:
-        Text characterCorrect = new Text(Character.toString(check.expected));
-        characterCorrect.setFill(Color.WHITE);
-        enteredText.getChildren().addAll(characterCorrect);
+        textLabels.get(model.getPosition() - 1).setStyle("-fx-text-fill: #62fbf7;");
         break;
       case INCORRECT:
-        Text characterIncorrect = new Text(Character.toString(check.typed));
-        characterIncorrect.setFill(Color.web("#fe55f7"));
-        enteredText.getChildren().addAll(characterIncorrect);
+        textLabels.get(model.getPosition()).setStyle("-fx-text-fill: #fe55f7;");
         break;
       case AUTOCORRECTED:
-        Text characterAutocorrected = new Text(Character.toString(check.typed));
-        characterAutocorrected.setFill(Color.web("#62fbf7"));
-        enteredText.getChildren().addAll(characterAutocorrected);
+        textLabels.get(model.getPosition() - 1).setStyle("-fx-text-fill: #d789f7;");
         break;
       default:
     }
@@ -197,9 +206,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     try {
       colorAlternateCounter++;
       if (colorAlternateCounter % 2 == 0) {
-        return new RaceTrack(IconManager.iconForId(userData.iconId), 450, 20, Color.web("#fe55f7"));
+        return new RaceTrack(IconManager.iconForId(userData.iconId), 550, 20, Color.web("#fe55f7"));
       } else {
-        return new RaceTrack(IconManager.iconForId(userData.iconId), 450, 20, Color.web("#62fbf7"));
+        return new RaceTrack(IconManager.iconForId(userData.iconId), 550, 20, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -220,6 +229,16 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   private void trackUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).updateProgress(update.percentProgress);
+  }
+
+  @FXML
+  private void leaveGame() {
+    model.leaveRace();
+    try {
+      new StartscreenController(stage, new StartScreenModel()).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

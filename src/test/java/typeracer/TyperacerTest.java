@@ -19,7 +19,7 @@ class TyperacerTest {
   @Test
   void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('t').state;
+    CorrectionStates actual = tp.check('t').getState();
     CorrectionStates expectation = CorrectionStates.CORRECT;
     assertEquals(actual, expectation);
   }
@@ -27,7 +27,7 @@ class TyperacerTest {
   @Test
   void testCheckAutocorrected() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('z').state;
+    CorrectionStates actual = tp.check('z').getState();
     CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
     assertEquals(actual, expectation);
   }
@@ -35,7 +35,7 @@ class TyperacerTest {
   @Test
   void testCheckIncorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('x').state;
+    CorrectionStates actual = tp.check('x').getState();
     CorrectionStates expectation = CorrectionStates.INCORRECT;
     assertEquals(actual, expectation);
   }
@@ -43,7 +43,7 @@ class TyperacerTest {
   @Test
   void testCheckUpperCaseAndLowerCase() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('Z').state;
+    CorrectionStates actual = tp.check('Z').getState();
     CorrectionStates expectation = CorrectionStates.INCORRECT;
     assertEquals(actual, expectation);
   }

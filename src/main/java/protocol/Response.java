@@ -15,6 +15,7 @@ public class Response {
     public static final String RACE_UPDATE = "race update";
     public static final String CHECKERED_FLAG = "checkered flag";
     public static final String RACE_RESULT = "race result";
+    public static final String CHAT_HISTORY = "chat history";
   }
 
   public final String type;
@@ -34,6 +35,8 @@ public class Response {
   public Long raceStop;
 
   public RaceResult raceResult;
+
+  public List<ChatMessageData> chatHistory;
 
   /**
    * Create a Request with given params.

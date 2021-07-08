@@ -9,39 +9,34 @@ public class RequestFactory {
    * @param playerName name of the player
    * @return {@link Request}
    */
-  public static Request makeRegisterRequest(String playerName) {
+  public static Request makeRegisterRequest(String playerName, String iconId) {
     Request request = new Request(Request.Types.REGISTER);
     request.playerName = playerName;
+    request.iconId = iconId;
     return request;
   }
 
   /**
    * Make a New game {@link Request} used to create a new game.
    *
-   * @param userId of initial player
    * @param lobbyName name of lobby
    * @return {@link Request}
    */
-  public static Request makeNewLobbyRequest(String userId, String lobbyName, String iconId) {
+  public static Request makeNewLobbyRequest(String lobbyName) {
     Request request = new Request(Request.Types.NEW_LOBBY);
-    request.userId = userId;
     request.lobbyName = lobbyName;
-    request.iconId = iconId;
     return request;
   }
 
   /**
    * Make a join game {@link Request} used to join existing games.
    *
-   * @param userId of player
    * @param lobbyId of lobby
    * @return {@link Request}
    */
-  public static Request makeJoinLobbyRequest(String userId, String lobbyId, String iconId) {
+  public static Request makeJoinLobbyRequest(String lobbyId) {
     Request request = new Request(Request.Types.JOIN_LOBBY);
-    request.userId = userId;
     request.lobbyId = lobbyId;
-    request.iconId = iconId;
     return request;
   }
 
@@ -92,5 +87,25 @@ public class RequestFactory {
    */
   public static Request makeLobbyUpdateRequest() {
     return new Request(Request.Types.LOBBY_UPDATE);
+  }
+
+  /**
+   * Make chat request used to send chat messages.
+   *
+   * @return {@link Request}
+   */
+  public static Request makeChatRequest(String message) {
+    Request request = new Request(Request.Types.CHAT_MESSAGE);
+    request.message = message;
+    return request;
+  }
+
+  /**
+   * Make chat history request used to request chat history.
+   *
+   * @return {@link Request}
+   */
+  public static Request makeChatHistoryRequest() {
+    return new Request(Request.Types.CHAT_HISTORY);
   }
 }

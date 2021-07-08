@@ -93,13 +93,13 @@ class Connection implements Closeable {
   private void receivedRequest(Request request) {
     switch (request.type) {
       case Request.Types.REGISTER:
-        api.registerPlayer(id, request.playerName);
+        api.registerPlayer(id, request.playerName, request.iconId);
         break;
       case Request.Types.NEW_LOBBY:
-        api.createNewLobby(id, request.userId, request.lobbyName, request.iconId);
+        api.createNewLobby(id, request.lobbyName);
         break;
       case Request.Types.JOIN_LOBBY:
-        api.joinLobby(request.lobbyId, id, request.userId, request.iconId);
+        api.joinLobby(id, request.lobbyId);
         break;
       case Request.Types.LEAVE_LOBBY:
         api.leaveLobby(id);
@@ -121,6 +121,12 @@ class Connection implements Closeable {
         break;
       case Request.Types.PREV_RACE_RESULT:
         api.sendPreviousRaceResult(id);
+        break;
+      case Request.Types.CHAT_MESSAGE:
+        api.sendChat(id, request.message);
+        break;
+      case Request.Types.CHAT_HISTORY:
+        api.requestChatHistory(id);
         break;
       default:
         Logger.logError("Unknown Request type: " + request.type);

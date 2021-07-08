@@ -18,7 +18,7 @@ public class StartscreenController extends Controller implements StartScreenMode
   private static final String FXMLPATH = "view/startscreen.fxml";
   private static final String USERNAME_ERROR = "Please choose a username";
 
-  private StartScreenModel model;
+  private final StartScreenModel model;
 
   @FXML TextField username;
 
@@ -41,14 +41,15 @@ public class StartscreenController extends Controller implements StartScreenMode
     if (ApplicationState.getInstance().getClient() == null) {
       try {
         ApplicationState.getInstance().newClient();
-        if (username.getText().equals("")) {
-          displayError(USERNAME_ERROR);
-        } else {
-          model.register(username.getText());
-        }
       } catch (IOException e) {
         displayError(e.getMessage());
+        return;
       }
+    }
+    if (username.getText().equals("")) {
+      displayError(USERNAME_ERROR);
+    } else {
+      model.register(username.getText());
     }
   }
 

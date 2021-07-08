@@ -3,9 +3,9 @@ package typeracer;
 /** Used as result of check char. Contains all information about the check. */
 public class CheckResult {
 
-  public CorrectionStates state;
-  public char expected;
-  public char typed;
+  private final CorrectionStates state;
+  private final char expected;
+  private final char typed;
 
   /**
    * Create Result.
@@ -18,5 +18,17 @@ public class CheckResult {
     this.state = state;
     this.typed = typed;
     this.expected = expected;
+  }
+
+  public char getExpected() {
+    return expected;
+  }
+
+  public char getTyped() {
+    return typed;
+  }
+
+  public CorrectionStates getState() {
+    return state;
   }
 }

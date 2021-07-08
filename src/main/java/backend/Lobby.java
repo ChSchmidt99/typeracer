@@ -1,16 +1,14 @@
 package backend;
 
 import database.Database;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
 import protocol.UserData;
-import server.PushService;
 import util.Logger;
 import util.Timestamp;
 
@@ -21,19 +19,21 @@ class Lobby implements RaceFinishedListener {
   private static final int MAX_PLAYERS = 4;
 
   private final String lobbyId;
-  private final HashMap<String, LobbyMember> members;
-  private final PushService pushService;
+  private final List<User> members;
   private final Database database;
   private final String name;
+
+  // TODO: Store Races in RaceStore
   private final List<Race> finishedRaces;
+  private final List<ChatMessage> chatHistory;
   private Race race;
 
-  Lobby(String lobbyId, String name, Database database, PushService pushService) {
-    this.members = new HashMap<>();
+  Lobby(String lobbyId, String name, Database database) {
+    this.members = new ArrayList<>();
     this.lobbyId = lobbyId;
-    this.pushService = pushService;
     this.database = database;
     this.finishedRaces = new ArrayList<>();
+    this.chatHistory = new ArrayList<>();
     this.name = name;
   }
 
@@ -45,42 +45,39 @@ class Lobby implements RaceFinishedListener {
     broadcast(resultResponse);
   }
 
-  void join(String connectionId, String userId, String iconId) {
-    try {
-      if (members.size() < MAX_PLAYERS) {
-        String username = this.database.getUsername(userId);
-        LobbyMember lobbyMember = new LobbyMember(connectionId, new User(userId, username, iconId));
-        members.put(connectionId, lobbyMember);
-        broadcastLobbyUpdate();
-      } else {
-        Response error = ResponseFactory.makeErrorResponse("Max number of players.");
-        pushService.sendResponse(connectionId, error);
-      }
-    } catch (IOException e) {
-      Logger.logError(e.getMessage());
+  void join(User user) {
+    if (members.size() < MAX_PLAYERS) {
+      members.add(user);
+      broadcastLobbyUpdate();
+    } else {
+      Response error = ResponseFactory.makeErrorResponse("Max number of players.");
+      user.sendResponse(error);
     }
   }
 
-  void leave(String connectionId) {
-    // TODO: Assign new host, if host leaves
-    if (!members.containsKey(connectionId)) {
-      Logger.logError("Called leave on non existing member");
+  void leave(User user) {
+    if (!members.contains(user)) {
+      Logger.logError("Called leave on user that's not in lobby");
       return;
     }
-    LobbyMember member = members.get(connectionId);
-    if (member.getUser().getState().equals(User.State.IN_RACE)) {
-      this.race.removePlayer(connectionId);
+    if (user.getState().equals(User.State.IN_RACE)) {
+      this.race.removePlayer(user);
     }
-    members.remove(connectionId);
+    members.remove(user);
+    user.setState(User.State.UNKNOWN);
     broadcastLobbyUpdate();
   }
 
-  void startRace(String connectionId, RaceSettings settings) {
-    Map<String, Player> readyPlayers = getReadyPlayers();
+  void sendChatMessage(ChatMessage message) {
+    chatHistory.add(message);
+    broadcastChat();
+  }
+
+  void startRace(User user, RaceSettings settings) {
+    HashMap<String, Player> readyPlayers = collectReadyPlayers();
     if (readyPlayers.size() == 0) {
-      // TODO: Central place for all error messages
       Response error = ResponseFactory.makeErrorResponse("No players ready");
-      pushService.sendResponse(connectionId, error);
+      user.sendResponse(error);
       return;
     }
     this.race =
@@ -88,7 +85,6 @@ class Lobby implements RaceFinishedListener {
             settings,
             this.database.getTextToType(),
             readyPlayers,
-            pushService,
             this,
             Timestamp.currentTimestamp() + START_DELAY);
     broadcastLobbyUpdate();
@@ -96,14 +92,18 @@ class Lobby implements RaceFinishedListener {
 
   LobbyData lobbyModel() {
     List<UserData> playerData = new ArrayList<>();
-    for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      playerData.add(entry.getValue().getUser().getUserData());
+    for (User user : members) {
+      playerData.add(user.getUserData());
     }
     return new LobbyData(lobbyId, playerData, name, isRunning());
   }
 
-  void setPlayerReady(String connectionId, boolean isReady) {
-    members.get(connectionId).setReady(isReady);
+  void setPlayerReady(User user, boolean isReady) {
+    if (isReady) {
+      user.setState(User.State.READY);
+    } else {
+      user.setState(User.State.NOT_READY);
+    }
     broadcastLobbyUpdate();
   }
 
@@ -126,34 +126,55 @@ class Lobby implements RaceFinishedListener {
     return this.members.isEmpty();
   }
 
-  void sendUpdate(String connectionId) {
+  void sendUpdate(User user) {
     Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());
-    pushService.sendResponse(connectionId, response);
+    user.sendResponse(response);
   }
 
-  void sendPreviousRaceResult(String connectionId) {
+  void sendChatHistory(User user) {
+    Response chatHistory = ResponseFactory.makeChatResponse(marshalChatHistory());
+    user.sendResponse(chatHistory);
+  }
+
+  void sendPreviousRaceResult(User user) {
     if (finishedRaces.size() == 0) {
       Logger.logError("Tried retrieving non existing previous race");
       return;
     }
     Race race = finishedRaces.get(finishedRaces.size() - 1);
     Response response = ResponseFactory.makeRaceResultResponse(race.getRaceResult());
-    pushService.sendResponse(connectionId, response);
+    user.sendResponse(response);
   }
 
-  private Map<String, Player> getReadyPlayers() {
-    Map<String, Player> readyPlayers = new HashMap<>();
-    for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      if (entry.getValue().isReady()) {
-        LobbyMember member = entry.getValue();
-        readyPlayers.put(entry.getKey(), member.toPlayer());
+  private HashMap<String, Player> collectReadyPlayers() {
+    HashMap<String, Player> readyPlayers = new HashMap<>();
+    for (User user : members) {
+      if (user.getState().equals(User.State.READY)) {
+        readyPlayers.put(user.getId(), new Player(user));
+        user.setState(User.State.IN_RACE);
       }
     }
     return readyPlayers;
   }
 
   private void broadcast(Response response) {
-    pushService.sendResponse(members.keySet(), response);
+    for (User user : members) {
+      user.sendResponse(response);
+    }
+  }
+
+  private void broadcastChat() {
+    List<ChatMessageData> messages = marshalChatHistory();
+    Response response = ResponseFactory.makeChatResponse(messages);
+    broadcast(response);
+  }
+
+  private List<ChatMessageData> marshalChatHistory() {
+    List<ChatMessageData> messages = new ArrayList<>();
+    for (ChatMessage message : this.chatHistory) {
+      messages.add(message.toChatMessageData());
+    }
+    return messages;
   }
 
   private void broadcastLobbyUpdate() {

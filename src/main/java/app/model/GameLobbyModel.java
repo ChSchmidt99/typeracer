@@ -4,7 +4,9 @@ import app.ApplicationState;
 import client.Client;
 import client.ErrorObserver;
 import client.LobbyObserver;
+import java.util.List;
 import javafx.application.Platform;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 
@@ -61,6 +63,16 @@ public class GameLobbyModel implements LobbyObserver, ErrorObserver {
     client.startRace();
   }
 
+  public void requestHistory() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.requestChatHistory();
+  }
+
+  public void sendMessage(String message) {
+    Client client = ApplicationState.getInstance().getClient();
+    client.sendChatMessage(message);
+  }
+
   @Override
   public void gameStarting(RaceData race) {
     if (observer != null) {
@@ -74,6 +86,13 @@ public class GameLobbyModel implements LobbyObserver, ErrorObserver {
     this.lobby = lobby;
     if (observer != null) {
       Platform.runLater(() -> observer.updatedLobby());
+    }
+  }
+
+  @Override
+  public void receivedChatHistory(List<ChatMessageData> chatHistory) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedChatHistory(chatHistory));
     }
   }
 
