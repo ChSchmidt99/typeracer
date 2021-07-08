@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="baseGridPane" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
-    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="TypeRacer" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2" />
+<GridPane fx:id="baseGridPane" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="TypeRacer" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2147483647" />
     <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="TOP">
         <Button onAction="#switchToSingleplayer" styleClass="gamebutton" text="Singleplayer" />
         <Button onAction="#switchToLobbyBrowser" styleClass="gamebutton" text="Multiplayer">
@@ -31,7 +31,7 @@
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fillHeight="false" minHeight="250.0" prefHeight="250.0" />
-      <RowConstraints fillHeight="false" minHeight="290.0" prefHeight="290.0" valignment="CENTER" />
+      <RowConstraints fillHeight="false" minHeight="250.0" prefHeight="250.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints fillHeight="false" minHeight="290.0" prefHeight="290.0" valignment="CENTER" vgrow="NEVER" />
    </rowConstraints>
 </GridPane>

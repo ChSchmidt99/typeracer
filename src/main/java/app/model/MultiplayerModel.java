@@ -40,6 +40,7 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
   private List<PlayerUpdate> updates;
   private State state;
   private final ScheduledExecutorService scheduler;
+  private String hurry;
 
   private enum State {
     PRE_START,
@@ -93,8 +94,11 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
     CheckResult check = typeracer.check(key.charAt(0));
     if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
       sendProgress();
+      this.hurry = "FINISHED!";
       this.state = State.CHECKERED_FLAG;
       this.raceEnd = Timestamp.currentTimestamp();
+    } else {
+      this.hurry = "HURRY!";
     }
     return check;
   }
@@ -219,4 +223,10 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
   public void close() throws IOException {
     scheduler.shutdownNow();
   }
+
+  public int getPosition() {
+    return typeracer.getState().getTypeChar().getCounter();
+  }
+
+  public String getHurryUp() { return this.hurry; };
 }

@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
-    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxHeight="900.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Create" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2" />
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxHeight="900.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Create" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2147483647" />
     <VBox alignment="CENTER" maxWidth="700.0" prefWidth="700.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
         <TextField fx:id="lobbyName" promptText="lobbyname" styleClass="inputfield">
             <VBox.margin>
@@ -32,7 +32,7 @@
         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1920.0" minWidth="810.0" prefWidth="810.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints fillHeight="false" maxHeight="600.0" minHeight="180.0" prefHeight="600.0" vgrow="ALWAYS" />
+        <RowConstraints fillHeight="false" maxHeight="600.0" minHeight="180.0" prefHeight="600.0" valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints />
     </rowConstraints>
 </GridPane>
