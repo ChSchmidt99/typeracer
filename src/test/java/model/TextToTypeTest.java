@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-
 /** Unit tests for TextToType class. */
 class TextToTypeTest {
 
@@ -14,27 +13,27 @@ class TextToTypeTest {
   void testCheckCharCorrect() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    CorrectionStates actual = ttt.checkChar('t');
-    CorrectionStates expectation = CorrectionStates.CORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = ttt.checkChar('t');
+    CheckResult expectation = new CheckResult(CorrectionStates.CORRECT, 't', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckCharAutocorrected() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    CorrectionStates actual = ttt.checkChar('z');
-    CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
-    assertEquals(actual, expectation);
+    CheckResult actual = ttt.checkChar('z');
+    CheckResult expectation = new CheckResult(CorrectionStates.AUTOCORRECTED, 'z', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckCharIncorrect() {
     Counter counter = new Counter();
     TextToType ttt = new TextToType("test", counter);
-    CorrectionStates actual = ttt.checkChar('x');
-    CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = ttt.checkChar('x');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'x', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test

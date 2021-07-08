@@ -1,10 +1,9 @@
 package model;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-
-
 
 /** Unit tests for Typeracer class. */
 class TyperacerTest {
@@ -21,33 +20,33 @@ class TyperacerTest {
   @Test
   void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('t');
-    CorrectionStates expectation = CorrectionStates.CORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('t');
+    CheckResult expectation = new CheckResult(CorrectionStates.CORRECT, 't', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckAutocorrected() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('z');
-    CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('z');
+    CheckResult expectation = new CheckResult(CorrectionStates.AUTOCORRECTED, 'z', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckIncorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('x');
-    CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('x');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'x', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckUpperCaseAndLowerCase() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('Z');
-    CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('Z');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'Z', 't');
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test

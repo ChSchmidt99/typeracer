@@ -3,13 +3,13 @@ package model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-/** Represents a classic Typeracer game. */
-public class Typeracer implements TyperacerInterface {
-
+/** Represents a reverse Typeracer game mode. */
+public class TyperacerReverseMode implements TyperacerInterface {
   private final GameState state;
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-  Typeracer(final String text) {
+  TyperacerReverseMode(final String text) {
+
     state = new GameState(text);
   }
 
@@ -20,11 +20,14 @@ public class Typeracer implements TyperacerInterface {
   /**
    * Creates a new game.
    *
-   * @return new Typeracer game.
+   * @return new TyperacerReverseMode game.
    */
-  public static Typeracer create() {
+  public static TyperacerReverseMode create() {
     String randomText = "new WordDatabase().getWord()";
-    return new Typeracer(randomText);
+    StringBuilder reversedText = new StringBuilder();
+    reversedText.append(randomText);
+    reversedText.reverse();
+    return new TyperacerReverseMode(reversedText.toString());
   }
 
   private void notifyListeners() {
@@ -36,10 +39,10 @@ public class Typeracer implements TyperacerInterface {
   }
 
   /**
-   * Checks the given character. This method can only be called on an active game. Otherwise, an
+   * Check the given character. This method can only be called on an active game. Otherwise, an
    * IllegalStateException is thrown.
    *
-   * @param guessedCharacter character to guess.
+   * @param guessedCharacter character to guess
    * @return true if the check was successful. false otherwise.
    * @throws IllegalStateException – if the current Typeracer game is not running
    */

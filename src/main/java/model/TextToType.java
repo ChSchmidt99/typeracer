@@ -5,6 +5,7 @@ public class TextToType {
 
   private final String completeText;
   private final Counter counter;
+  private int mistakeCounter = 0;
 
   CorrectionStates[] checkedCharacters;
 
@@ -15,20 +16,22 @@ public class TextToType {
     checkedCharacters = new CorrectionStates[completeText.length()];
   }
 
-  CorrectionStates checkChar(char userInput) {
+  CheckResult checkChar(char userInput) {
     CorrectionStates guessed = CorrectionStates.INCORRECT;
 
-    char given = completeText.charAt(counter.getCurrentValue());
+    char expected = completeText.charAt(counter.getCurrentValue());
 
-    if (userInput == given) {
+    if (userInput == expected) {
       guessed = CorrectionStates.CORRECT;
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.CORRECT;
+      counter.increase();
     } else {
-      if (checkForAutocorrect(userInput, given) == given) {
+      if (checkForAutocorrect(userInput, expected) == expected) {
         guessed = CorrectionStates.AUTOCORRECTED;
+        counter.increase();
       }
     }
-    return guessed;
+    return new CheckResult(guessed, userInput, expected);
   }
 
   /**
@@ -40,8 +43,9 @@ public class TextToType {
    */
   private char checkForAutocorrect(char typedChar, char givenChar) {
     if ((Character.isUpperCase(typedChar) && Character.isLowerCase(givenChar))
-        || (Character.isLowerCase(typedChar) && Character.isUpperCase(givenChar))) {
+            || (Character.isLowerCase(typedChar) && Character.isUpperCase(givenChar))) {
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.INCORRECT;
+      mistakeCounter++;
     }
 
     boolean isUpper = false;
@@ -104,10 +108,19 @@ public class TextToType {
   // https://stackoverflow.com/questions/10275461/java-whats-the-most-efficient-way-to-remove-all-blank-space-from-a-stringbuild
 
   boolean checkFinish() {
-    return checkedCharacters[completeText.length() - 1] != null;
+    return checkedCharacters[completeText.length() - 1] != null
+            && checkedCharacters[completeText.length() - 1] != CorrectionStates.INCORRECT;
   }
 
-  String getCompleteText() {
+  public String getCompleteText() {
     return completeText;
+  }
+
+  public int getCounter() {
+    return counter.getCurrentValue();
+  }
+
+  public int getMistakeCounter() {
+    return mistakeCounter;
   }
 }

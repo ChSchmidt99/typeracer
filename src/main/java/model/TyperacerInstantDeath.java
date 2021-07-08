@@ -3,13 +3,12 @@ package model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-/** Represents a classic Typeracer game. */
-public class Typeracer implements TyperacerInterface {
-
+/** Represents a Typeracer game mode which ends on the first mistake. */
+public class TyperacerInstantDeath implements TyperacerInterface {
   private final GameState state;
   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-  Typeracer(final String text) {
+  TyperacerInstantDeath(final String text) {
     state = new GameState(text);
   }
 
@@ -17,14 +16,9 @@ public class Typeracer implements TyperacerInterface {
     support.addPropertyChangeListener(changeListener);
   }
 
-  /**
-   * Creates a new game.
-   *
-   * @return new Typeracer game.
-   */
-  public static Typeracer create() {
+  public static TyperacerInstantDeath create() {
     String randomText = "new WordDatabase().getWord()";
-    return new Typeracer(randomText);
+    return new TyperacerInstantDeath(randomText);
   }
 
   private void notifyListeners() {
@@ -36,10 +30,10 @@ public class Typeracer implements TyperacerInterface {
   }
 
   /**
-   * Checks the given character. This method can only be called on an active game. Otherwise, an
+   * Check the given character. This method can only be called on an active game. Otherwise, an
    * IllegalStateException is thrown.
    *
-   * @param guessedCharacter character to guess.
+   * @param guessedCharacter character to guess
    * @return true if the check was successful. false otherwise.
    * @throws IllegalStateException – if the current Typeracer game is not running
    */
@@ -50,6 +44,9 @@ public class Typeracer implements TyperacerInterface {
 
     CheckResult result = state.getTypeChar().checkChar(guessedCharacter);
     if (state.getTypeChar().checkFinish()) {
+      state.endGame();
+    }
+    if (result.getState() == CorrectionStates.INCORRECT) {
       state.endGame();
     }
 
