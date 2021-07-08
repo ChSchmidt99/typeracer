@@ -71,7 +71,7 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
   @FXML
   void sendMessage() {
     String message = chatInputTextField.getText();
-    if (message.equals("")){
+    if (message.equals("")) {
       return;
     }
     model.sendMessage(message);
@@ -115,7 +115,7 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
   @Override
   public void receivedChatHistory(List<ChatMessageData> chatHistory) {
     chatListView.getItems().clear();
-    for (ChatMessageData message: chatHistory) {
+    for (ChatMessageData message : chatHistory) {
       chatListView.getItems().add(message.user.name + ": " + message.message);
     }
   }

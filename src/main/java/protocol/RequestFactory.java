@@ -101,7 +101,7 @@ public class RequestFactory {
   }
 
   /**
-   * Make chat history request used to request chat history,
+   * Make chat history request used to request chat history.
    *
    * @return {@link Request}
    */

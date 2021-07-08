@@ -10,6 +10,4 @@ class SingleplayerController extends Controller {
   SingleplayerController(Stage stage) throws IOException {
     super(stage, FXMLPATH);
   }
-
-
 }

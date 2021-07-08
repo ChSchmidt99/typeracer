@@ -27,8 +27,10 @@ public class MultiplayerModel
 
   /** Update interval in sec. */
   private static final long POLLING_INTERVAL = 1;
+
   private static final long FALL_BACK_START_DELAY = 3;
-  private static final FinishedMessage FINISHED = new FinishedMessage("FINISHED","waiting for race end");
+  private static final FinishedMessage FINISHED =
+      new FinishedMessage("FINISHED", "waiting for race end");
   private static final FinishedMessage NOT_FINISHED = new FinishedMessage("HURRY!", "");
 
   private MultiplayerModelObserver observer;
@@ -233,5 +235,7 @@ public class MultiplayerModel
     return typeracer.getState().getTypeChar().getCounter();
   }
 
-  public FinishedMessage getFinishedText() { return this.finishedMessage; };
+  public FinishedMessage getFinishedText() {
+    return this.finishedMessage;
+  }
 }

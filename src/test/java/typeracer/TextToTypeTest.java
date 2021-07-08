@@ -15,7 +15,7 @@ class TextToTypeTest {
     TextToType ttt = new TextToType("test", counter);
     CheckResult result = ttt.checkChar('t');
     CorrectionStates expectation = CorrectionStates.CORRECT;
-    assertEquals(result.state, expectation);
+    assertEquals(result.getState(), expectation);
   }
 
   @Test
@@ -24,7 +24,7 @@ class TextToTypeTest {
     TextToType ttt = new TextToType("test", counter);
     CheckResult result = ttt.checkChar('z');
     CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
-    assertEquals(result.state, expectation);
+    assertEquals(result.getState(), expectation);
   }
 
   @Test
@@ -33,7 +33,7 @@ class TextToTypeTest {
     TextToType ttt = new TextToType("test", counter);
     CheckResult result = ttt.checkChar('x');
     CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(result.state, expectation);
+    assertEquals(result.getState(), expectation);
   }
 
   @Test

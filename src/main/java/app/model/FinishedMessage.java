@@ -1,5 +1,6 @@
 package app.model;
 
+/** Represents the message displayed after player is finished. */
 public class FinishedMessage {
 
   private final String mainMessage;

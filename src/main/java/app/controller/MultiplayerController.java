@@ -6,13 +6,12 @@ import app.model.FinishedMessage;
 import app.model.GameFinishedModel;
 import app.model.MultiplayerModel;
 import app.model.MultiplayerModelObserver;
+import app.model.StartScreenModel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import app.model.StartScreenModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -168,7 +167,7 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   }
 
   private void setupText(String t) {
-    for (int i = 0; i<t.length(); i++) {
+    for (int i = 0; i < t.length(); i++) {
       Label character = new Label(Character.toString(t.charAt(i)));
       character.setStyle("-fx-text-fill: #ffffff");
       textLabels.add(character);
@@ -179,15 +178,15 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   /** Creates labels for user input which will be added to hbox enteredText. */
   private Label showTextProgess(CheckResult check) {
     Label label = new Label();
-    switch (check.state) {
+    switch (check.getState()) {
       case CORRECT:
-        textLabels.get(model.getPosition()-1).setStyle("-fx-text-fill: #62fbf7;");
+        textLabels.get(model.getPosition() - 1).setStyle("-fx-text-fill: #62fbf7;");
         break;
       case INCORRECT:
         textLabels.get(model.getPosition()).setStyle("-fx-text-fill: #fe55f7;");
         break;
       case AUTOCORRECTED:
-        textLabels.get(model.getPosition()-1).setStyle("-fx-text-fill: #d789f7;");
+        textLabels.get(model.getPosition() - 1).setStyle("-fx-text-fill: #d789f7;");
         break;
       default:
     }
