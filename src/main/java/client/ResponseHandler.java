@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import protocol.Response;
@@ -17,19 +18,21 @@ class ResponseHandler implements Closeable {
   private final BufferedReader reader;
   private final Gson gson;
   private final ExecutorService executorService;
-  private final HashSet<ClientObserver> observers;
-  private final HashSet<RaceObserver> raceObservers;
-  private final HashSet<LobbyObserver> lobbyObservers;
-  private final HashSet<ErrorObserver> errorObservers;
+  private final List<ClientObserver> observers;
+  private final List<RaceObserver> raceObservers;
+  private final List<RaceResultObserver> resultObservers;
+  private final List<LobbyObserver> lobbyObservers;
+  private final List<ErrorObserver> errorObservers;
 
   ResponseHandler(Socket socket, Gson gson) throws IOException {
     this.reader =
         new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
     this.gson = gson;
-    this.observers = new HashSet<>();
-    this.lobbyObservers = new HashSet<>();
-    this.raceObservers = new HashSet<>();
-    this.errorObservers = new HashSet<>();
+    this.observers = new CopyOnWriteArrayList<>();
+    this.lobbyObservers = new CopyOnWriteArrayList<>();
+    this.raceObservers = new CopyOnWriteArrayList<>();
+    this.resultObservers = new CopyOnWriteArrayList<>();
+    this.errorObservers = new CopyOnWriteArrayList<>();
     executorService = Executors.newFixedThreadPool(1);
     executorService.execute(this::startListening);
   }
@@ -41,8 +44,9 @@ class ResponseHandler implements Closeable {
    */
   @Override
   public void close() throws IOException {
-    this.executorService.shutdownNow();
+    this.errorObservers.clear();
     this.reader.close();
+    this.executorService.shutdownNow();
   }
 
   void subscribe(ClientObserver observer) {
@@ -69,6 +73,14 @@ class ResponseHandler implements Closeable {
     lobbyObservers.remove(observer);
   }
 
+  void subscribeResults(RaceResultObserver observer) {
+    resultObservers.add(observer);
+  }
+
+  void unsubscribeResults(RaceResultObserver observer) {
+    resultObservers.remove(observer);
+  }
+
   void subscribeErrors(ErrorObserver observer) {
     errorObservers.add(observer);
   }
@@ -84,10 +96,17 @@ class ResponseHandler implements Closeable {
         Response response = gson.fromJson(line, Response.class);
         receivedResponse(response);
       }
+      disconnected();
     } catch (IOException e) {
-      // TODO: Handle lost Server connection
-      System.out.println(e.getMessage());
+      disconnected();
     }
+  }
+
+  private void disconnected() {
+    errorObservers.forEach(
+        (observer) -> {
+          observer.receivedError("Lost server connection");
+        });
   }
 
   private void receivedResponse(Response response) {
@@ -132,6 +151,12 @@ class ResponseHandler implements Closeable {
         raceObservers.forEach(
             (observer) -> {
               observer.receivedCheckeredFlag(response.raceStop);
+            });
+        break;
+      case Response.Types.RACE_RESULT:
+        resultObservers.forEach(
+            (observer) -> {
+              observer.receivedRaceResult(response.raceResult);
             });
         break;
       default:

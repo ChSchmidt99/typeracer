@@ -14,6 +14,7 @@ public class Request {
     public static final String GET_LOBBIES = "get lobbies";
     public static final String UPDATE_PROGRESS = "update progress";
     public static final String LOBBY_UPDATE = "get lobby update";
+    public static final String PREV_RACE_RESULT = "previous race result";
   }
 
   public final String type;

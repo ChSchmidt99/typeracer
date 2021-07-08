@@ -7,7 +7,9 @@ public class RaceData {
 
   public final String textToType;
 
-  public final List<PlayerData> players;
+  public final List<UserData> players;
+
+  public final long startTime;
 
   /**
    * Create RaceModel.
@@ -15,8 +17,9 @@ public class RaceData {
    * @param textToType text of the race
    * @param players list of players
    */
-  public RaceData(String textToType, List<PlayerData> players) {
+  public RaceData(String textToType, List<UserData> players, long startTime) {
     this.textToType = textToType;
     this.players = players;
+    this.startTime = startTime;
   }
 }

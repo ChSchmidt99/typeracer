@@ -57,4 +57,9 @@ class CreateController extends Controller implements CreateModelObserver {
       e.printStackTrace();
     }
   }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
+  }
 }

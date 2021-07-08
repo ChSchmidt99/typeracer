@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Represents the internal state of the game. */
 public class GameState {

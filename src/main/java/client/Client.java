@@ -40,6 +40,8 @@ public interface Client extends ObserverHandler, Closeable {
 
   void requestLobbyUpdate();
 
+  void requestPreviousRaceResult();
+
   /**
    * Set ready or not. If ready, client will join the next race.
    *

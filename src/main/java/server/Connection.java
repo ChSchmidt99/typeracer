@@ -48,8 +48,8 @@ class Connection implements Closeable {
   @Override
   public void close() {
     try {
-      socket.close();
       reader.close();
+      socket.close();
     } catch (IOException e) {
       Logger.logError(e.getMessage());
     }
@@ -63,8 +63,9 @@ class Connection implements Closeable {
         Request request = gson.fromJson(line, Request.class);
         receivedRequest(request);
       }
+      disconnected(onDisconnect);
     } catch (IOException e) {
-      onDisconnect.closedConnection(this);
+      disconnected(onDisconnect);
     } catch (JsonSyntaxException e) {
       sendResponse(ResponseFactory.makeErrorResponse("Invalid Request"));
     }
@@ -82,6 +83,11 @@ class Connection implements Closeable {
 
   String getId() {
     return id;
+  }
+
+  private void disconnected(OnDisconnect onDisconnect) {
+    onDisconnect.closedConnection(this);
+    api.leaveLobby(id);
   }
 
   private void receivedRequest(Request request) {
@@ -112,6 +118,9 @@ class Connection implements Closeable {
         break;
       case Request.Types.LOBBY_UPDATE:
         api.sendLobbyUpdate(id);
+        break;
+      case Request.Types.PREV_RACE_RESULT:
+        api.sendPreviousRaceResult(id);
         break;
       default:
         Logger.logError("Unknown Request type: " + request.type);

@@ -2,8 +2,11 @@ package app;
 
 import client.Client;
 import client.ClientImpl;
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Singleton holding the applications state. */
 public class ApplicationState {
@@ -12,8 +15,11 @@ public class ApplicationState {
 
   private String userId;
   private Client client;
+  private final List<Closeable> closeables;
 
-  private ApplicationState() {}
+  private ApplicationState() {
+    closeables = new ArrayList<>();
+  }
 
   /**
    * Creates new instance or returns existing one.
@@ -35,13 +41,40 @@ public class ApplicationState {
     return userId;
   }
 
+  public void addCloseable(Closeable closeable) {
+    closeables.add(closeable);
+  }
+
+  public void removeCloseable(Closeable closeable) {
+    closeables.remove(closeable);
+  }
+
+  /** Close all closeables. */
+  public void close() {
+    for (Closeable closeable : closeables) {
+      try {
+        closeable.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   /**
-   * Set Client.
+   * Connect a new Client, overrides existing Client.
    *
-   * @param client client
+   * @return {@link Client}
+   * @throws IOException if unable to connect
    */
-  public void setClient(Client client) {
-    this.client = client;
+  public Client newClient() throws IOException {
+    if (this.client != null) {
+      client.close();
+      this.removeCloseable(this.client);
+    }
+    // TODO: Add address/port to config
+    client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
+    closeables.add(client);
+    return client;
   }
 
   /**
@@ -50,14 +83,6 @@ public class ApplicationState {
    * @return {@link Client}
    */
   public Client getClient() {
-    if (client == null) {
-      // TODO: Add address/port to config
-      try {
-        client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return client;
+    return this.client;
   }
 }

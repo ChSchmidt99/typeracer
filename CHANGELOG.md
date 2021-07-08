@@ -26,11 +26,11 @@ and this project adheres to
 - send player updates to server when a game is running
 - receive race updates at a set interval
 - GUI functionality for game screen setup (usernames, texttotype etc.)
-- key handler for user input during game
+- key handler for userData input during game
 - progress indicator during gameplay
 - color indicator for correctly/wrongly typed letters  
 - username requirement for entering multiplayer
-- connection of gui, database and model
+- connection of gui, database and typeracer
 
 ### Changed
 - List View Actions to Interface callback on cell button click

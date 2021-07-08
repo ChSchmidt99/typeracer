@@ -13,7 +13,7 @@ public class PlayerTest {
   void updateProgress() {
     int wpm = 4;
     int cpm = wpm * 5;
-    Player player = new Player("someId", "someConnection", "someName", "iconId");
+    Player player = new Player("someId", new User("someConnection", "someName", "iconId"));
     player.updateProgress(new ProgressSnapshot(0, 60, cpm, 0), cpm);
     PlayerUpdate update = player.getUpdate();
     assertEquals(1, update.percentProgress);

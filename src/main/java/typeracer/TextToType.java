@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Represent a text that needs to be written. */
 public class TextToType {

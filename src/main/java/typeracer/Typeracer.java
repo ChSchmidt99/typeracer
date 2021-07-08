@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

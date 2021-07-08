@@ -32,19 +32,19 @@ import java.util.List;
   /**
    * Make race starting response. Used to notify users when a race is about to start.
    *
-   * @param model {@link RaceModel} of the started race
+   * @param typeracer {@link RaceModel} of the started race
    * @return {@link Response}
    */
-  public static Response makeRaceStartingResponse(RaceModel model) {
+  public static Response makeRaceStartingResponse(RaceModel typeracer) {
 <span class="fc" id="L39">    Response response = new Response(Response.Types.GAME_STARTING);</span>
-<span class="fc" id="L40">    response.race = model;</span>
+<span class="fc" id="L40">    response.race = typeracer;</span>
 <span class="fc" id="L41">    return response;</span>
   }
 
   /**
    * Make registered response. Used to send userId to newly registered players
    *
-   * @param userId id of user
+   * @param userId id of userData
    * @return {@link Response}
    */
   public static Response makeRegisteredResponse(String userId) {

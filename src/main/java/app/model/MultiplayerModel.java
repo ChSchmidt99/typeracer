@@ -2,27 +2,49 @@ package app.model;
 
 import app.ApplicationState;
 import client.Client;
+import client.ErrorObserver;
 import client.RaceObserver;
+import client.RaceResultObserver;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
-import model.CheckResult;
-import model.GamePhase;
-import model.Typeracer;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
+import protocol.RaceResult;
+import typeracer.CheckResult;
+import typeracer.GamePhase;
+import typeracer.Typeracer;
 import util.Timestamp;
 
 /** Model for Multiplayer View. */
-public class MultiplayerModel implements RaceObserver {
+public class MultiplayerModel
+    implements RaceObserver, RaceResultObserver, ErrorObserver, Closeable {
+
+  /** Update interval in sec. */
+  private static final long POLLING_INTERVAL = 1;
+
+  private static final long FALL_BACK_START_DELAY = 3;
 
   private MultiplayerModelObserver observer;
 
-  private final long raceStart;
+  private long raceStart;
+  private long raceEnd;
   private final Typeracer typeracer;
   private final RaceData raceData;
   private List<PlayerUpdate> updates;
-  private int notifyCounter;
+  private State state;
+  private final ScheduledExecutorService scheduler;
+
+  private enum State {
+    PRE_START,
+    RACING,
+    CHECKERED_FLAG
+  }
 
   /**
    * Create Model for Multiplayer View.
@@ -30,11 +52,12 @@ public class MultiplayerModel implements RaceObserver {
    * @param race information about started race
    */
   public MultiplayerModel(RaceData race) {
+    this.scheduler = Executors.newScheduledThreadPool(2);
     this.raceData = race;
-    this.raceStart = Timestamp.currentTimestamp();
     this.typeracer = new Typeracer(race.textToType);
-    this.notifyCounter = 0;
-    ApplicationState.getInstance().getClient().subscribeRaceUpdates(this);
+    this.state = State.PRE_START;
+    subscribe();
+    ApplicationState.getInstance().addCloseable(this);
   }
 
   /**
@@ -62,11 +85,16 @@ public class MultiplayerModel implements RaceObserver {
    * @return {@link CheckResult}
    */
   public CheckResult typed(String key) {
-    if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
+    if ((this.state == State.PRE_START)
+        || typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
       return null;
     }
     CheckResult check = typeracer.check(key.charAt(0));
-    notifyInterval();
+    if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
+      sendProgress();
+      this.state = State.CHECKERED_FLAG;
+      this.raceEnd = Timestamp.currentTimestamp();
+    }
     return check;
   }
 
@@ -74,21 +102,33 @@ public class MultiplayerModel implements RaceObserver {
     return updates;
   }
 
-  public void leaveRace() {
-    ApplicationState.getInstance().getClient().unsubscribeRaceUpdates(this);
+  /** Call on screen exit. */
+  public void leftScreen() {
+    unsubscribe();
+    try {
+      close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ApplicationState.getInstance().removeCloseable(this);
   }
 
-  /*
-   * Limits the interval, in which the server gets notified about changes.
-   */
-  private void notifyInterval() {
-    if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
-      sendProgress();
-      return;
+  /** Call to initialize Race. */
+  public void initRaceStart() {
+    startPolling();
+    if (raceData.startTime < Timestamp.currentTimestamp()) {
+      // Server race start is already in the past, start race later;
+      this.raceStart = Timestamp.currentTimestamp() + FALL_BACK_START_DELAY;
+    } else {
+      // Race start is in the future, schedule race start.
+      this.raceStart = raceData.startTime;
     }
-    if (notifyCounter++ == 2) {
-      sendProgress();
-      notifyCounter = 0;
+  }
+
+  private void raceStart() {
+    state = State.RACING;
+    if (observer != null) {
+      Platform.runLater(() -> observer.raceStarted());
     }
   }
 
@@ -112,8 +152,73 @@ public class MultiplayerModel implements RaceObserver {
 
   @Override
   public void receivedCheckeredFlag(long raceStop) {
+    this.state = State.CHECKERED_FLAG;
+    this.raceEnd = raceStop;
     if (observer != null) {
-      Platform.runLater(() -> observer.checkeredFlag(raceStop));
+      Platform.runLater(
+          () -> {
+            observer.updatedCountDown(this.raceEnd - Timestamp.currentTimestamp());
+            observer.checkeredFlag(raceStop);
+          });
     }
+  }
+
+  public void startPolling() {
+    scheduler.scheduleAtFixedRate(this::tick, 0, POLLING_INTERVAL, TimeUnit.SECONDS);
+  }
+
+  @Override
+  public void receivedRaceResult(RaceResult result) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedRaceResult(result));
+    }
+  }
+
+  @Override
+  public void receivedError(String message) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedError(message));
+    }
+  }
+
+  private void tick() {
+    switch (state) {
+      case PRE_START:
+        if (observer != null) {
+          long countDown = this.raceStart - Timestamp.currentTimestamp();
+          Platform.runLater(() -> observer.updatedCountDown(countDown));
+          if (countDown == 0) {
+            raceStart();
+          }
+        }
+        break;
+      case RACING:
+        long time = Timestamp.currentTimestamp() - raceStart;
+        if (observer != null) {
+          Platform.runLater(() -> observer.updatedTimer(time));
+        }
+        sendProgress();
+        break;
+      default:
+    }
+  }
+
+  private void subscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.subscribeErrors(this);
+    client.subscribeResults(this);
+    client.subscribeRaceUpdates(this);
+  }
+
+  private void unsubscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.unsubscribeErrors(this);
+    client.unsubscribeResults(this);
+    client.unsubscribeRaceUpdates(this);
+  }
+
+  @Override
+  public void close() throws IOException {
+    scheduler.shutdownNow();
   }
 }

@@ -74,4 +74,6 @@ public interface Api {
    * @param snapshot snapshot of the race progress
    */
   void updateProgress(String connectionId, ProgressSnapshot snapshot);
+
+  void sendPreviousRaceResult(String connectionId);
 }

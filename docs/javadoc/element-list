@@ -4,7 +4,7 @@ app.elements
 backend
 client
 database
-model
+typeracer
 protocol
 server
 util

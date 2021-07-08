@@ -5,6 +5,8 @@ import app.model.GameLobbyModelObserver;
 import app.model.MultiplayerModel;
 import app.model.OpenLobbiesModel;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -12,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import protocol.LobbyData;
 import protocol.RaceData;
+import protocol.UserData;
 
 class GameLobbyController extends Controller implements GameLobbyModelObserver {
 
@@ -74,7 +77,21 @@ class GameLobbyController extends Controller implements GameLobbyModelObserver {
 
   private void displayLobby(LobbyData lobby) {
     userlist.getItems().clear();
-    userlist.getItems().addAll(lobby.players);
+    List<String> items = new ArrayList<>();
+    for (UserData user : lobby.players) {
+      items.add(toListItem(user));
+    }
+    userlist.getItems().addAll(items);
     this.startButton.setDisable(lobby.isRunning);
+  }
+
+  private String toListItem(UserData userData) {
+    String skeleton = "%s (%s)";
+    return String.format(skeleton, userData.name, userData.state);
+  }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
   }
 }

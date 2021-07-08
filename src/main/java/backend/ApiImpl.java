@@ -44,12 +44,22 @@ public class ApiImpl implements Api {
   @Override
   public void createNewLobby(String connectionId, String userId, String lobbyName, String iconId) {
     String lobbyId = sessionStore.createNewLobby(connectionId, lobbyName, pushService);
-    sessionStore.joinLobby(lobbyId, connectionId, userId, iconId);
+    try {
+      sessionStore.joinLobby(lobbyId, connectionId, userId, iconId);
+    } catch (Exception e) {
+      Response error = ResponseFactory.makeErrorResponse(e.getMessage());
+      pushService.sendResponse(connectionId, error);
+    }
   }
 
   @Override
   public void joinLobby(String lobbyId, String connectionId, String userId, String iconId) {
-    sessionStore.joinLobby(lobbyId, connectionId, userId, iconId);
+    try {
+      sessionStore.joinLobby(lobbyId, connectionId, userId, iconId);
+    } catch (Exception e) {
+      Response error = ResponseFactory.makeErrorResponse(e.getMessage());
+      pushService.sendResponse(connectionId, error);
+    }
   }
 
   @Override
@@ -82,5 +92,10 @@ public class ApiImpl implements Api {
   @Override
   public void updateProgress(String connectionId, ProgressSnapshot snapshot) {
     sessionStore.updateProgress(connectionId, snapshot);
+  }
+
+  @Override
+  public void sendPreviousRaceResult(String connectionId) {
+    sessionStore.sendPreviousRaceResult(connectionId);
   }
 }
