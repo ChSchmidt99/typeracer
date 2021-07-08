@@ -9,7 +9,6 @@ import app.model.OpenLobbiesModelObserver;
 import app.model.StartScreenModel;
 import java.io.IOException;
 import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

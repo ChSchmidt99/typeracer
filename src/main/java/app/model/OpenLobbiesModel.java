@@ -6,14 +6,12 @@ import client.Client;
 import client.ClientObserver;
 import client.ErrorObserver;
 import client.LobbyObserver;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import javafx.application.Platform;
 import protocol.LobbyData;
 import protocol.RaceData;
@@ -21,14 +19,13 @@ import protocol.RaceData;
 /** Model for OpenLobbies View. */
 public class OpenLobbiesModel implements LobbyObserver, ClientObserver, ErrorObserver, Closeable {
 
-  /**
-   * Update interval in seconds;
-   */
+  /** Update interval in seconds. */
   private static final long UPDATE_INTERVAL = 5;
 
   private OpenLobbiesModelObserver observer;
   private final ScheduledExecutorService scheduler;
 
+  /** Model for OpenLobbies view. */
   public OpenLobbiesModel() {
     scheduler = Executors.newScheduledThreadPool(1);
     subscribe();
@@ -44,16 +41,19 @@ public class OpenLobbiesModel implements LobbyObserver, ClientObserver, ErrorObs
     this.observer = observer;
   }
 
+  /** Call when view was created to start automatic lobby refreshing. */
   public void createdView() {
     scheduler.scheduleAtFixedRate(this::requestLobbyList, 0, UPDATE_INTERVAL, TimeUnit.SECONDS);
   }
 
+  /** Call on scene change. */
   public void leftScreen() {
     scheduler.shutdownNow();
     ApplicationState.getInstance().removeCloseable(this);
     unsubscribe();
   }
 
+  /** Request list of all open lobbies. */
   public void requestLobbyList() {
     Client client = ApplicationState.getInstance().getClient();
     client.requestLobbies();

@@ -90,6 +90,12 @@ public class ResponseFactory {
     return response;
   }
 
+  /**
+   * Make race result response used to send race results to clients.
+   *
+   * @param result {@link RaceResult}
+   * @return {@link Response}
+   */
   public static Response makeRaceResultResponse(RaceResult result) {
     Response response = new Response(Response.Types.RACE_RESULT);
     response.raceResult = result;

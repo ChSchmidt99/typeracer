@@ -103,9 +103,10 @@ class ResponseHandler implements Closeable {
   }
 
   private void disconnected() {
-    errorObservers.forEach((observer) -> {
-      observer.receivedError("Lost server connection");
-    });
+    errorObservers.forEach(
+        (observer) -> {
+          observer.receivedError("Lost server connection");
+        });
   }
 
   private void receivedResponse(Response response) {

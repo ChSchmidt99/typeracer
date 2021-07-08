@@ -3,9 +3,8 @@ package app.model;
 import app.ApplicationState;
 import client.Client;
 import client.ClientObserver;
-import java.util.List;
-
 import client.ErrorObserver;
+import java.util.List;
 import javafx.application.Platform;
 import protocol.LobbyData;
 

@@ -5,7 +5,6 @@ import client.Client;
 import client.ErrorObserver;
 import client.RaceObserver;
 import client.RaceResultObserver;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
@@ -23,12 +22,12 @@ import typeracer.Typeracer;
 import util.Timestamp;
 
 /** Model for Multiplayer View. */
-public class MultiplayerModel implements RaceObserver, RaceResultObserver, ErrorObserver, Closeable {
+public class MultiplayerModel
+    implements RaceObserver, RaceResultObserver, ErrorObserver, Closeable {
 
-  /**
-   * Update interval in sec.
-   */
+  /** Update interval in sec. */
   private static final long POLLING_INTERVAL = 1;
+
   private static final long FALL_BACK_START_DELAY = 3;
 
   private MultiplayerModelObserver observer;
@@ -86,8 +85,8 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
    * @return {@link CheckResult}
    */
   public CheckResult typed(String key) {
-    if ((this.state == State.PRE_START) ||
-    typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
+    if ((this.state == State.PRE_START)
+        || typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
       return null;
     }
     CheckResult check = typeracer.check(key.charAt(0));
@@ -103,6 +102,7 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
     return updates;
   }
 
+  /** Call on screen exit. */
   public void leftScreen() {
     unsubscribe();
     try {
@@ -113,6 +113,7 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
     ApplicationState.getInstance().removeCloseable(this);
   }
 
+  /** Call to initialize Race. */
   public void initRaceStart() {
     startPolling();
     if (raceData.startTime < Timestamp.currentTimestamp()) {
@@ -154,10 +155,11 @@ public class MultiplayerModel implements RaceObserver, RaceResultObserver, Error
     this.state = State.CHECKERED_FLAG;
     this.raceEnd = raceStop;
     if (observer != null) {
-      Platform.runLater(() -> {
-        observer.updatedCountDown(this.raceEnd - Timestamp.currentTimestamp());
-        observer.checkeredFlag(raceStop);
-      });
+      Platform.runLater(
+          () -> {
+            observer.updatedCountDown(this.raceEnd - Timestamp.currentTimestamp());
+            observer.checkeredFlag(raceStop);
+          });
     }
   }
 

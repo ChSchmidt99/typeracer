@@ -2,7 +2,6 @@ package app;
 
 import client.Client;
 import client.ClientImpl;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -50,8 +49,9 @@ public class ApplicationState {
     closeables.remove(closeable);
   }
 
+  /** Close all closeables. */
   public void close() {
-    for (Closeable closeable: closeables) {
+    for (Closeable closeable : closeables) {
       try {
         closeable.close();
       } catch (Exception e) {
@@ -60,10 +60,16 @@ public class ApplicationState {
     }
   }
 
+  /**
+   * Connect a new Client, overrides existing Client.
+   *
+   * @return {@link Client}
+   * @throws IOException if unable to connect
+   */
   public Client newClient() throws IOException {
     if (this.client != null) {
-     client.close();
-     this.removeCloseable(this.client);
+      client.close();
+      this.removeCloseable(this.client);
     }
     // TODO: Add address/port to config
     client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);

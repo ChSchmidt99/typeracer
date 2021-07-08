@@ -32,7 +32,7 @@ class SessionStore {
   }
 
   void joinLobby(String lobbyId, String connectionId, String userId, String iconId)
-          throws Exception {
+      throws Exception {
     if (!lobbies.containsKey(lobbyId)) {
       throw new Exception("Lobby does not exist.");
     }

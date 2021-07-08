@@ -2,7 +2,6 @@ package app;
 
 import app.controller.StartscreenController;
 import app.model.StartScreenModel;
-import client.Client;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;

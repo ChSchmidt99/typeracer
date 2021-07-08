@@ -2,6 +2,7 @@ package protocol;
 
 import java.util.List;
 
+/** Model for Race Result responses. */
 public class RaceResult {
 
   /** Duration of race. */

@@ -67,5 +67,4 @@ public class CreateModel implements LobbyObserver, ErrorObserver {
     client.unsubscribeErrors(this);
     client.unsubscribeLobbyUpdates(this);
   }
-
 }

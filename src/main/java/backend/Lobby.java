@@ -83,7 +83,13 @@ class Lobby implements RaceFinishedListener {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService, this,
+    this.race =
+        new Race(
+            settings,
+            this.database.getTextToType(),
+            readyPlayers,
+            pushService,
+            this,
             Timestamp.currentTimestamp() + START_DELAY);
     broadcastLobbyUpdate();
   }
