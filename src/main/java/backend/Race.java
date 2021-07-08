@@ -98,10 +98,6 @@ class Race {
     }
     p.sort(Comparator.comparing(Player::getWpm));
     Collections.reverse(p);
-    for (int i = 0; i < p.size(); i++) {
-      System.out.println(i + " " + p.get(i).getWpm());
-    }
-
     List<UserResult> classification = new ArrayList<>();
     for (int i = 0; i < p.size(); i++) {
       Player player = p.get(i);
