@@ -6,4 +6,6 @@ import protocol.LobbyData;
 public interface GameFinishedModelObserver {
 
   void receivedGameLobby(LobbyData lobbyData);
+
+  void receivedError(String message);
 }

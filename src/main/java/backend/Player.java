@@ -1,44 +1,36 @@
 package backend;
 
-import protocol.PlayerData;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
+import protocol.UserData;
 
 /** Used to represent a Player in an ongoing race. */
 public class Player {
 
-  private final String userId;
-  private final String name;
-  private final String iconId;
+  private final User user;
   private final String connectionId;
   private int wpm;
   private float progress;
   private long raceStartTime;
   private long lastUpdateTime;
-  // private int mistakes;
+  private int mistakes;
 
-  Player(String userId, String connectionId, String name, String iconId) {
-    this.userId = userId;
+  Player(String connectionId, User user) {
+    this.user = user;
     this.connectionId = connectionId;
-    this.name = name;
-    this.iconId = iconId;
     this.wpm = 0;
     this.progress = 0;
     this.raceStartTime = 0;
     this.lastUpdateTime = 0;
-    // this.mistakes = 0;
+    this.mistakes = 0;
   }
 
   String getConnectionId() {
     return connectionId;
   }
 
-  String getUserId() {
-    return userId;
-  }
-
-  String getName() {
-    return name;
+  User getUser() {
+    return user;
   }
 
   void updateProgress(ProgressSnapshot snapshot, int textLength) {
@@ -52,18 +44,26 @@ public class Player {
     this.lastUpdateTime = snapshot.timestamp;
     this.wpm = wordsPerMinute(snapshot.progress, this.raceDuration());
     this.progress = (float) snapshot.progress / textLength;
-    // this.mistakes = snapshot.mistakes;
+    this.mistakes = snapshot.mistakes;
   }
 
   PlayerUpdate getUpdate() {
-    return new PlayerUpdate(this.userId, wpm, progress, isFinished(), this.raceDuration());
+    return new PlayerUpdate(this.user.getId(), wpm, progress, isFinished(), this.raceDuration());
   }
 
-  PlayerData getModel() {
-    return new PlayerData(this.userId, this.name, this.iconId);
+  int getWpm() {
+    return wpm;
   }
 
-  private long raceDuration() {
+  int getMistakes() {
+    return this.mistakes;
+  }
+
+  UserData getUserData() {
+    return user.getUserData();
+  }
+
+  long raceDuration() {
     return this.lastUpdateTime - raceStartTime;
   }
 

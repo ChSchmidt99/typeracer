@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Tracks the index of the text to type. */
 public class Counter {

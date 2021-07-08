@@ -46,6 +46,11 @@
     -fx-text-fill: #fe55f7;
 }
 
+.countdownLabel {
+    -fx-text-fill: #fe55f7;
+    -fx-font-size: 80px;
+}
+
 .title {
     -fx-font-size: 80px;
     -fx-padding: 15px;
@@ -78,7 +83,7 @@
     -fx-background-radius: 0px;
 }
 
-.raceOverTimer {
+.timeDisplay {
     -fx-font-size: 30px;
     -fx-text-fill: #fe55f7;
     -fx-background-color: transparent;
@@ -87,12 +92,12 @@
 
 .textToType {
   -fx-text-fill: #62fbf7;
-  -fx-font-size: 25px;
+  -fx-font-size: 20px;
   -padding: 15px;
 }
 
 .enteredtext {
-  -fx-font-size: 25px;
+  -fx-font-size: 20px;
 }
 
 .ingameUserlabel {

@@ -9,18 +9,23 @@ import java.util.Map;
 import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
+import protocol.UserData;
 import server.PushService;
 import util.Logger;
+import util.Timestamp;
 
 /** Represents one game currently managed by the server. */
 class Lobby implements RaceFinishedListener {
+
+  private static final int START_DELAY = 3;
+  private static final int MAX_PLAYERS = 4;
 
   private final String lobbyId;
   private final HashMap<String, LobbyMember> members;
   private final PushService pushService;
   private final Database database;
   private final String name;
-  private static final int maxPlayers = 4;
+  private final List<Race> finishedRaces;
   private Race race;
 
   Lobby(String lobbyId, String name, Database database, PushService pushService) {
@@ -28,19 +33,23 @@ class Lobby implements RaceFinishedListener {
     this.lobbyId = lobbyId;
     this.pushService = pushService;
     this.database = database;
+    this.finishedRaces = new ArrayList<>();
     this.name = name;
   }
 
   @Override
   public void raceFinished() {
     broadcastLobbyUpdate();
+    finishedRaces.add(race);
+    Response resultResponse = ResponseFactory.makeRaceResultResponse(race.getRaceResult());
+    broadcast(resultResponse);
   }
 
   void join(String connectionId, String userId, String iconId) {
     try {
-      if (members.size() < maxPlayers) {
+      if (members.size() < MAX_PLAYERS) {
         String username = this.database.getUsername(userId);
-        LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username, iconId);
+        LobbyMember lobbyMember = new LobbyMember(connectionId, new User(userId, username, iconId));
         members.put(connectionId, lobbyMember);
         broadcastLobbyUpdate();
       } else {
@@ -59,7 +68,7 @@ class Lobby implements RaceFinishedListener {
       return;
     }
     LobbyMember member = members.get(connectionId);
-    if (member.isInRace()) {
+    if (member.getUser().getState().equals(User.State.IN_RACE)) {
       this.race.removePlayer(connectionId);
     }
     members.remove(connectionId);
@@ -74,20 +83,28 @@ class Lobby implements RaceFinishedListener {
       pushService.sendResponse(connectionId, error);
       return;
     }
-    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService, this);
+    this.race =
+        new Race(
+            settings,
+            this.database.getTextToType(),
+            readyPlayers,
+            pushService,
+            this,
+            Timestamp.currentTimestamp() + START_DELAY);
     broadcastLobbyUpdate();
   }
 
   LobbyData lobbyModel() {
-    List<String> playerNames = new ArrayList<>();
+    List<UserData> playerData = new ArrayList<>();
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      playerNames.add(entry.getValue().getName());
+      playerData.add(entry.getValue().getUser().getUserData());
     }
-    return new LobbyData(lobbyId, playerNames, name, isRunning());
+    return new LobbyData(lobbyId, playerData, name, isRunning());
   }
 
   void setPlayerReady(String connectionId, boolean isReady) {
-    members.get(connectionId).setIsReady(isReady);
+    members.get(connectionId).setReady(isReady);
+    broadcastLobbyUpdate();
   }
 
   boolean isRunning() {
@@ -114,10 +131,20 @@ class Lobby implements RaceFinishedListener {
     pushService.sendResponse(connectionId, response);
   }
 
+  void sendPreviousRaceResult(String connectionId) {
+    if (finishedRaces.size() == 0) {
+      Logger.logError("Tried retrieving non existing previous race");
+      return;
+    }
+    Race race = finishedRaces.get(finishedRaces.size() - 1);
+    Response response = ResponseFactory.makeRaceResultResponse(race.getRaceResult());
+    pushService.sendResponse(connectionId, response);
+  }
+
   private Map<String, Player> getReadyPlayers() {
     Map<String, Player> readyPlayers = new HashMap<>();
     for (Map.Entry<String, LobbyMember> entry : members.entrySet()) {
-      if (entry.getValue().getIsReady()) {
+      if (entry.getValue().isReady()) {
         LobbyMember member = entry.getValue();
         readyPlayers.put(entry.getKey(), member.toPlayer());
       }

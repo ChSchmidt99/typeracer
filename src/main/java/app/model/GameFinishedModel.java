@@ -2,15 +2,24 @@ package app.model;
 
 import app.ApplicationState;
 import client.Client;
+import client.ErrorObserver;
 import client.LobbyObserver;
 import javafx.application.Platform;
 import protocol.LobbyData;
 import protocol.RaceData;
+import protocol.RaceResult;
 
 /** Model for GameFinished View. */
-public class GameFinishedModel implements LobbyObserver {
+public class GameFinishedModel implements LobbyObserver, ErrorObserver {
 
   private GameFinishedModelObserver observer;
+
+  private final RaceResult result;
+
+  public GameFinishedModel(RaceResult result) {
+    this.result = result;
+    ApplicationState.getInstance().getClient().setIsReady(false);
+  }
 
   /**
    * Set Observer.
@@ -21,10 +30,19 @@ public class GameFinishedModel implements LobbyObserver {
     this.observer = observer;
   }
 
+  /**
+   * Get result of previous race.
+   *
+   * @return {@link RaceResult}
+   */
+  public RaceResult getRaceResult() {
+    return this.result;
+  }
+
   /** Request a lobby updated. */
   public void requestLobby() {
     Client client = ApplicationState.getInstance().getClient();
-    client.subscribeLobbyUpdates(this);
+    subscribe();
     client.requestLobbyUpdate();
   }
 
@@ -38,6 +56,25 @@ public class GameFinishedModel implements LobbyObserver {
     if (observer != null) {
       Platform.runLater(() -> observer.receivedGameLobby(lobby));
     }
-    ApplicationState.getInstance().getClient().unsubscribeLobbyUpdates(this);
+    unsubscribe();
+  }
+
+  @Override
+  public void receivedError(String message) {
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedError(message));
+    }
+  }
+
+  private void subscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.subscribeErrors(this);
+    client.subscribeLobbyUpdates(this);
+  }
+
+  private void unsubscribe() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.unsubscribeErrors(this);
+    client.unsubscribeLobbyUpdates(this);
   }
 }

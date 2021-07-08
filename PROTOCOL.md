@@ -2,15 +2,15 @@
 (Work in progress)
 
 ## User management
-### Register a new user
-Send request to register a new user with the given name:
+### Register a new userData
+Send request to register a new userData with the given name:
 ```json
 {
     "type" : "register",
     "playerName" : "<some username>"
 }
 ```
-If the registration process was successful, a Request with the assigned user id is sent back:
+If the registration process was successful, a Request with the assigned userData id is sent back:
 ```json
 {
     "type" : "registered",
@@ -28,7 +28,7 @@ Send request to create a new lobby and join as host.
     "lobbyName" : "<some name>"
 }
 ```
-After successfully creating a new lobby, the specified user is added as host with equivalent behavior to the following join lobby request.
+After successfully creating a new lobby, the specified userData is added as host with equivalent behavior to the following join lobby request.
 ### Join existing lobby
 Send request to join an existing lobby with the provided lobby id.
 ```json
@@ -87,7 +87,7 @@ After processing, a Response including all lobbies will be sent back.
 ```
 isRunning will be true, if there currently is a race running in the given lobby and false otherwise. 
 ### Mark or unmark player as ready
-Send player ready request to mark the user as ready to join the next race, or unmark the user again.
+Send player ready request to mark the userData as ready to join the next race, or unmark the userData again.
 ```json
 {
     "type" : "player ready",

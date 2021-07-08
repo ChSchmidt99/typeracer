@@ -1,18 +1,21 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import protocol.PlayerData;
 import protocol.PlayerUpdate;
 import protocol.ProgressSnapshot;
 import protocol.RaceData;
+import protocol.RaceResult;
 import protocol.Response;
 import protocol.ResponseFactory;
+import protocol.UserData;
+import protocol.UserResult;
 import server.PushService;
 import util.Logger;
 import util.Timestamp;
@@ -25,6 +28,7 @@ class Race {
   private final Map<String, Player> players;
   private final PushService pushService;
   private final RaceFinishedListener listener;
+  private final long raceStart;
   private ScheduledExecutorService scheduler;
   private RaceState state;
 
@@ -45,23 +49,25 @@ class Race {
       String textToType,
       Map<String, Player> players,
       PushService pushService,
-      RaceFinishedListener listener) {
+      RaceFinishedListener listener,
+      long raceStart) {
     this.textToType = textToType;
     this.players = players;
     this.pushService = pushService;
     this.state = RaceState.RUNNING;
     this.settings = settings;
     this.listener = listener;
+    this.raceStart = raceStart;
     broadcastGameStarting();
     startUpdates();
   }
 
   RaceData getModel() {
-    List<PlayerData> out = new ArrayList<>();
+    List<UserData> out = new ArrayList<>();
     for (Map.Entry<String, Player> entry : players.entrySet()) {
-      out.add(entry.getValue().getModel());
+      out.add(entry.getValue().getUserData());
     }
-    return new RaceData(this.textToType, out);
+    return new RaceData(this.textToType, out, raceStart);
   }
 
   boolean getIsRunning() {
@@ -84,11 +90,28 @@ class Race {
     this.players.remove(connectionId);
   }
 
+  RaceResult getRaceResult() {
+    List<Player> p = new ArrayList<>();
+    for (Map.Entry<String, Player> entry : players.entrySet()) {
+      p.add(entry.getValue());
+    }
+    p.sort(Comparator.comparing(Player::raceDuration));
+    List<UserResult> classification = new ArrayList<>();
+    for (int i = 0; i < p.size(); i++) {
+      Player player = p.get(i);
+      UserResult result =
+          new UserResult(player.getUserData(), player.getWpm(), player.getMistakes(), i + 1);
+      classification.add(result);
+    }
+    long duration = p.get(0).raceDuration();
+    return new RaceResult(duration, classification);
+  }
+
   private void checkeredFlag() {
     if (this.state == RaceState.CHECKERED_FLAG) {
-      Logger.logError("Race already in checkered flag state");
       return;
     }
+    this.state = RaceState.CHECKERED_FLAG;
     long raceStop = Timestamp.currentTimestamp() + settings.checkeredFlagDuration;
     broadcastCheckeredFlag(raceStop);
     ScheduledExecutorService s = Executors.newScheduledThreadPool(1);

@@ -4,4 +4,6 @@ package app.model;
 public interface StartScreenModelObserver {
 
   void registered();
+
+  void receivedError(String message);
 }

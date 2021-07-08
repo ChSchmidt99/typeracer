@@ -7,10 +7,9 @@ import app.model.MultiplayerModel;
 import app.model.MultiplayerModelObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -20,10 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import model.CheckResult;
-import protocol.PlayerData;
 import protocol.PlayerUpdate;
-import util.Timestamp;
+import protocol.RaceResult;
+import protocol.UserData;
+import protocol.UserResult;
+import typeracer.CheckResult;
 
 /** Handles all gui functionality associated with gameplay. */
 class MultiplayerController extends Controller implements MultiplayerModelObserver {
@@ -42,7 +42,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @FXML VBox userList;
 
-  @FXML Label checkeredFlagLabel;
+  @FXML Label timerLabel;
+
+  @FXML Label countdownLabel;
 
   /**
    * Controller for Multiplayer game screen.
@@ -56,6 +58,12 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     setupText(model.getRaceData().textToType);
     setupKeyHandler();
     setupTracks(model.getRaceData().players);
+    model.initRaceStart();
+  }
+
+  @Override
+  public void raceStarted() {
+    countdownLabel.setVisible(false);
   }
 
   @Override
@@ -68,20 +76,35 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   }
 
   @Override
-  public void checkeredFlag(long raceEndTimestamp) {
-    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-    Date end = Timestamp.timestampToDate(raceEndTimestamp);
-    String stopTime = format.format(end);
-    checkeredFlagLabel.setStyle("-fx-background-color: #000000;");
-    checkeredFlagLabel.setDisable(false);
-    checkeredFlagLabel.setText("Race Ending: " + stopTime);
-    openGameOverScreen();
+  public void receivedRaceResult(RaceResult result) {
+    openGameOverScreen(result);
+    System.out.println("Duration: " + result.duration);
+    for (UserResult res : result.classification) {
+      System.out.println(res.userData.name);
+      System.out.println(res.wpm);
+    }
   }
 
-  private void openGameOverScreen() {
-    model.leaveRace();
+  @Override
+  public void checkeredFlag(long raceEndTimestamp) {
+    countdownLabel.setText("Hurry!");
+    countdownLabel.setVisible(true);
+  }
+
+  @Override
+  public void updatedTimer(long time) {
+    Platform.runLater(() -> timerLabel.setText("Time: " + time + "s"));
+  }
+
+  @Override
+  public void updatedCountDown(long time) {
+    countdownLabel.setText(Long.toString(time));
+  }
+
+  private void openGameOverScreen(RaceResult result) {
+    model.leftScreen();
     try {
-      new GameFinishedController(stage, new GameFinishedModel()).show();
+      new GameFinishedController(stage, new GameFinishedModel(result)).show();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -108,11 +131,10 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   /*
    * Adds the user list along with progress bars and wpm to game screen.
    */
-  private void setupTracks(List<PlayerData> players) {
-    for (PlayerData player : players) {
+  private void setupTracks(List<UserData> players) {
+    for (UserData player : players) {
 
       VBox userVbox = new VBox();
-
       wpmCreator(player.userId);
       userVbox.getChildren().add(userLabelCreator(player.name));
       userVbox.getChildren().add(wpmLabels.get(player.userId));
@@ -166,20 +188,18 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
     Label label = new Label(user);
     label.setTextFill(Color.WHITE);
     label.setStyle(
-        "-fx-font-size: 25px; -fx-background-color: #ffffff; "
+        "-fx-font-size: 20px; -fx-background-color: #ffffff; "
             + "-fx-text-fill: #000000; -fx-min-width: 150px;");
     return label;
   }
 
-  private RaceTrack trackCreator(PlayerData playerData) {
+  private RaceTrack trackCreator(UserData userData) {
     try {
       colorAlternateCounter++;
       if (colorAlternateCounter % 2 == 0) {
-        return new RaceTrack(
-            IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#fe55f7"));
+        return new RaceTrack(IconManager.iconForId(userData.iconId), 450, 20, Color.web("#fe55f7"));
       } else {
-        return new RaceTrack(
-            IconManager.iconForId(playerData.iconId), 450, 25, Color.web("#62fbf7"));
+        return new RaceTrack(IconManager.iconForId(userData.iconId), 450, 20, Color.web("#62fbf7"));
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -200,5 +220,10 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   private void trackUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).updateProgress(update.percentProgress);
+  }
+
+  @Override
+  public void receivedError(String message) {
+    displayError(message);
   }
 }

@@ -9,7 +9,7 @@ public class LobbyData {
 
   public String name;
 
-  public List<String> players;
+  public List<UserData> players;
 
   public boolean isRunning;
 
@@ -21,7 +21,7 @@ public class LobbyData {
    * @param name lobby name
    * @param isRunning whether or not a race is currently running
    */
-  public LobbyData(String id, List<String> players, String name, boolean isRunning) {
+  public LobbyData(String id, List<UserData> players, String name, boolean isRunning) {
     this.id = id;
     this.players = players;
     this.name = name;

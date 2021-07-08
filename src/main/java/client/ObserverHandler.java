@@ -57,4 +57,18 @@ public interface ObserverHandler {
    * @param observer {@link ClientObserver}
    */
   void unsubscribeErrors(ErrorObserver observer);
+
+  /**
+   * Subscribe to receive responses.
+   *
+   * @param observer {@link ClientObserver}
+   */
+  void subscribeResults(RaceResultObserver observer);
+
+  /**
+   * Unsubscribe from responses.
+   *
+   * @param observer {@link ClientObserver}
+   */
+  void unsubscribeResults(RaceResultObserver observer);
 }

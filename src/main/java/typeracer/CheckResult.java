@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Used as result of check char. Contains all information about the check. */
 public class CheckResult {

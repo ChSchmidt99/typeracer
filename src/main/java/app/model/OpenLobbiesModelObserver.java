@@ -9,4 +9,6 @@ public interface OpenLobbiesModelObserver {
   void receivedOpenLobbies(List<LobbyData> lobbies);
 
   void joinedLobby(LobbyData lobby);
+
+  void receivedError(String message);
 }

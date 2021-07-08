@@ -31,19 +31,25 @@ class SessionStore {
     return lobbyId;
   }
 
-  void joinLobby(String lobbyId, String connectionId, String userId, String iconId) {
-    connectionIds.put(connectionId, lobbyId);
+  void joinLobby(String lobbyId, String connectionId, String userId, String iconId)
+      throws Exception {
+    if (!lobbies.containsKey(lobbyId)) {
+      throw new Exception("Lobby does not exist.");
+    }
     Lobby lobby = lobbies.get(lobbyId);
     lobby.join(connectionId, userId, iconId);
+    connectionIds.put(connectionId, lobbyId);
   }
 
   void leaveLobby(String connectionId) {
     Lobby lobby = getLobby(connectionId);
-    lobby.leave(connectionId);
-    connectionIds.remove(connectionId);
-    if (lobby.isEmpty()) {
-      lobbies.remove(lobby.getLobbyId());
+    if (lobby != null) {
+      lobby.leave(connectionId);
+      if (lobby.isEmpty()) {
+        lobbies.remove(lobby.getLobbyId());
+      }
     }
+    connectionIds.remove(connectionId);
   }
 
   void startGame(String connectionId, RaceSettings raceSettings) {
@@ -77,6 +83,11 @@ class SessionStore {
   void sendLobbyUpdate(String connectionId) {
     Lobby lobby = getLobby(connectionId);
     lobby.sendUpdate(connectionId);
+  }
+
+  void sendPreviousRaceResult(String connectionId) {
+    Lobby lobby = getLobby(connectionId);
+    lobby.sendPreviousRaceResult(connectionId);
   }
 
   Lobby getLobby(String connectionId) {
