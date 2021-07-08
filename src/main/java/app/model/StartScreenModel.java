@@ -1,6 +1,7 @@
 package app.model;
 
 import app.ApplicationState;
+import app.IconManager;
 import client.Client;
 import client.ClientObserver;
 import client.ErrorObserver;
@@ -21,7 +22,7 @@ public class StartScreenModel implements ClientObserver, ErrorObserver {
   public void register(String name) {
     Client client = ApplicationState.getInstance().getClient();
     subscribe();
-    client.registerUser(name);
+    client.registerUser(name, IconManager.getSelectedIcon().getId());
   }
 
   /**

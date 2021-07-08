@@ -15,11 +15,10 @@ public class Request {
     public static final String UPDATE_PROGRESS = "update progress";
     public static final String LOBBY_UPDATE = "get lobby update";
     public static final String PREV_RACE_RESULT = "previous race result";
+    public static final String CHAT_MESSAGE = "chat message";
   }
 
   public final String type;
-
-  public String userId;
 
   public String playerName;
 
@@ -32,6 +31,8 @@ public class Request {
   public Boolean isReady;
 
   public ProgressSnapshot snapshot;
+
+  public String message;
 
   /**
    * Create a Request with given params.

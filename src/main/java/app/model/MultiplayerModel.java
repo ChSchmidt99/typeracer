@@ -102,9 +102,7 @@ public class MultiplayerModel
     return updates;
   }
 
-  /**
-   * Call to leave the race.
-   */
+  /** Call to leave the race. */
   public void leaveRace() {
     ApplicationState.getInstance().getClient().leaveLobby();
     leftScreen();

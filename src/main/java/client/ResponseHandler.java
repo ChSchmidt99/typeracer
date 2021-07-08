@@ -159,6 +159,12 @@ class ResponseHandler implements Closeable {
               observer.receivedRaceResult(response.raceResult);
             });
         break;
+      case Response.Types.CHAT_HISTORY:
+        lobbyObservers.forEach(
+            (observer) -> {
+              observer.receivedChatHistory(response.chatHistory);
+            });
+        break;
       default:
         System.out.println("Received unknown ResponseType: " + response.type);
     }

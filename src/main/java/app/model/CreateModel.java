@@ -1,11 +1,12 @@
 package app.model;
 
 import app.ApplicationState;
-import app.IconManager;
 import client.Client;
 import client.ErrorObserver;
 import client.LobbyObserver;
+import java.util.List;
 import javafx.application.Platform;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 
@@ -30,10 +31,8 @@ public class CreateModel implements LobbyObserver, ErrorObserver {
    */
   public void createLobby(String name) {
     Client client = ApplicationState.getInstance().getClient();
-    String userId = ApplicationState.getInstance().getUserId();
-    String iconId = IconManager.getSelectedIcon().getId();
     subscribe();
-    client.newLobby(userId, name, iconId);
+    client.newLobby(name);
   }
 
   @Override
@@ -48,6 +47,9 @@ public class CreateModel implements LobbyObserver, ErrorObserver {
     }
     unsubscribe();
   }
+
+  @Override
+  public void receivedChatHistory(List<ChatMessageData> chatHistory) {}
 
   @Override
   public void receivedError(String message) {

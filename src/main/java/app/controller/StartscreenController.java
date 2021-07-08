@@ -18,7 +18,7 @@ public class StartscreenController extends Controller implements StartScreenMode
   private static final String FXMLPATH = "view/startscreen.fxml";
   private static final String USERNAME_ERROR = "Please choose a username";
 
-  private StartScreenModel model;
+  private final StartScreenModel model;
 
   @FXML TextField username;
 

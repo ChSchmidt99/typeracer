@@ -8,25 +8,19 @@ import protocol.UserData;
 public class Player {
 
   private final User user;
-  private final String connectionId;
   private int wpm;
   private float progress;
   private long raceStartTime;
   private long lastUpdateTime;
   private int mistakes;
 
-  Player(String connectionId, User user) {
+  Player(User user) {
     this.user = user;
-    this.connectionId = connectionId;
     this.wpm = 0;
     this.progress = 0;
     this.raceStartTime = 0;
     this.lastUpdateTime = 0;
     this.mistakes = 0;
-  }
-
-  String getConnectionId() {
-    return connectionId;
   }
 
   User getUser() {

@@ -101,4 +101,15 @@ public class ResponseFactory {
     response.raceResult = result;
     return response;
   }
+
+  /**
+   * Make race result response used to send race results to clients.
+   *
+   * @return {@link Response}
+   */
+  public static Response makeChatResponse(List<ChatMessageData> chatHistory) {
+    Response response = new Response(Response.Types.CHAT_HISTORY);
+    response.chatHistory = chatHistory;
+    return response;
+  }
 }

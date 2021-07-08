@@ -11,25 +11,23 @@ public interface Api {
    * @param connectionId id of the server connection
    * @param name id of the user
    */
-  void registerPlayer(String connectionId, String name);
+  void registerPlayer(String connectionId, String name, String iconId);
 
   /**
    * Call to create a new lobby.
    *
    * @param connectionId id of the server connection
-   * @param userId id of the user
    * @param lobbyName name of the lobby
    */
-  void createNewLobby(String connectionId, String userId, String lobbyName, String iconId);
+  void createNewLobby(String connectionId, String lobbyName);
 
   /**
    * Call to join an existing lobby.
    *
-   * @param lobbyId id of lobby to join
    * @param connectionId id of server connection
-   * @param userId id of user
+   * @param lobbyId id of lobby to join
    */
-  void joinLobby(String lobbyId, String connectionId, String userId, String iconId);
+  void joinLobby(String connectionId, String lobbyId);
 
   /**
    * Call to leave if currently in a lobby.
@@ -76,4 +74,6 @@ public interface Api {
   void updateProgress(String connectionId, ProgressSnapshot snapshot);
 
   void sendPreviousRaceResult(String connectionId);
+
+  void sendChat(String connectionId, String message);
 }

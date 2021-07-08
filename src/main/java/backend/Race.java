@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +16,6 @@ import protocol.Response;
 import protocol.ResponseFactory;
 import protocol.UserData;
 import protocol.UserResult;
-import server.PushService;
 import util.Logger;
 import util.Timestamp;
 
@@ -27,7 +25,6 @@ class Race {
   private final RaceSettings settings;
   private final String textToType;
   private final Map<String, Player> players;
-  private final PushService pushService;
   private final RaceFinishedListener listener;
   private final long raceStart;
   private ScheduledExecutorService scheduler;
@@ -49,12 +46,10 @@ class Race {
       RaceSettings settings,
       String textToType,
       Map<String, Player> players,
-      PushService pushService,
       RaceFinishedListener listener,
       long raceStart) {
     this.textToType = textToType;
     this.players = players;
-    this.pushService = pushService;
     this.state = RaceState.RUNNING;
     this.settings = settings;
     this.listener = listener;
@@ -75,20 +70,20 @@ class Race {
     return this.state != RaceState.FINISHED;
   }
 
-  void updateProgress(String connectionId, ProgressSnapshot snapshot) {
+  void updateProgress(User user, ProgressSnapshot snapshot) {
     if (state == RaceState.FINISHED) {
       Logger.logError("Tried updating after race finished");
       return;
     }
-    Player player = players.get(connectionId);
+    Player player = players.get(user.getId());
     player.updateProgress(snapshot, textToType.length());
     if (player.getUpdate().isFinished) {
       checkeredFlag();
     }
   }
 
-  void removePlayer(String connectionId) {
-    this.players.remove(connectionId);
+  void removePlayer(User user) {
+    this.players.remove(user.getId());
   }
 
   RaceResult getRaceResult() {
@@ -146,10 +141,8 @@ class Race {
   }
 
   private void broadcastCheckeredFlag(long raceStop) {
-    for (Map.Entry<String, Player> entry : players.entrySet()) {
-      Response response = ResponseFactory.makeCheckeredFlagResponse(raceStop);
-      pushService.sendResponse(entry.getKey(), response);
-    }
+    Response response = ResponseFactory.makeCheckeredFlagResponse(raceStop);
+    broadcast(response);
   }
 
   private void broadcastUpdate() {
@@ -166,7 +159,8 @@ class Race {
   }
 
   private void broadcast(Response response) {
-    Set<String> connectionIds = players.keySet();
-    pushService.sendResponse(connectionIds, response);
+    for (Map.Entry<String, Player> player : players.entrySet()) {
+      player.getValue().getUser().sendResponse(response);
+    }
   }
 }

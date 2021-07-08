@@ -1,5 +1,7 @@
 package client;
 
+import java.util.List;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 
@@ -19,4 +21,11 @@ public interface LobbyObserver {
    * @param lobby information about the updated lobby
    */
   void receivedLobbyUpdate(LobbyData lobby);
+
+  /**
+   * Called when a new message has been added to chat.
+   *
+   * @param chatHistory history of all chat messages
+   */
+  void receivedChatHistory(List<ChatMessageData> chatHistory);
 }

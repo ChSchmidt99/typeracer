@@ -4,7 +4,9 @@ import app.ApplicationState;
 import client.Client;
 import client.ErrorObserver;
 import client.LobbyObserver;
+import java.util.List;
 import javafx.application.Platform;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.RaceData;
 
@@ -74,6 +76,13 @@ public class GameLobbyModel implements LobbyObserver, ErrorObserver {
     this.lobby = lobby;
     if (observer != null) {
       Platform.runLater(() -> observer.updatedLobby());
+    }
+  }
+
+  @Override
+  public void receivedChatHistory(List<ChatMessageData> chatHistory) {
+    for (ChatMessageData message : chatHistory) {
+      System.out.println(message.user.name + ": " + message.message);
     }
   }
 
