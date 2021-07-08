@@ -131,6 +131,11 @@ class Lobby implements RaceFinishedListener {
     user.sendResponse(response);
   }
 
+  void sendChatHistory(User user) {
+    Response chatHistory = ResponseFactory.makeChatResponse(marshalChatHistory());
+    user.sendResponse(chatHistory);
+  }
+
   void sendPreviousRaceResult(User user) {
     if (finishedRaces.size() == 0) {
       Logger.logError("Tried retrieving non existing previous race");
@@ -159,12 +164,17 @@ class Lobby implements RaceFinishedListener {
   }
 
   private void broadcastChat() {
+    List<ChatMessageData> messages = marshalChatHistory();
+    Response response = ResponseFactory.makeChatResponse(messages);
+    broadcast(response);
+  }
+
+  private List<ChatMessageData> marshalChatHistory() {
     List<ChatMessageData> messages = new ArrayList<>();
     for (ChatMessage message : this.chatHistory) {
       messages.add(message.toChatMessageData());
     }
-    Response response = ResponseFactory.makeChatResponse(messages);
-    broadcast(response);
+    return messages;
   }
 
   private void broadcastLobbyUpdate() {

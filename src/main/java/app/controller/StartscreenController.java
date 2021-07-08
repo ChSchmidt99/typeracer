@@ -41,14 +41,15 @@ public class StartscreenController extends Controller implements StartScreenMode
     if (ApplicationState.getInstance().getClient() == null) {
       try {
         ApplicationState.getInstance().newClient();
-        if (username.getText().equals("")) {
-          displayError(USERNAME_ERROR);
-        } else {
-          model.register(username.getText());
-        }
       } catch (IOException e) {
         displayError(e.getMessage());
+        return;
       }
+    }
+    if (username.getText().equals("")) {
+      displayError(USERNAME_ERROR);
+    } else {
+      model.register(username.getText());
     }
   }
 

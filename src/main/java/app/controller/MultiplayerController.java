@@ -2,6 +2,7 @@ package app.controller;
 
 import app.IconManager;
 import app.elements.RaceTrack;
+import app.model.FinishedMessage;
 import app.model.GameFinishedModel;
 import app.model.MultiplayerModel;
 import app.model.MultiplayerModelObserver;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import app.model.StartScreenModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -17,7 +20,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import protocol.PlayerUpdate;
@@ -25,7 +27,6 @@ import protocol.RaceResult;
 import protocol.UserData;
 import protocol.UserResult;
 import typeracer.CheckResult;
-import typeracer.GamePhase;
 
 /** Handles all gui functionality associated with gameplay. */
 class MultiplayerController extends Controller implements MultiplayerModelObserver {
@@ -42,13 +43,13 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @FXML TextFlow textToType;
 
-  @FXML TextFlow enteredText;
-
   @FXML VBox userList;
 
   @FXML Label timerLabel;
 
   @FXML Label countdownLabel;
+
+  @FXML Label countdownSubtitle;
 
   /**
    * Controller for Multiplayer game screen.
@@ -73,7 +74,6 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   @Override
   public void updatedRaceState() {
     List<PlayerUpdate> updates = model.getRaceUpdate();
-    countdownLabel.setText(model.getHurryUp());
     for (PlayerUpdate update : updates) {
       trackUpdate(update);
       wpmUpdate(update);
@@ -92,7 +92,9 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   @Override
   public void checkeredFlag(long raceEndTimestamp) {
+    setFinishedMessage();
     countdownLabel.setVisible(true);
+    countdownSubtitle.setVisible(true);
   }
 
   @Override
@@ -103,6 +105,12 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
   @Override
   public void updatedCountDown(long time) {
     countdownLabel.setText(Long.toString(time));
+  }
+
+  private void setFinishedMessage() {
+    FinishedMessage message = model.getFinishedText();
+    countdownLabel.setText(message.getMainMessage());
+    countdownSubtitle.setText(message.getSubMessage());
   }
 
   private void openGameOverScreen(RaceResult result) {
@@ -126,6 +134,7 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
             event -> {
               String typed = event.getCharacter();
               CheckResult check = model.typed(typed);
+              setFinishedMessage();
               if (check != null) {
                 showTextProgess(check);
               }
@@ -221,6 +230,16 @@ class MultiplayerController extends Controller implements MultiplayerModelObserv
 
   private void trackUpdate(PlayerUpdate update) {
     userProgress.get(update.userId).updateProgress(update.percentProgress);
+  }
+
+  @FXML
+  private void leaveGame() {
+    model.leaveRace();
+    try {
+      new StartscreenController(stage, new StartScreenModel()).show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

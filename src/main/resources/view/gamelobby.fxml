@@ -43,15 +43,18 @@
                  <ScrollPane focusTraversable="false" maxWidth="330.0" minHeight="400.0" minWidth="330.0" prefHeight="400.0" prefWidth="330.0" styleClass="gameLobbyScrollpane" vbarPolicy="ALWAYS">
                      <AnchorPane minHeight="400.0" minWidth="310.0" prefHeight="400.0" prefWidth="310.0" style="-fx-background-color: #ffffff;">
                      <children>
-                        <ListView fx:id="lobbychat" focusTraversable="false" minHeight="400.0" minWidth="310.0" prefHeight="400.0" prefWidth="310.0" styleClass="lobbychat" />
+                        <ListView fx:id="chatListView" focusTraversable="false" minHeight="400.0" minWidth="310.0" prefHeight="400.0" prefWidth="310.0" styleClass="lobbychat" />
                      </children>
                      </AnchorPane>
                  </ScrollPane>
-               <TextField fx:id="lobbychatInput" styleClass="inputfield">
-                  <VBox.margin>
-                     <Insets top="20.0" />
-                  </VBox.margin>
-               </TextField>
+                <HBox>
+                    <TextField fx:id="chatInputTextField" onAction="#sendMessage" styleClass="inputfield">
+                        <VBox.margin>
+                            <Insets top="20.0" />
+                        </VBox.margin>
+                    </TextField>
+                    <Button mnemonicParsing="false" onAction="#sendMessage" styleClass="joinbutton" text="Send" />
+                </HBox>
             </children>
          </VBox>
       </children>

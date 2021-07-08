@@ -75,5 +75,7 @@ public interface Api {
 
   void sendPreviousRaceResult(String connectionId);
 
+  void requestChatHistory(String connectionId);
+
   void sendChat(String connectionId, String message);
 }

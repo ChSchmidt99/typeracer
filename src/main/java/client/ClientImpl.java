@@ -94,6 +94,11 @@ public class ClientImpl implements Closeable, Client {
   }
 
   @Override
+  public void requestChatHistory() {
+    sendRequest(RequestFactory.makeChatHistoryRequest());
+  }
+
+  @Override
   public void subscribe(ClientObserver observer) {
     responseHandler.subscribe(observer);
   }

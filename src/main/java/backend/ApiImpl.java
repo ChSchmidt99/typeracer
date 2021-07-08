@@ -128,6 +128,15 @@ public class ApiImpl implements Api {
   }
 
   @Override
+  public void requestChatHistory(String connectionId) {
+    User user = userStore.getUser(connectionId);
+    Lobby lobby = lobbyStore.getLobby(user);
+    if (lobby != null) {
+      lobby.sendChatHistory(user);
+    }
+  }
+
+  @Override
   public void sendChat(String connectionId, String message) {
     User user = userStore.getUser(connectionId);
     Lobby lobby = lobbyStore.getLobby(user);

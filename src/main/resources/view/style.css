@@ -54,6 +54,11 @@
     -fx-padding: 5px;
 }
 
+.countdownSubtitle {
+    -fx-text-fill: #fe55f7;
+    -fx-font-size: 30px;;
+}
+
 .title {
     -fx-font-size: 80px;
     -fx-padding: 15px;

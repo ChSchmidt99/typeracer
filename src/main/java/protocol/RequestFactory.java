@@ -99,4 +99,13 @@ public class RequestFactory {
     request.message = message;
     return request;
   }
+
+  /**
+   * Make chat history request used to request chat history,
+   *
+   * @return {@link Request}
+   */
+  public static Request makeChatHistoryRequest() {
+    return new Request(Request.Types.CHAT_HISTORY);
+  }
 }

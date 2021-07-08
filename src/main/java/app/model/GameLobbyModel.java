@@ -63,6 +63,16 @@ public class GameLobbyModel implements LobbyObserver, ErrorObserver {
     client.startRace();
   }
 
+  public void requestHistory() {
+    Client client = ApplicationState.getInstance().getClient();
+    client.requestChatHistory();
+  }
+
+  public void sendMessage(String message) {
+    Client client = ApplicationState.getInstance().getClient();
+    client.sendChatMessage(message);
+  }
+
   @Override
   public void gameStarting(RaceData race) {
     if (observer != null) {
@@ -81,8 +91,8 @@ public class GameLobbyModel implements LobbyObserver, ErrorObserver {
 
   @Override
   public void receivedChatHistory(List<ChatMessageData> chatHistory) {
-    for (ChatMessageData message : chatHistory) {
-      System.out.println(message.user.name + ": " + message.message);
+    if (observer != null) {
+      Platform.runLater(() -> observer.receivedChatHistory(chatHistory));
     }
   }
 

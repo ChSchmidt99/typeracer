@@ -125,6 +125,9 @@ class Connection implements Closeable {
       case Request.Types.CHAT_MESSAGE:
         api.sendChat(id, request.message);
         break;
+      case Request.Types.CHAT_HISTORY:
+        api.requestChatHistory(id);
+        break;
       default:
         Logger.logError("Unknown Request type: " + request.type);
     }

@@ -192,6 +192,12 @@ Will send a chat message to current lobby.
   "message" : "<some chat message>"
 }
 ```
+### Request Chat History
+```json
+{
+  "type" : "chat history"
+}
+```
 ### Receive Chat history
 Will be sent to all clients when new chat messages are added.
 ```json

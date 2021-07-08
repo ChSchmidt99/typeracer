@@ -13,6 +13,7 @@ and this project adheres to
 - Race results after game screen
 - Countdown before race start
 - Chat on Lobby screen
+- Leave button on game screen
 
 ### Changed
 - Closing Client on Window Close

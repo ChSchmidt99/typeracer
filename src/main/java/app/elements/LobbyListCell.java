@@ -59,8 +59,6 @@ public class LobbyListCell extends ListCell<LobbyData> {
     if (empty || model == null) {
       clearContent();
     } else {
-      System.out.println("Empty: " + empty);
-      System.out.println("LobbyData: " + model);
       lobbyId = model.id;
       setContent(model);
     }

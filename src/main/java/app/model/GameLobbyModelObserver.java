@@ -1,6 +1,9 @@
 package app.model;
 
+import protocol.ChatMessageData;
 import protocol.RaceData;
+
+import java.util.List;
 
 /** Observer for GameLobbyModel. */
 public interface GameLobbyModelObserver {
@@ -10,4 +13,6 @@ public interface GameLobbyModelObserver {
   void startedRace(RaceData model);
 
   void receivedError(String message);
+
+  void receivedChatHistory(List<ChatMessageData> chatHistory);
 }
