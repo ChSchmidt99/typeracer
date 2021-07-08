@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,12 @@ class Race {
     for (Map.Entry<String, Player> entry : players.entrySet()) {
       p.add(entry.getValue());
     }
-    p.sort(Comparator.comparing(Player::raceDuration));
+    p.sort(Comparator.comparing(Player::getWpm));
+    Collections.reverse(p);
+    for (int i = 0; i < p.size(); i++) {
+      System.out.println(i + " " + p.get(i).getWpm());
+    }
+
     List<UserResult> classification = new ArrayList<>();
     for (int i = 0; i < p.size(); i++) {
       Player player = p.get(i);
