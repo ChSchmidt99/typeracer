@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="GameLobby" textAlignment="CENTER" wrapText="true" />
    <HBox alignment="TOP_CENTER" minHeight="500.0" prefHeight="500.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
       <children>
