@@ -1,16 +1,17 @@
 package typeracer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /** Unit tests for Typeracer class. */
 class TyperacerTest {
 
   @Test
-  void testCreate() {
+  void testCreate() throws IOException {
     Typeracer tp;
-    String expectation = "new WordDatabase().getWord()";
+    String expectation = "Ich kann meine Stirn nicht sehen!";
     tp = Typeracer.create();
     String actual = tp.getState().getTypeChar().getCompleteText();
     assertEquals(expectation, actual);
