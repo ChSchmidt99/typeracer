@@ -29,13 +29,13 @@
                      </AnchorPane>
                   </content>
                </ScrollPane>
-                     <Button fx:id="startButton" onAction="#startGame" styleClass="gamebutton" text="Start Game">
+                     <Button fx:id="startButton" styleClass="gamebutton" text="Start Game">
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin>
                </Button>
-               <Button fx:id="backToLobbyBrowser" mnemonicParsing="false" onAction="#backToLobbyBrowser" styleClass="gamebutton" text="Back" />
-                     <CheckBox fx:id="lobbyCheckbox" onAction="#checkedReady" styleClass="checkbox" text="Ready" />
+               <Button fx:id="backButton" mnemonicParsing="false" styleClass="gamebutton" text="Back" />
+                     <CheckBox fx:id="lobbyCheckbox" styleClass="checkbox" text="Ready" />
             </children>
          </VBox>
          <VBox prefHeight="200.0" prefWidth="100.0">
@@ -48,12 +48,12 @@
                      </AnchorPane>
                  </ScrollPane>
                 <HBox>
-                    <TextField fx:id="chatInputTextField" onAction="#sendMessage" styleClass="inputfield">
+                    <TextField fx:id="chatInputTextField" styleClass="inputfield">
                         <VBox.margin>
                             <Insets top="20.0" />
                         </VBox.margin>
                     </TextField>
-                    <Button mnemonicParsing="false" onAction="#sendMessage" styleClass="joinbutton" text="Send" />
+                    <Button fx:id="sendButton" mnemonicParsing="false" styleClass="joinbutton" text="Send" />
                 </HBox>
             </children>
          </VBox>

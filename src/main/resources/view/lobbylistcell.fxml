@@ -20,7 +20,7 @@
                </VBox>
             </children>
          </VBox>
-         <Button fx:id="joinButton" alignment="CENTER" minWidth="50.0" contentDisplay="CENTER" onAction="#clickedJoin" styleClass="joinbutton" text="Join" />
+         <Button fx:id="joinButton" onAction="#clickedJoin" alignment="CENTER" minWidth="50.0" contentDisplay="CENTER" styleClass="joinbutton" text="Join" />
       </HBox>
    </graphic>
 </fx:root>

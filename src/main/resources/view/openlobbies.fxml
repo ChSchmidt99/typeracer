@@ -13,12 +13,12 @@
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Lobbies" textAlignment="CENTER" wrapText="true" />
     <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
       <ListView fx:id="lobbylist" focusTraversable="false" maxWidth="700.0" prefHeight="200.0" prefWidth="700.0" styleClass="lobbyBrowser" />
-        <Button fx:id="createButton" onAction="#switchToCreateScreen" styleClass="gamebutton" text="Create New Game">
+        <Button fx:id="createButton" styleClass="gamebutton" text="Create New Game">
            <VBox.margin>
                <Insets top="20.0" />
            </VBox.margin>
         </Button>
-      <Button fx:id="backToStartscreen" mnemonicParsing="false" onAction="#backToStartscreen" styleClass="gamebutton" text="Back" />
+      <Button fx:id="backButton" mnemonicParsing="false" styleClass="gamebutton" text="Back" />
     </VBox>
    <columnConstraints>
       <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
