@@ -21,6 +21,8 @@ public class TextToType {
 
     char expected = completeText.charAt(counter.getCurrentValue());
 
+    int index = counter.getCurrentValue();
+
     if (userInput == expected) {
       guessed = CorrectionStates.CORRECT;
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.CORRECT;
@@ -31,7 +33,7 @@ public class TextToType {
         counter.increase();
       }
     }
-    return new CheckResult(guessed, userInput, expected);
+    return new CheckResult(guessed, userInput, expected, index);
   }
 
   /**

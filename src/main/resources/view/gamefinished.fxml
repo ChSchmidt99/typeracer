@@ -88,7 +88,7 @@
                <Insets bottom="20.0" />
             </VBox.margin>
          </Label>
-         <Button fx:id="returnToLobby" mnemonicParsing="false" onAction="#returnToLobby" styleClass="gamebutton" text="Return to Lobby" />
+         <Button fx:id="returnButton" mnemonicParsing="false" styleClass="gamebutton" text="Return to Lobby" />
       </children>
    </VBox>
    <columnConstraints>

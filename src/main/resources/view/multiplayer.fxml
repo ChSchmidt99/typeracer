@@ -24,11 +24,11 @@
             <Insets top="15.0" />
          </GridPane.margin>
       </VBox>
-        <TextFlow fx:id="textToType" maxWidth="720.0" styleClass="textToType" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextFlow fx:id="textFlow" maxWidth="720.0" styleClass="textToType" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <HBox alignment="CENTER" maxWidth="720.0" prefHeight="30.0" prefWidth="720.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
             <children>
                 <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="TOP" prefWidth="220.0" styleClass="timeDisplay" text="Time: 0 s" textAlignment="CENTER" />
-                <Button fx:id="leave" onAction="#leaveGame" focusTraversable="false" mnemonicParsing="false" prefWidth="150.0" styleClass="buttonGamescreen" text="Leave" />
+                <Button fx:id="leaveButton" focusTraversable="false" mnemonicParsing="false" prefWidth="150.0" styleClass="buttonGamescreen" text="Leave" />
             </children>
          <opaqueInsets>
             <Insets />
