@@ -1,34 +1,12 @@
 package model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 /** Represents a classic Typeracer game. */
 public class Typeracer implements TyperacerInterface {
 
   private final GameState state;
-  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
   Typeracer(final String text) {
     state = new GameState(text);
-  }
-
-  public void addPropertyChangeListener(final PropertyChangeListener changeListener) {
-    support.addPropertyChangeListener(changeListener);
-  }
-
-  /**
-   * Creates a new game.
-   *
-   * @return new Typeracer game.
-   */
-  public static Typeracer create() {
-    String randomText = "new WordDatabase().getWord()";
-    return new Typeracer(randomText);
-  }
-
-  private void notifyListeners() {
-    support.firePropertyChange("GameState", null, this.getState());
   }
 
   public GameState getState() {
@@ -53,7 +31,6 @@ public class Typeracer implements TyperacerInterface {
       state.endGame();
     }
 
-    notifyListeners();
     return result;
   }
 
@@ -65,6 +42,5 @@ public class Typeracer implements TyperacerInterface {
    */
   public void forfeit() {
     state.endGame();
-    notifyListeners();
   }
 }

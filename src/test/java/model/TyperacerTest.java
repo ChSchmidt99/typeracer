@@ -9,15 +9,6 @@ import org.junit.jupiter.api.Test;
 class TyperacerTest {
 
   @Test
-  void testCreate() {
-    Typeracer tp;
-    String expectation = "new WordDatabase().getWord()";
-    tp = Typeracer.create();
-    String actual = tp.getState().getTypeChar().getCompleteText();
-    assertEquals(expectation, actual);
-  }
-
-  @Test
   void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
     CheckResult actual = tp.check('t');

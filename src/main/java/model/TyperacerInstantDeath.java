@@ -1,28 +1,11 @@
 package model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 /** Represents a Typeracer game mode which ends on the first mistake. */
 public class TyperacerInstantDeath implements TyperacerInterface {
   private final GameState state;
-  private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
   TyperacerInstantDeath(final String text) {
     state = new GameState(text);
-  }
-
-  public void addPropertyChangeListener(final PropertyChangeListener changeListener) {
-    support.addPropertyChangeListener(changeListener);
-  }
-
-  public static TyperacerInstantDeath create() {
-    String randomText = "new WordDatabase().getWord()";
-    return new TyperacerInstantDeath(randomText);
-  }
-
-  private void notifyListeners() {
-    support.firePropertyChange("GameState", null, this.getState());
   }
 
   public GameState getState() {
@@ -50,7 +33,6 @@ public class TyperacerInstantDeath implements TyperacerInterface {
       state.endGame();
     }
 
-    notifyListeners();
     return result;
   }
 
@@ -62,6 +44,5 @@ public class TyperacerInstantDeath implements TyperacerInterface {
    */
   public void forfeit() {
     state.endGame();
-    notifyListeners();
   }
 }

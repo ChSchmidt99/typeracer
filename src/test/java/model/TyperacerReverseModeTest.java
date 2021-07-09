@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 /** Unit tests for TyperacerReverseMode class. */
 public class TyperacerReverseModeTest {
   @Test
-  void testCreateReverseString() {
+  void testReverseString() {
     TyperacerReverseMode tp;
-    String expectation = ")(droWteg.)(esabataDdroW wen";
-    tp = TyperacerReverseMode.create();
+    tp = new TyperacerReverseMode("abc");
+    String expectation = "cba";
     String actual = tp.getState().getTypeChar().getCompleteText();
     assertEquals(expectation, actual);
   }
