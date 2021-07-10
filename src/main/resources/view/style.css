@@ -46,6 +46,20 @@
     -fx-text-fill: #fe55f7;
 }
 
+.chat-button {
+    -fx-text-fill: #62fbf7;
+    -fx-background-color: transparent;
+    -fx-font-size: 25px;
+    -fx-border-color: #fe55f7;
+    -fx-border-width: 3px 3px 3px 3px;
+    -fx-pref-height: 40px;
+}
+
+.chat-button:hover {
+    -fx-border-color: #62fbf7;
+    -fx-font-color: #fe55f7;
+}
+
 .countdownLabel {
     -fx-text-fill: #fe55f7;
     -fx-font-size: 80px;

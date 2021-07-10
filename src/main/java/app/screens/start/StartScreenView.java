@@ -1,6 +1,6 @@
 package app.screens.start;
 
-import app.cursom.IconPicker;
+import app.custom.IconPicker;
 import app.screens.View;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;

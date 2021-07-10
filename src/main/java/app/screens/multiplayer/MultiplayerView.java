@@ -1,7 +1,7 @@
 package app.screens.multiplayer;
 
 import app.IconManager;
-import app.cursom.RaceTrack;
+import app.custom.RaceTrack;
 import app.screens.View;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

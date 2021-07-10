@@ -1,4 +1,4 @@
-package app.cursom;
+package app.custom;
 
 import java.io.IOException;
 import java.util.Objects;
