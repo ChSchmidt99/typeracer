@@ -101,7 +101,7 @@ class Race {
       classification.add(result);
     }
     long duration = p.get(0).raceDuration();
-    return new RaceResult(duration, classification);
+    return new RaceResult(duration, classification, textToType);
   }
 
   private void checkeredFlag() {

@@ -47,7 +47,9 @@ public class GameFinishedView extends View {
   void updateView(RaceResult result) throws FileNotFoundException {
     duration.setText("Time: " + result.duration + " s");
     firstPlace.setText(result.classification.get(0).userData.name);
-    firstPlace.setText("WPM: " + (result.classification.get(0).wpm));
+    firstPlace.setText(
+        "Accuracy: " + ( (1 - result.classification.get(0).mistakes / result.text.length())*100) + "%");
+    // firstPlace.setText("WPM: " + (result.classification.get(0).wpm));
     // firstPlace.setText("# Mistakes: " + String.valueOf(result.classification.get(0).mistakes));
 
     firstPlaceImage.setImage(
@@ -55,7 +57,9 @@ public class GameFinishedView extends View {
 
     if (result.classification.size() >= 2) {
       secondPlace.setText(result.classification.get(1).userData.name);
-      secondPlace.setText("WPM: " + (result.classification.get(1).wpm));
+      secondPlace.setText(
+              "Accuracy: " + ( (1 - result.classification.get(1).mistakes / result.text.length())*100) + "%");
+      // secondPlace.setText("WPM: " + (result.classification.get(1).wpm));
       // secondPlace.setText("# Mistakes: " +
       // String.valueOf(result.classification.get(1).mistakes));
       secondPlaceImage.setImage(
@@ -64,7 +68,9 @@ public class GameFinishedView extends View {
 
     if (result.classification.size() == 3) {
       thirdPlace.setText(result.classification.get(2).userData.name);
-      thirdPlace.setText("WPM: " + (result.classification.get(2).wpm));
+      thirdPlace.setText(
+              "Accuracy: " + ( (1 - result.classification.get(2).mistakes / result.text.length())*100) + "%");
+      // thirdPlace.setText("WPM: " + (result.classification.get(2).wpm));
       // thirdPlace.setText("# Mistakes: " + String.valueOf(result.classification.get(1).mistakes));
       thirdPlaceImage.setImage(
           IconManager.iconForId(result.classification.get(2).userData.iconId).getImage());
