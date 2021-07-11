@@ -9,7 +9,7 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-/** Main Class and method. */
+/** Application entry point. */
 public class Main extends Application {
 
   @Override

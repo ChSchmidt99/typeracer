@@ -12,6 +12,7 @@ import java.util.List;
 public class ApplicationState {
 
   private static ApplicationState instance;
+  private static final Config config = new Config("127.0.0.1", 8080);
 
   private String userId;
   private Client client;
@@ -71,8 +72,7 @@ public class ApplicationState {
       client.close();
       this.removeCloseable(this.client);
     }
-    // TODO: Add address/port to config
-    client = new ClientImpl(InetAddress.getByName("127.0.0.1"), 8080);
+    client = new ClientImpl(InetAddress.getByName(config.getAddress()), config.getPort());
     closeables.add(client);
     return client;
   }

@@ -6,7 +6,7 @@ import java.io.IOException;
 public class DatabaseImpl implements Database {
 
   private final TextDatabase textDatabase;
-  private final TestDatabase testDatabase;
+  private final UserDatabase testDatabase;
 
   /**
    * Create new Database.
@@ -14,7 +14,7 @@ public class DatabaseImpl implements Database {
    * @throws Exception if some files cannot be loaded
    */
   public DatabaseImpl() throws Exception {
-    this.testDatabase = new TestDatabase();
+    this.testDatabase = new UserDatabase();
     this.textDatabase = new TextDatabase();
   }
 

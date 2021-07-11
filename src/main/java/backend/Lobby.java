@@ -23,7 +23,8 @@ class Lobby implements RaceFinishedListener {
   private final Database database;
   private final String name;
 
-  // TODO: Store Races in RaceStore
+  // Finished races were planned to be stored in database, but feature was not finished in time.
+  // That's the only reason finished races are stored in Lobby for now.
   private final List<Race> finishedRaces;
   private final List<ChatMessage> chatHistory;
   private Race race;
