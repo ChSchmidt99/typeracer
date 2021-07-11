@@ -24,8 +24,7 @@ public class StartScreenModel implements ClientObserver, ErrorObserver {
     client.registerUser(name, IconManager.getSelectedIcon().getId());
   }
 
-  void registerSingleplayer(String name) throws IOException {
-  }
+  void registerSingleplayer(String name) throws IOException {}
 
   void setObserver(StartScreenModelObserver observer) {
     this.observer = observer;

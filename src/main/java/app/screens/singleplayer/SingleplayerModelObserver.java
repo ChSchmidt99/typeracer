@@ -1,6 +1,5 @@
 package app.screens.singleplayer;
 
-import app.screens.singleplayer.FinishedMessage;
 import protocol.RaceResult;
 
 public interface SingleplayerModelObserver {
@@ -20,5 +19,4 @@ public interface SingleplayerModelObserver {
   void changedFinishedMessage(FinishedMessage message);
 
   void receivedError(String message);
-
 }

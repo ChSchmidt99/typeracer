@@ -1,7 +1,5 @@
 package protocol;
 
-import database.TextDatabase;
-
 public class RaceDataSingleplayer {
 
   public long startTime;

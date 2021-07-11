@@ -52,7 +52,9 @@ public class SingleplayerController implements SingleplayerModelObserver {
 
   @Override
   public void checkeredFlag(long raceEndTimestamp) {
-    new GameFinishedControllerSingleplayer(new GameFinishedModelSingleplayer(model.username, model.iconId, model.getDuration()), new GameFinishedViewSingleplayer(view.getStage()));
+    new GameFinishedControllerSingleplayer(
+        new GameFinishedModelSingleplayer(model.username, model.iconId, model.getDuration()),
+        new GameFinishedViewSingleplayer(view.getStage()));
   }
 
   @Override

@@ -1,15 +1,9 @@
 package app.screens.finishedSingleplayer;
 
-import app.screens.createSingleplayer.CreateSingleplayerController;
-import app.screens.createSingleplayer.CreateSingleplayerModel;
-import app.screens.lobby.GameLobbyController;
-import app.screens.lobby.GameLobbyModel;
-import app.screens.lobby.GameLobbyView;
 import app.screens.start.StartScreenController;
 import app.screens.start.StartScreenModel;
 import app.screens.start.StartScreenView;
 import java.io.FileNotFoundException;
-import protocol.LobbyData;
 
 /** Controller for game finished screen. */
 public class GameFinishedControllerSingleplayer implements GameFinishedModelObserverSingleplayer {
@@ -23,7 +17,8 @@ public class GameFinishedControllerSingleplayer implements GameFinishedModelObse
    * @param model to fill view with
    * @param view that will be shown
    */
-  public GameFinishedControllerSingleplayer(GameFinishedModelSingleplayer model, GameFinishedViewSingleplayer view) {
+  public GameFinishedControllerSingleplayer(
+      GameFinishedModelSingleplayer model, GameFinishedViewSingleplayer view) {
     this.view = view;
     this.model = model;
     bindings(view);
@@ -41,13 +36,15 @@ public class GameFinishedControllerSingleplayer implements GameFinishedModelObse
   }
 
   private void bindings(GameFinishedViewSingleplayer view) {
-    view.getReturnButton().setOnAction(event -> {
-      try {
-        clickedReturn();
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      }
-    });
+    view.getReturnButton()
+        .setOnAction(
+            event -> {
+              try {
+                clickedReturn();
+              } catch (FileNotFoundException e) {
+                e.printStackTrace();
+              }
+            });
   }
 
   private void clickedReturn() throws FileNotFoundException {

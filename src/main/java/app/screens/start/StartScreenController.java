@@ -42,13 +42,15 @@ public class StartScreenController implements StartScreenModelObserver {
   }
 
   private void bindButtons(StartScreenView view) {
-    view.getSingleplayerButton().setOnAction((actionEvent) -> {
-      try {
-        clickedSingleplayer();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    });
+    view.getSingleplayerButton()
+        .setOnAction(
+            (actionEvent) -> {
+              try {
+                clickedSingleplayer();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            });
     view.getMultiplayerButton().setOnAction((actionEvent) -> clickedMultiplayer());
   }
 
@@ -68,10 +70,11 @@ public class StartScreenController implements StartScreenModelObserver {
     if (view.getUsername().equals("")) {
       view.displayError(USERNAME_ERROR);
     } else {
-      CreateSingleplayerModel createSingleplayerModel = new CreateSingleplayerModel(view.getUsername(), IconManager.getSelectedIcon().getId());
+      CreateSingleplayerModel createSingleplayerModel =
+          new CreateSingleplayerModel(view.getUsername(), IconManager.getSelectedIcon().getId());
       CreateSingleplayerView createSingleplayerView = new CreateSingleplayerView(view.getStage());
-      CreateSingleplayerController createSingleplayerController = new CreateSingleplayerController(createSingleplayerModel, createSingleplayerView);
-      }
+      CreateSingleplayerController createSingleplayerController =
+          new CreateSingleplayerController(createSingleplayerModel, createSingleplayerView);
     }
   }
-
+}

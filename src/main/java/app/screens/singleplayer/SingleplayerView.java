@@ -82,8 +82,8 @@ public class SingleplayerView extends View {
   }
 
   void updatedRaceState(PlayerUpdate update) {
-      trackUpdate(update);
-      wpmUpdate(update);
+    trackUpdate(update);
+    wpmUpdate(update);
   }
 
   /** Creates labels for user input which will be added to hbox enteredText. */
@@ -106,22 +106,22 @@ public class SingleplayerView extends View {
    * Adds the user list along with progress bars and wpm to game screen.
    */
   private void setupTracks(String name, String iconId) {
-      VBox userVbox = new VBox();
-      Label wpmLabel = wpmCreator();
-      userVbox.getChildren().add(userLabelCreator(name));
-      userVbox.getChildren().add(wpmLabel);
-      wpmLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
+    VBox userVbox = new VBox();
+    Label wpmLabel = wpmCreator();
+    userVbox.getChildren().add(userLabelCreator(name));
+    userVbox.getChildren().add(wpmLabel);
+    wpmLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #62fbf7; -fx-min-width: 40px;");
 
-      HBox userHbox = new HBox();
+    HBox userHbox = new HBox();
 
-      RaceTrack track = trackCreator(iconId, Color.web("#62fbf7"));
+    RaceTrack track = trackCreator(iconId, Color.web("#62fbf7"));
 
-      userHbox.getChildren().add(userVbox);
-      userHbox.getChildren().add(track);
+    userHbox.getChildren().add(userVbox);
+    userHbox.getChildren().add(track);
 
-      userList.getChildren().add(userHbox);
-      lanes.put(name, new app.screens.singleplayer.Lane(wpmLabel, track));
-    }
+    userList.getChildren().add(userHbox);
+    lanes.put(name, new app.screens.singleplayer.Lane(wpmLabel, track));
+  }
 
   private void setupText(String t) {
     for (int i = 0; i < t.length(); i++) {

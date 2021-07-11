@@ -32,13 +32,15 @@ public class CreateSingleplayerController {
   }
 
   private void bindButtons(CreateSingleplayerView view) throws FileNotFoundException {
-    view.getStartButton().setOnAction(actionEvent -> {
-      try {
-        clickedStart();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    });
+    view.getStartButton()
+        .setOnAction(
+            actionEvent -> {
+              try {
+                clickedStart();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            });
     view.getBackButton().setOnAction(actionEvent -> clickedBack());
     view.getUsernameLabel().setText("User: " + model.name);
     view.getUsericon().setImage(IconManager.iconForId(model.iconId).getImage());
@@ -50,7 +52,9 @@ public class CreateSingleplayerController {
   }
 
   private void clickedStart() throws IOException {
-    new SingleplayerController(new SingleplayerModel(new RaceDataSingleplayer(new TextDatabase().getPhrase(), 0, model.name,
-        model.iconId) ), new SingleplayerView(view.getStage()));
+    new SingleplayerController(
+        new SingleplayerModel(
+            new RaceDataSingleplayer(new TextDatabase().getPhrase(), 0, model.name, model.iconId)),
+        new SingleplayerView(view.getStage()));
   }
 }

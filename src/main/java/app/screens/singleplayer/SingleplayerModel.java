@@ -1,25 +1,14 @@
 package app.screens.singleplayer;
 
 import app.ApplicationState;
-import app.screens.finishedSingleplayer.GameFinishedControllerSingleplayer;
-import app.screens.finishedSingleplayer.GameFinishedModelSingleplayer;
-import app.screens.finishedSingleplayer.GameFinishedViewSingleplayer;
-import client.Client;
-import client.ErrorObserver;
-import client.RaceObserver;
-import client.RaceResultObserver;
-import database.TextDatabase;
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import protocol.PlayerUpdate;
-import protocol.ProgressSnapshot;
 import protocol.RaceDataSingleplayer;
-import protocol.RaceResult;
 import typeracer.CheckResult;
 import typeracer.GamePhase;
 import typeracer.Typeracer;
@@ -33,7 +22,8 @@ public class SingleplayerModel implements Closeable {
   private static final long FALL_BACK_START_DELAY = 3;
   private static final app.screens.singleplayer.FinishedMessage FINISHED =
       new app.screens.singleplayer.FinishedMessage("FINISHED", "waiting for race to end");
-  private static final app.screens.singleplayer.FinishedMessage NOT_FINISHED = new app.screens.singleplayer.FinishedMessage("HURRY!", "");
+  private static final app.screens.singleplayer.FinishedMessage NOT_FINISHED =
+      new app.screens.singleplayer.FinishedMessage("HURRY!", "");
 
   private SingleplayerModelObserver observer;
 
@@ -87,9 +77,10 @@ public class SingleplayerModel implements Closeable {
     if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
       updateView();
       if (observer != null) {
-        Platform.runLater(() -> {
-          observer.checkeredFlag(getDuration());
-        });
+        Platform.runLater(
+            () -> {
+              observer.checkeredFlag(getDuration());
+            });
       }
       this.state = State.CHECKERED_FLAG;
     }
@@ -172,4 +163,3 @@ public class SingleplayerModel implements Closeable {
     return Timestamp.currentTimestamp() - raceStart;
   }
 }
-

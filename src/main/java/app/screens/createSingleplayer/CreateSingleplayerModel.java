@@ -1,7 +1,7 @@
 package app.screens.createSingleplayer;
 
 /** Model for CreateView for Singleplayer. */
-public class CreateSingleplayerModel  {
+public class CreateSingleplayerModel {
 
   String name;
   String iconId;

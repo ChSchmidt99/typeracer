@@ -38,7 +38,6 @@ public class GameFinishedView extends View {
    */
   public GameFinishedView(Stage stage) {
     super(stage, FXML_PATH);
-
   }
 
   Button getReturnButton() {
