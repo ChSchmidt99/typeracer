@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Connection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">server</a> &gt; <span class="el_source">Connection.java</span></div><h1>Connection.java</h1><pre class="source lang-java linenums">package server;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Connection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">server</a> &gt; <span class="el_source">Connection.java</span></div><h1>Connection.java</h1><pre class="source lang-java linenums">package server;
 
 import backend.Api;
 import com.google.gson.Gson;
@@ -48,8 +48,8 @@ class Connection implements Closeable {
   @Override
   public void close() {
     try {
-<span class="fc" id="L51">      socket.close();</span>
-<span class="fc" id="L52">      reader.close();</span>
+<span class="fc" id="L51">      reader.close();</span>
+<span class="fc" id="L52">      socket.close();</span>
 <span class="nc" id="L53">    } catch (IOException e) {</span>
 <span class="nc" id="L54">      Logger.logError(e.getMessage());</span>
 <span class="fc" id="L55">    }</span>
@@ -63,12 +63,13 @@ class Connection implements Closeable {
 <span class="nc" id="L63">        Request request = gson.fromJson(line, Request.class);</span>
 <span class="nc" id="L64">        receivedRequest(request);</span>
 <span class="nc" id="L65">      }</span>
-<span class="nc" id="L66">    } catch (IOException e) {</span>
-<span class="nc" id="L67">      onDisconnect.closedConnection(this);</span>
-<span class="fc" id="L68">    } catch (JsonSyntaxException e) {</span>
-<span class="fc" id="L69">      sendResponse(ResponseFactory.makeErrorResponse(&quot;Invalid Request&quot;));</span>
-<span class="pc" id="L70">    }</span>
-<span class="fc" id="L71">  }</span>
+<span class="fc" id="L66">      disconnected(onDisconnect);</span>
+<span class="nc" id="L67">    } catch (IOException e) {</span>
+<span class="nc" id="L68">      disconnected(onDisconnect);</span>
+<span class="fc" id="L69">    } catch (JsonSyntaxException e) {</span>
+<span class="fc" id="L70">      sendResponse(ResponseFactory.makeErrorResponse(&quot;Invalid Request&quot;));</span>
+<span class="pc" id="L71">    }</span>
+<span class="fc" id="L72">  }</span>
 
   /**
    * Send a {@link Response} to the Connection.
@@ -76,43 +77,60 @@ class Connection implements Closeable {
    * @param response some Response
    */
   void sendResponse(Response response) {
-<span class="fc" id="L79">    String json = gson.toJson(response);</span>
-<span class="fc" id="L80">    writer.println(json);</span>
-<span class="fc" id="L81">  }</span>
+<span class="fc" id="L80">    String json = gson.toJson(response);</span>
+<span class="fc" id="L81">    writer.println(json);</span>
+<span class="fc" id="L82">  }</span>
 
   String getId() {
-<span class="fc" id="L84">    return id;</span>
+<span class="fc" id="L85">    return id;</span>
   }
 
+  private void disconnected(OnDisconnect onDisconnect) {
+<span class="fc" id="L89">    onDisconnect.closedConnection(this);</span>
+<span class="fc" id="L90">    api.leaveLobby(id);</span>
+<span class="fc" id="L91">  }</span>
+
   private void receivedRequest(Request request) {
-<span class="nc bnc" id="L88" title="All 9 branches missed.">    switch (request.type) {</span>
+<span class="nc bnc" id="L94" title="All 13 branches missed.">    switch (request.type) {</span>
       case Request.Types.REGISTER:
-<span class="nc" id="L90">        api.registerPlayer(id, request.playerName);</span>
-<span class="nc" id="L91">        break;</span>
-      case Request.Types.NEW_LOBBY:
-<span class="nc" id="L93">        api.createNewLobby(id, request.userId, request.lobbyName);</span>
-<span class="nc" id="L94">        break;</span>
-      case Request.Types.JOIN_LOBBY:
-<span class="nc" id="L96">        api.joinLobby(request.lobbyId, id, request.userId);</span>
+<span class="nc" id="L96">        api.registerPlayer(id, request.playerName, request.iconId);</span>
 <span class="nc" id="L97">        break;</span>
-      case Request.Types.LEAVE_LOBBY:
-<span class="nc" id="L99">        api.leaveLobby(id);</span>
+      case Request.Types.NEW_LOBBY:
+<span class="nc" id="L99">        api.createNewLobby(id, request.lobbyName);</span>
 <span class="nc" id="L100">        break;</span>
-      case Request.Types.START_RACE:
-<span class="nc" id="L102">        api.startRace(id);</span>
+      case Request.Types.JOIN_LOBBY:
+<span class="nc" id="L102">        api.joinLobby(id, request.lobbyId);</span>
 <span class="nc" id="L103">        break;</span>
-      case Request.Types.GET_LOBBIES:
-<span class="nc" id="L105">        api.getLobbies(id);</span>
+      case Request.Types.LEAVE_LOBBY:
+<span class="nc" id="L105">        api.leaveLobby(id);</span>
 <span class="nc" id="L106">        break;</span>
-      case Request.Types.PLAYER_READY:
-<span class="nc" id="L108">        api.setPlayerReady(id, request.isReady);</span>
+      case Request.Types.START_RACE:
+<span class="nc" id="L108">        api.startRace(id);</span>
 <span class="nc" id="L109">        break;</span>
-      case Request.Types.UPDATE_PROGRESS:
-<span class="nc" id="L111">        api.updateProgress(id, request.snapshot);</span>
+      case Request.Types.GET_LOBBIES:
+<span class="nc" id="L111">        api.getLobbies(id);</span>
 <span class="nc" id="L112">        break;</span>
+      case Request.Types.PLAYER_READY:
+<span class="nc" id="L114">        api.setPlayerReady(id, request.isReady);</span>
+<span class="nc" id="L115">        break;</span>
+      case Request.Types.UPDATE_PROGRESS:
+<span class="nc" id="L117">        api.updateProgress(id, request.snapshot);</span>
+<span class="nc" id="L118">        break;</span>
+      case Request.Types.LOBBY_UPDATE:
+<span class="nc" id="L120">        api.sendLobbyUpdate(id);</span>
+<span class="nc" id="L121">        break;</span>
+      case Request.Types.PREV_RACE_RESULT:
+<span class="nc" id="L123">        api.sendPreviousRaceResult(id);</span>
+<span class="nc" id="L124">        break;</span>
+      case Request.Types.CHAT_MESSAGE:
+<span class="nc" id="L126">        api.sendChat(id, request.message);</span>
+<span class="nc" id="L127">        break;</span>
+      case Request.Types.CHAT_HISTORY:
+<span class="nc" id="L129">        api.requestChatHistory(id);</span>
+<span class="nc" id="L130">        break;</span>
       default:
-<span class="nc" id="L114">        Logger.logError(&quot;Unknown Request type: &quot; + request.type);</span>
+<span class="nc" id="L132">        Logger.logError(&quot;Unknown Request type: &quot; + request.type);</span>
     }
-<span class="nc" id="L116">  }</span>
+<span class="nc" id="L134">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -7,6 +7,7 @@ public class RequestFactory {
    * Make a Register {@link Request} used to register a new player.
    *
    * @param playerName name of the player
+   * @param iconId id of icon
    * @return {@link Request}
    */
   public static Request makeRegisterRequest(String playerName, String iconId) {
@@ -92,6 +93,7 @@ public class RequestFactory {
   /**
    * Make chat request used to send chat messages.
    *
+   * @param message chat message
    * @return {@link Request}
    */
   public static Request makeChatRequest(String message) {

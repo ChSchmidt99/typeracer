@@ -1,121 +1,186 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">Lobby.java</span></div><h1>Lobby.java</h1><pre class="source lang-java linenums">package backend;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">Lobby.java</span></div><h1>Lobby.java</h1><pre class="source lang-java linenums">package backend;
 
 import database.Database;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import protocol.ChatMessageData;
 import protocol.LobbyData;
 import protocol.Response;
 import protocol.ResponseFactory;
-import server.PushService;
+import protocol.UserData;
 import util.Logger;
+import util.Timestamp;
 
 /** Represents one game currently managed by the server. */
-class Lobby {
+class Lobby implements RaceFinishedListener {
+
+  private static final int START_DELAY = 3;
+  private static final int MAX_PLAYERS = 4;
 
   private final String lobbyId;
-  private final HashMap&lt;String, LobbyMember&gt; members;
-  private final PushService pushService;
+  private final List&lt;User&gt; members;
   private final Database database;
   private final String name;
+
+  // Finished races were planned to be stored in database, but feature was not finished in time.
+  // That's the only reason finished races are stored in Lobby for now.
+  private final List&lt;Race&gt; finishedRaces;
+  private final List&lt;ChatMessage&gt; chatHistory;
   private Race race;
 
-<span class="fc" id="L25">  Lobby(String lobbyId, String name, Database database, PushService pushService) {</span>
-<span class="fc" id="L26">    this.members = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L27">    this.lobbyId = lobbyId;</span>
-<span class="fc" id="L28">    this.pushService = pushService;</span>
-<span class="fc" id="L29">    this.database = database;</span>
-<span class="fc" id="L30">    this.name = name;</span>
-<span class="fc" id="L31">  }</span>
+<span class="fc" id="L32">  Lobby(String lobbyId, String name, Database database) {</span>
+<span class="fc" id="L33">    this.members = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L34">    this.lobbyId = lobbyId;</span>
+<span class="fc" id="L35">    this.database = database;</span>
+<span class="fc" id="L36">    this.finishedRaces = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L37">    this.chatHistory = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L38">    this.name = name;</span>
+<span class="fc" id="L39">  }</span>
 
-  void join(String connectionId, String userId) {
-    try {
-<span class="fc" id="L35">      String username = this.database.getUsername(userId);</span>
-<span class="fc" id="L36">      LobbyMember lobbyMember = new LobbyMember(userId, connectionId, username);</span>
-<span class="fc" id="L37">      members.put(connectionId, lobbyMember);</span>
-<span class="fc" id="L38">      broadcastLobbyUpdate();</span>
-<span class="nc" id="L39">    } catch (IOException e) {</span>
-<span class="nc" id="L40">      Logger.logError(e.getMessage());</span>
-<span class="fc" id="L41">    }</span>
-<span class="fc" id="L42">  }</span>
+  @Override
+  public void raceFinished() {
+<span class="nc" id="L43">    broadcastLobbyUpdate();</span>
+<span class="nc" id="L44">    finishedRaces.add(race);</span>
+<span class="nc" id="L45">    Response resultResponse = ResponseFactory.makeRaceResultResponse(race.getRaceResult());</span>
+<span class="nc" id="L46">    broadcast(resultResponse);</span>
+<span class="nc" id="L47">  }</span>
 
-  void leave(String connectionId) {
-    // TODO: Assign new host, if host leaves
-<span class="nc bnc" id="L46" title="All 2 branches missed.">    if (!members.containsKey(connectionId)) {</span>
-<span class="nc" id="L47">      Logger.logError(&quot;Called leave on non existing member&quot;);</span>
-<span class="nc" id="L48">      return;</span>
+  void join(User user) {
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">    if (members.size() &lt; MAX_PLAYERS) {</span>
+<span class="fc" id="L51">      members.add(user);</span>
+<span class="fc" id="L52">      broadcastLobbyUpdate();</span>
+    } else {
+<span class="nc" id="L54">      Response error = ResponseFactory.makeErrorResponse(&quot;Max number of players.&quot;);</span>
+<span class="nc" id="L55">      user.sendResponse(error);</span>
     }
-<span class="nc" id="L50">    LobbyMember member = members.get(connectionId);</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">    if (member.isInRace()) {</span>
-<span class="nc" id="L52">      this.race.removePlayer(connectionId);</span>
-    }
-<span class="nc" id="L54">    members.remove(connectionId);</span>
-<span class="nc" id="L55">    broadcastLobbyUpdate();</span>
-<span class="nc" id="L56">  }</span>
+<span class="fc" id="L57">  }</span>
 
-  void startRace(String connectionId, RaceSettings settings) {
-<span class="nc" id="L59">    Map&lt;String, Player&gt; readyPlayers = getReadyPlayers();</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">    if (readyPlayers.size() == 0) {</span>
-      // TODO: Central place for all error messages
-<span class="nc" id="L62">      Response error = ResponseFactory.makeErrorResponse(&quot;No players ready&quot;);</span>
-<span class="nc" id="L63">      pushService.sendResponse(connectionId, error);</span>
-<span class="nc" id="L64">      return;</span>
+  void leave(User user) {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">    if (!members.contains(user)) {</span>
+<span class="nc" id="L61">      Logger.logError(&quot;Called leave on user that's not in lobby&quot;);</span>
+<span class="nc" id="L62">      return;</span>
     }
-<span class="nc" id="L66">    this.race = new Race(settings, this.database.getTextToType(), readyPlayers, pushService);</span>
-<span class="nc" id="L67">    broadcastLobbyUpdate();</span>
-<span class="nc" id="L68">  }</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">    if (user.getState().equals(User.State.IN_RACE)) {</span>
+<span class="nc" id="L65">      this.race.removePlayer(user);</span>
+    }
+<span class="nc" id="L67">    members.remove(user);</span>
+<span class="nc" id="L68">    user.setState(User.State.UNKNOWN);</span>
+<span class="nc" id="L69">    broadcastLobbyUpdate();</span>
+<span class="nc" id="L70">  }</span>
 
-  LobbyModel lobbyData() {
-<span class="fc" id="L71">    List&lt;String&gt; playerNames = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L72" title="All 2 branches covered.">    for (Map.Entry&lt;String, LobbyMember&gt; entry : members.entrySet()) {</span>
-<span class="fc" id="L73">      playerNames.add(entry.getValue().getName());</span>
-<span class="fc" id="L74">    }</span>
-<span class="fc" id="L75">    return new LobbyModel(lobbyId, playerNames, name, isRunning());</span>
+  void sendChatMessage(ChatMessage message) {
+<span class="nc" id="L73">    chatHistory.add(message);</span>
+<span class="nc" id="L74">    broadcastChat();</span>
+<span class="nc" id="L75">  }</span>
+
+  void startRace(User user, RaceSettings settings) {
+<span class="nc" id="L78">    HashMap&lt;String, Player&gt; readyPlayers = collectReadyPlayers();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">    if (readyPlayers.size() == 0) {</span>
+<span class="nc" id="L80">      Response error = ResponseFactory.makeErrorResponse(&quot;No players ready&quot;);</span>
+<span class="nc" id="L81">      user.sendResponse(error);</span>
+<span class="nc" id="L82">      return;</span>
+    }
+<span class="nc" id="L84">    this.race =</span>
+        new Race(
+            settings,
+<span class="nc" id="L87">            this.database.getTextToType(),</span>
+            readyPlayers,
+            this,
+<span class="nc" id="L90">            Timestamp.currentTimestamp() + START_DELAY);</span>
+<span class="nc" id="L91">    broadcastLobbyUpdate();</span>
+<span class="nc" id="L92">  }</span>
+
+  LobbyData lobbyModel() {
+<span class="fc" id="L95">    List&lt;UserData&gt; playerData = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">    for (User user : members) {</span>
+<span class="fc" id="L97">      playerData.add(user.getUserData());</span>
+<span class="fc" id="L98">    }</span>
+<span class="fc" id="L99">    return new LobbyData(lobbyId, playerData, name, isRunning());</span>
   }
 
-  void setPlayerReady(String connectionId, boolean isReady) {
-<span class="nc" id="L79">    members.get(connectionId).setIsReady(isReady);</span>
-<span class="nc" id="L80">  }</span>
+  void setPlayerReady(User user, boolean isReady) {
+<span class="nc bnc" id="L103" title="All 2 branches missed.">    if (isReady) {</span>
+<span class="nc" id="L104">      user.setState(User.State.READY);</span>
+    } else {
+<span class="nc" id="L106">      user.setState(User.State.NOT_READY);</span>
+    }
+<span class="nc" id="L108">    broadcastLobbyUpdate();</span>
+<span class="nc" id="L109">  }</span>
 
   boolean isRunning() {
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">    if (this.race == null) {</span>
-<span class="fc" id="L84">      return false;</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">    if (this.race == null) {</span>
+<span class="fc" id="L113">      return false;</span>
     }
-<span class="nc" id="L86">    return this.race.getIsRunning();</span>
+<span class="nc" id="L115">    return this.race.getIsRunning();</span>
   }
 
   Race getRace() {
-<span class="nc" id="L90">    return this.race;</span>
+<span class="nc" id="L119">    return this.race;</span>
   }
 
   String getLobbyId() {
-<span class="nc" id="L94">    return this.lobbyId;</span>
+<span class="nc" id="L123">    return this.lobbyId;</span>
   }
 
   boolean isEmpty() {
-<span class="nc" id="L98">    return this.members.isEmpty();</span>
+<span class="nc" id="L127">    return this.members.isEmpty();</span>
   }
 
-  private Map&lt;String, Player&gt; getReadyPlayers() {
-<span class="nc" id="L102">    Map&lt;String, Player&gt; readyPlayers = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">    for (Map.Entry&lt;String, LobbyMember&gt; entry : members.entrySet()) {</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">      if (entry.getValue().getIsReady()) {</span>
-<span class="nc" id="L105">        LobbyMember member = entry.getValue();</span>
-<span class="nc" id="L106">        readyPlayers.put(entry.getKey(), member.toPlayer());</span>
+  void sendUpdate(User user) {
+<span class="nc" id="L131">    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());</span>
+<span class="nc" id="L132">    user.sendResponse(response);</span>
+<span class="nc" id="L133">  }</span>
+
+  void sendChatHistory(User user) {
+<span class="nc" id="L136">    Response chatHistory = ResponseFactory.makeChatResponse(marshalChatHistory());</span>
+<span class="nc" id="L137">    user.sendResponse(chatHistory);</span>
+<span class="nc" id="L138">  }</span>
+
+  void sendPreviousRaceResult(User user) {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">    if (finishedRaces.size() == 0) {</span>
+<span class="nc" id="L142">      Logger.logError(&quot;Tried retrieving non existing previous race&quot;);</span>
+<span class="nc" id="L143">      return;</span>
+    }
+<span class="nc" id="L145">    Race race = finishedRaces.get(finishedRaces.size() - 1);</span>
+<span class="nc" id="L146">    Response response = ResponseFactory.makeRaceResultResponse(race.getRaceResult());</span>
+<span class="nc" id="L147">    user.sendResponse(response);</span>
+<span class="nc" id="L148">  }</span>
+
+  private HashMap&lt;String, Player&gt; collectReadyPlayers() {
+<span class="nc" id="L151">    HashMap&lt;String, Player&gt; readyPlayers = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">    for (User user : members) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">      if (user.getState().equals(User.State.READY)) {</span>
+<span class="nc" id="L154">        readyPlayers.put(user.getId(), new Player(user));</span>
+<span class="nc" id="L155">        user.setState(User.State.IN_RACE);</span>
       }
-<span class="nc" id="L108">    }</span>
-<span class="nc" id="L109">    return readyPlayers;</span>
+<span class="nc" id="L157">    }</span>
+<span class="nc" id="L158">    return readyPlayers;</span>
   }
 
   private void broadcast(Response response) {
-<span class="fc" id="L113">    pushService.sendResponse(members.keySet(), response);</span>
-<span class="fc" id="L114">  }</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">    for (User user : members) {</span>
+<span class="fc" id="L163">      user.sendResponse(response);</span>
+<span class="fc" id="L164">    }</span>
+<span class="fc" id="L165">  }</span>
+
+  private void broadcastChat() {
+<span class="nc" id="L168">    List&lt;ChatMessageData&gt; messages = marshalChatHistory();</span>
+<span class="nc" id="L169">    Response response = ResponseFactory.makeChatResponse(messages);</span>
+<span class="nc" id="L170">    broadcast(response);</span>
+<span class="nc" id="L171">  }</span>
+
+  private List&lt;ChatMessageData&gt; marshalChatHistory() {
+<span class="nc" id="L174">    List&lt;ChatMessageData&gt; messages = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">    for (ChatMessage message : this.chatHistory) {</span>
+<span class="nc" id="L176">      messages.add(message.toChatMessageData());</span>
+<span class="nc" id="L177">    }</span>
+<span class="nc" id="L178">    return messages;</span>
+  }
 
   private void broadcastLobbyUpdate() {
-<span class="fc" id="L117">    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyData());</span>
-<span class="fc" id="L118">    broadcast(response);</span>
-<span class="fc" id="L119">  }</span>
+<span class="fc" id="L182">    Response response = ResponseFactory.makeLobbyUpdateResponse(lobbyModel());</span>
+<span class="fc" id="L183">    broadcast(response);</span>
+<span class="fc" id="L184">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

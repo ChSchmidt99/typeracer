@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Request.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">protocol</a> &gt; <span class="el_source">Request.java</span></div><h1>Request.java</h1><pre class="source lang-java linenums">package protocol;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Request.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">protocol</a> &gt; <span class="el_source">Request.java</span></div><h1>Request.java</h1><pre class="source lang-java linenums">package protocol;
 
 /** Represents a Json Request. */
 public class Request {
@@ -13,13 +13,17 @@ public class Request {
     public static final String PLAYER_READY = &quot;player ready&quot;;
     public static final String GET_LOBBIES = &quot;get lobbies&quot;;
     public static final String UPDATE_PROGRESS = &quot;update progress&quot;;
+    public static final String LOBBY_UPDATE = &quot;get lobby update&quot;;
+    public static final String PREV_RACE_RESULT = &quot;previous race result&quot;;
+    public static final String CHAT_MESSAGE = &quot;chat message&quot;;
+    public static final String CHAT_HISTORY = &quot;chat history&quot;;
   }
 
   public final String type;
 
-  public String userId;
-
   public String playerName;
+
+  public String iconId;
 
   public String lobbyId;
 
@@ -29,13 +33,15 @@ public class Request {
 
   public ProgressSnapshot snapshot;
 
+  public String message;
+
   /**
    * Create a Request with given params.
    *
    * @param type request type
    */
-<span class="fc" id="L37">  public Request(String type) {</span>
-<span class="fc" id="L38">    this.type = type;</span>
-<span class="fc" id="L39">  }</span>
+<span class="nc" id="L43">  public Request(String type) {</span>
+<span class="nc" id="L44">    this.type = type;</span>
+<span class="nc" id="L45">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

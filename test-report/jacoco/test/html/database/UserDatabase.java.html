@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDatabase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">database</a> &gt; <span class="el_source">UserDatabase.java</span></div><h1>UserDatabase.java</h1><pre class="source lang-java linenums">package database;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+/** implements test for the database interface. */
+public class UserDatabase {
+
+  // Database was initially planned to store users in a file permanently.
+  // Because writing to files is not possible from .jar files
+  // and no database feature was finished in time, it is now a relatively simple user store.
+  Map&lt;String, String&gt; map;
+
+<span class="fc" id="L17">  UserDatabase() throws URISyntaxException {</span>
+<span class="fc" id="L18">    this.map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L19">  }</span>
+
+  /**
+   * Creates new database.txt entry for user and returns unique ID.
+   *
+   * @param username name of user
+   * @return userId
+   */
+  String registerUser(String username) throws IOException {
+<span class="fc" id="L28">    UUID uuid = UUID.randomUUID();</span>
+<span class="fc" id="L29">    String uuidAsString = uuid.toString();</span>
+<span class="fc" id="L30">    this.map.put(uuidAsString, username);</span>
+<span class="fc" id="L31">    return uuidAsString;</span>
+  }
+
+  /**
+   * Retrieves username by id.
+   *
+   * @param userId name of user
+   * @return userId
+   */
+  String getUsername(String userId) throws IOException {
+<span class="fc" id="L41">    return map.get(userId);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

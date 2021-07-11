@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StartScreenModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.start</a> &gt; <span class="el_source">StartScreenModel.java</span></div><h1>StartScreenModel.java</h1><pre class="source lang-java linenums">package app.screens.start;
+
+import app.ApplicationState;
+import app.IconManager;
+import client.Client;
+import client.ClientObserver;
+import client.ErrorObserver;
+import java.io.IOException;
+import java.util.List;
+import javafx.application.Platform;
+import protocol.LobbyData;
+
+/** Model for StartScreen View. */
+<span class="nc" id="L14">public class StartScreenModel implements ClientObserver, ErrorObserver {</span>
+
+  private StartScreenModelObserver observer;
+
+  void register(String name) throws IOException {
+<span class="nc bnc" id="L19" title="All 2 branches missed.">    if (ApplicationState.getInstance().getClient() == null) {</span>
+<span class="nc" id="L20">      ApplicationState.getInstance().newClient();</span>
+    }
+<span class="nc" id="L22">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L23">    subscribe();</span>
+<span class="nc" id="L24">    client.registerUser(name, IconManager.getSelectedIcon().getId());</span>
+<span class="nc" id="L25">  }</span>
+
+  void setObserver(StartScreenModelObserver observer) {
+<span class="nc" id="L28">    this.observer = observer;</span>
+<span class="nc" id="L29">  }</span>
+
+  @Override
+  public void registered(String userId) {
+<span class="nc" id="L33">    unsubscribe();</span>
+<span class="nc" id="L34">    ApplicationState.getInstance().setUserId(userId);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L36">      Platform.runLater(() -&gt; observer.registered());</span>
+    }
+<span class="nc" id="L38">  }</span>
+
+  @Override
+<span class="nc" id="L41">  public void receivedOpenLobbies(List&lt;LobbyData&gt; lobbies) {}</span>
+
+  @Override
+  public void receivedError(String message) {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L46">      Platform.runLater(() -&gt; observer.receivedError(message));</span>
+    }
+<span class="nc" id="L48">  }</span>
+
+  private void subscribe() {
+<span class="nc" id="L51">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L52">    client.subscribeErrors(this);</span>
+<span class="nc" id="L53">    client.subscribe(this);</span>
+<span class="nc" id="L54">  }</span>
+
+  private void unsubscribe() {
+<span class="nc" id="L57">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L58">    client.unsubscribeErrors(this);</span>
+<span class="nc" id="L59">    client.unsubscribe(this);</span>
+<span class="nc" id="L60">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

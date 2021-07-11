@@ -105,6 +105,7 @@ public class ResponseFactory {
   /**
    * Make race result response used to send race results to clients.
    *
+   * @param chatHistory history of all chats
    * @return {@link Response}
    */
   public static Response makeChatResponse(List<ChatMessageData> chatHistory) {

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameLobbyModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.lobby</a> &gt; <span class="el_source">GameLobbyModel.java</span></div><h1>GameLobbyModel.java</h1><pre class="source lang-java linenums">package app.screens.lobby;
+
+import app.ApplicationState;
+import client.Client;
+import client.ErrorObserver;
+import client.LobbyObserver;
+import java.util.List;
+import javafx.application.Platform;
+import protocol.ChatMessageData;
+import protocol.LobbyData;
+import protocol.RaceData;
+
+/** Model for GameLobby View. */
+public class GameLobbyModel implements LobbyObserver, ErrorObserver {
+
+  private LobbyData lobby;
+
+  private GameLobbyModelObserver observer;
+
+<span class="nc" id="L20">  public GameLobbyModel(LobbyData lobby) {</span>
+<span class="nc" id="L21">    this.lobby = lobby;</span>
+<span class="nc" id="L22">    subscribe();</span>
+<span class="nc" id="L23">  }</span>
+
+  @Override
+  public void gameStarting(RaceData race) {
+<span class="nc bnc" id="L27" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L28">      Platform.runLater(() -&gt; observer.startedRace(race));</span>
+    }
+<span class="nc" id="L30">    unsubscribe();</span>
+<span class="nc" id="L31">  }</span>
+
+  @Override
+  public void receivedLobbyUpdate(LobbyData lobby) {
+<span class="nc" id="L35">    this.lobby = lobby;</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L37">      Platform.runLater(() -&gt; observer.updatedLobby());</span>
+    }
+<span class="nc" id="L39">  }</span>
+
+  @Override
+  public void receivedChatHistory(List&lt;ChatMessageData&gt; chatHistory) {
+<span class="nc bnc" id="L43" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L44">      Platform.runLater(() -&gt; observer.receivedChatHistory(chatHistory));</span>
+    }
+<span class="nc" id="L46">  }</span>
+
+  @Override
+  public void receivedError(String message) {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L51">      Platform.runLater(() -&gt; observer.receivedError(message));</span>
+    }
+<span class="nc" id="L53">  }</span>
+
+  void setObserver(GameLobbyModelObserver observer) {
+<span class="nc" id="L56">    this.observer = observer;</span>
+<span class="nc" id="L57">  }</span>
+
+  LobbyData getLobby() {
+<span class="nc" id="L60">    return lobby;</span>
+  }
+
+  void leaveLobby() {
+<span class="nc" id="L64">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L65">    client.leaveLobby();</span>
+<span class="nc" id="L66">    unsubscribe();</span>
+<span class="nc" id="L67">  }</span>
+
+  void setReady(boolean isReady) {
+<span class="nc" id="L70">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L71">    client.setIsReady(isReady);</span>
+<span class="nc" id="L72">  }</span>
+
+  void startRace() {
+<span class="nc" id="L75">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L76">    client.startRace();</span>
+<span class="nc" id="L77">  }</span>
+
+  void requestHistory() {
+<span class="nc" id="L80">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L81">    client.requestChatHistory();</span>
+<span class="nc" id="L82">  }</span>
+
+  void sendMessage(String message) {
+<span class="nc" id="L85">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L86">    client.sendChatMessage(message);</span>
+<span class="nc" id="L87">  }</span>
+
+  private void subscribe() {
+<span class="nc" id="L90">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L91">    client.subscribeErrors(this);</span>
+<span class="nc" id="L92">    client.subscribeLobbyUpdates(this);</span>
+<span class="nc" id="L93">  }</span>
+
+  private void unsubscribe() {
+<span class="nc" id="L96">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L97">    client.unsubscribeErrors(this);</span>
+<span class="nc" id="L98">    client.unsubscribeLobbyUpdates(this);</span>
+<span class="nc" id="L99">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

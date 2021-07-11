@@ -9,7 +9,8 @@ public interface Api {
    * Call to register a new player with the given name.
    *
    * @param connectionId id of the server connection
-   * @param name id of the user
+   * @param name of user
+   * @param iconId id of icon
    */
   void registerPlayer(String connectionId, String name, String iconId);
 

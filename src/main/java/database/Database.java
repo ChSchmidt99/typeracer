@@ -17,6 +17,7 @@ public interface Database {
    *
    * @param username name of user
    * @return userId
+   * @throws IOException when there was an error storing the user
    */
   String registerUser(String username) throws IOException;
 

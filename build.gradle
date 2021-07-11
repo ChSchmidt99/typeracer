@@ -81,7 +81,7 @@ task serverJar(type: ShadowJar) {
     from sourceSets.main.output
     manifest {
         attributes(
-                'Main-Class': 'server.Main'
+                'Main-Class': 'server.ServerRunner'
         )
     }
     configurations = [project.configurations.server]
@@ -89,7 +89,7 @@ task serverJar(type: ShadowJar) {
 
 task runServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'server.Main'
+    main = 'server.ServerRunner'
 }
 
 checkstyle {
@@ -115,11 +115,6 @@ test {
     }
 }
 
-// TODO: (for students) Configure that jacocoTestReport is always run after successful tests,
-// so that test report is always up-to-date
-// Maybe even track test report and JavaDoc-HTML in Repository?
-
-// TODO: (for students) Think about configuring the JavaDoc task used for generating JavaDoc HTML
 task javaDoc(type: Javadoc) {
   source = sourceSets.main.allJava
   classpath = sourceSets.main.runtimeClasspath
@@ -130,8 +125,6 @@ jacocoTestReport {
     finalizedBy jacocoTestCoverageVerification // always check coverage after generating report
 }
 
-
-// TODO: (for students) Add limits or adjust limit to your team's Definition of Done
 jacocoTestCoverageVerification {
     violationRules {
         rule {
