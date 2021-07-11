@@ -25,13 +25,14 @@ public class CreateView extends View {
    */
   public CreateView(Stage stage) {
     super(stage, FXML_PATH);
-    lobbyName.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-      if (isNowFocused) {
-        Platform.runLater(() -> lobbyName.selectAll());
-      }
-    });
-
-    lobbyName.setFocusTraversable(false);
+    lobbyName
+        .focusedProperty()
+        .addListener(
+            (obs, wasFocused, isNowFocused) -> {
+              if (isNowFocused) {
+                Platform.runLater(() -> lobbyName.selectAll());
+              }
+            });
   }
 
   String getLobbyName() {
