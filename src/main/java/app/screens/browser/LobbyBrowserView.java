@@ -36,7 +36,6 @@ public class LobbyBrowserView extends View implements JoinHandler {
 
   @Override
   public void clickedJoin(String lobbyId) {
-    System.out.println("Got Call");
     if (onJoin != null) {
       onJoin.calledJoin(lobbyId);
     }

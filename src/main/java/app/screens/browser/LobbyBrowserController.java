@@ -40,7 +40,6 @@ public class LobbyBrowserController implements LobbyBrowserObserver {
 
   @Override
   public void joinedLobby(LobbyData lobby) {
-    System.out.println("Should join");
     new GameLobbyController(new GameLobbyModel(lobby), new GameLobbyView(view.getStage()));
     model.leftScreen();
   }
