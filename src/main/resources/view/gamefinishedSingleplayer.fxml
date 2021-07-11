@@ -42,7 +42,7 @@
                <Insets bottom="20.0" />
             </VBox.margin>
          </Label>
-         <Button fx:id="returnButton" mnemonicParsing="false" styleClass="gamebutton" text="Return to Startscreen" />
+         <Button fx:id="returnButton" mnemonicParsing="false" styleClass="gamebutton" text="Return to Createscreen" />
       </children>
    </VBox>
    <columnConstraints>

@@ -31,6 +31,7 @@ public class CreateView extends View {
       }
     });
 
+    lobbyName.setFocusTraversable(false);
   }
 
   String getLobbyName() {
