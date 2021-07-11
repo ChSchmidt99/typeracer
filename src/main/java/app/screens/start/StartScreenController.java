@@ -1,9 +1,14 @@
 package app.screens.start;
 
+import app.IconManager;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
+import app.screens.createsingleplayer.CreateSingleplayerController;
+import app.screens.createsingleplayer.CreateSingleplayerModel;
+import app.screens.createsingleplayer.CreateSingleplayerView;
 import java.io.IOException;
+import javafx.fxml.FXML;
 
 /** Handles transition functionality for startscreen. */
 public class StartScreenController implements StartScreenModelObserver {
@@ -38,7 +43,13 @@ public class StartScreenController implements StartScreenModelObserver {
   }
 
   private void bindButtons(StartScreenView view) {
-    view.getSingleplayerButton().setOnAction((actionEvent) -> clickedSingleplayer());
+    view.getSingleplayerButton().setOnAction((actionEvent) -> {
+      try {
+        clickedSingleplayer();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
     view.getMultiplayerButton().setOnAction((actionEvent) -> clickedMultiplayer());
   }
 
@@ -54,5 +65,14 @@ public class StartScreenController implements StartScreenModelObserver {
     }
   }
 
-  private void clickedSingleplayer() {}
-}
+  private void clickedSingleplayer() throws IOException {
+    if (view.getUsername().equals("")) {
+      view.displayError(USERNAME_ERROR);
+    } else {
+      CreateSingleplayerModel createSingleplayerModel = new CreateSingleplayerModel(view.getUsername(), IconManager.getSelectedIcon().getId());
+      CreateSingleplayerView createSingleplayerView = new CreateSingleplayerView(view.getStage());
+      CreateSingleplayerController createSingleplayerController = new CreateSingleplayerController(createSingleplayerModel, createSingleplayerView);
+      }
+    }
+  }
+

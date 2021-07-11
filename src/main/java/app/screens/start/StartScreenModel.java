@@ -2,6 +2,8 @@ package app.screens.start;
 
 import app.ApplicationState;
 import app.IconManager;
+import app.screens.createsingleplayer.CreateSingleplayerController;
+import app.screens.createsingleplayer.CreateSingleplayerModel;
 import client.Client;
 import client.ClientObserver;
 import client.ErrorObserver;
@@ -22,6 +24,9 @@ public class StartScreenModel implements ClientObserver, ErrorObserver {
     Client client = ApplicationState.getInstance().getClient();
     subscribe();
     client.registerUser(name, IconManager.getSelectedIcon().getId());
+  }
+
+  void registerSingleplayer(String name) throws IOException {
   }
 
   void setObserver(StartScreenModelObserver observer) {
