@@ -24,6 +24,7 @@ public class CreateView extends View {
    */
   public CreateView(Stage stage) {
     super(stage, FXML_PATH);
+    lobbyName.setFocusTraversable(false);
   }
 
   String getLobbyName() {
