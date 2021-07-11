@@ -28,6 +28,7 @@ public class TextToType {
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.CORRECT;
       counter.increase();
     } else {
+      mistakeCounter++;
       if (checkForAutocorrect(userInput, expected) == expected) {
         guessed = CorrectionStates.AUTOCORRECTED;
         counter.increase();
@@ -47,7 +48,6 @@ public class TextToType {
     if ((Character.isUpperCase(typedChar) && Character.isLowerCase(givenChar))
         || (Character.isLowerCase(typedChar) && Character.isUpperCase(givenChar))) {
       checkedCharacters[counter.getCurrentValue()] = CorrectionStates.INCORRECT;
-      mistakeCounter++;
     }
 
     boolean isUpper = false;

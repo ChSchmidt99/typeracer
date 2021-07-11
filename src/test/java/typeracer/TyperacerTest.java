@@ -1,21 +1,11 @@
 package typeracer;
 
-import java.io.IOException;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 /** Unit tests for Typeracer class. */
 class TyperacerTest {
-
-  @Test
-  void testCreate() throws IOException {
-    Typeracer tp;
-    String expectation = "Ich kann meine Stirn nicht sehen!";
-    tp = Typeracer.create();
-    String actual = tp.getState().getTypeChar().getCompleteText();
-    assertEquals(expectation, actual);
-  }
 
   @Test
   void testCheckCorrect() {

@@ -1,7 +1,7 @@
 package app.screens.browser;
 
-import app.cursom.JoinHandler;
-import app.cursom.LobbyListCell;
+import app.custom.JoinHandler;
+import app.custom.LobbyListCell;
 import app.screens.View;
 import java.util.List;
 import javafx.collections.FXCollections;
