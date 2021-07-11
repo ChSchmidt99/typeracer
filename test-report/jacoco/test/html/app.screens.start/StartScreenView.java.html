@@ -36,20 +36,24 @@ public class StartScreenView extends View {
 <span class="nc" id="L36">    return username.getText();</span>
   }
 
+  void putUsername(String name) {
+<span class="nc" id="L40">    username.setText(name);</span>
+<span class="nc" id="L41">  }</span>
+
   Button getSingleplayerButton() {
-<span class="nc" id="L40">    return singleplayerButton;</span>
+<span class="nc" id="L44">    return singleplayerButton;</span>
   }
 
   Button getMultiplayerButton() {
-<span class="nc" id="L44">    return multiplayerButton;</span>
+<span class="nc" id="L48">    return multiplayerButton;</span>
   }
 
   private void addIconPicker() {
-<span class="nc" id="L48">    IconPicker iconPicker = new IconPicker(4);</span>
-<span class="nc" id="L49">    iconPicker.setAlignment(Pos.CENTER);</span>
-<span class="nc" id="L50">    iconPicker.setHgap(40);</span>
-<span class="nc" id="L51">    iconPicker.setVgap(20);</span>
-<span class="nc" id="L52">    baseGridPane.add(iconPicker, 1, 1);</span>
-<span class="nc" id="L53">  }</span>
+<span class="nc" id="L52">    IconPicker iconPicker = new IconPicker(4);</span>
+<span class="nc" id="L53">    iconPicker.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L54">    iconPicker.setHgap(40);</span>
+<span class="nc" id="L55">    iconPicker.setVgap(20);</span>
+<span class="nc" id="L56">    baseGridPane.add(iconPicker, 1, 1);</span>
+<span class="nc" id="L57">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

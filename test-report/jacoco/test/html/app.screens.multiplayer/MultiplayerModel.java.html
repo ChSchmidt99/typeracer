@@ -30,7 +30,7 @@ public class MultiplayerModel
 
   private static final long FALL_BACK_START_DELAY = 3;
 <span class="nc" id="L32">  private static final FinishedMessage FINISHED =</span>
-      new FinishedMessage(&quot;FINISHED&quot;, &quot;waiting for race end&quot;);
+      new FinishedMessage(&quot;FINISHED&quot;, &quot;waiting for race to end&quot;);
 <span class="nc" id="L34">  private static final FinishedMessage NOT_FINISHED = new FinishedMessage(&quot;HURRY!&quot;, &quot;&quot;);</span>
 
   private MultiplayerModelObserver observer;
@@ -169,56 +169,63 @@ public class MultiplayerModel
 
   private void sendProgress() {
 <span class="nc" id="L171">    Client client = ApplicationState.getInstance().getClient();</span>
-<span class="nc" id="L172">    System.out.println(typeracer.getState().getTypeChar().getMistakeCounter());</span>
-<span class="nc" id="L173">    client.sendProgressUpdate(</span>
+<span class="nc" id="L172">    client.sendProgressUpdate(</span>
         new ProgressSnapshot(
             raceStart,
-<span class="nc" id="L176">            Timestamp.currentTimestamp(),</span>
-<span class="nc" id="L177">            typeracer.getState().getTypeChar().getCounter(),</span>
-<span class="nc" id="L178">            typeracer.getState().getTypeChar().getMistakeCounter()));</span>
-<span class="nc" id="L179">  }</span>
+<span class="nc" id="L175">            Timestamp.currentTimestamp(),</span>
+<span class="nc" id="L176">            typeracer.getState().getTypeChar().getCounter(),</span>
+<span class="nc" id="L177">            typeracer.getState().getTypeChar().getMistakeCounter()));</span>
+<span class="nc" id="L178">  }</span>
 
   private void startPolling() {
-<span class="nc" id="L182">    scheduler.scheduleAtFixedRate(this::tick, 0, POLLING_INTERVAL, TimeUnit.SECONDS);</span>
-<span class="nc" id="L183">  }</span>
+<span class="nc" id="L181">    scheduler.scheduleAtFixedRate(this::tick, 0, POLLING_INTERVAL, TimeUnit.SECONDS);</span>
+<span class="nc" id="L182">  }</span>
 
   private void tick() {
-<span class="nc bnc" id="L186" title="All 3 branches missed.">    switch (state) {</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">    switch (state) {</span>
       case PRE_START:
-<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (observer != null) {</span>
-<span class="nc" id="L189">          long countDown = this.raceStart - Timestamp.currentTimestamp();</span>
-<span class="nc" id="L190">          Platform.runLater(() -&gt; observer.updatedCountDown(countDown));</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">          if (countDown == 0) {</span>
-<span class="nc" id="L192">            raceStart();</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L188">          long countDown = this.raceStart - Timestamp.currentTimestamp();</span>
+<span class="nc" id="L189">          Platform.runLater(() -&gt; observer.updatedCountDown(countDown));</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">          if (countDown == 0) {</span>
+<span class="nc" id="L191">            raceStart();</span>
           }
-<span class="nc" id="L194">        }</span>
+<span class="nc" id="L193">        }</span>
         break;
       case RACING:
-<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (observer != null) {</span>
-<span class="nc" id="L198">          Platform.runLater(() -&gt; observer.changedFinishedMessage(finishedMessage));</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L197">          Platform.runLater(() -&gt; observer.changedFinishedMessage(finishedMessage));</span>
         }
-<span class="nc" id="L200">        long time = Timestamp.currentTimestamp() - raceStart;</span>
-<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (observer != null) {</span>
-<span class="nc" id="L202">          Platform.runLater(() -&gt; observer.updatedTimer(time));</span>
+<span class="nc" id="L199">        long time = Timestamp.currentTimestamp() - raceStart;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L201">          Platform.runLater(() -&gt; observer.updatedTimer(time));</span>
         }
-<span class="nc" id="L204">        sendProgress();</span>
-<span class="nc" id="L205">        break;</span>
+<span class="nc" id="L203">        sendProgress();</span>
+<span class="nc" id="L204">        break;</span>
+      case CHECKERED_FLAG:
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L207">          Platform.runLater(() -&gt; observer.changedFinishedMessage(finishedMessage));</span>
+        }
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        if (typeracer.getState().getCurrentGamePhase() == GamePhase.RUNNING) {</span>
+<span class="nc" id="L210">          sendProgress();</span>
+        }
+        break;
       default:
     }
-<span class="nc" id="L208">  }</span>
-
-  private void subscribe() {
-<span class="nc" id="L211">    Client client = ApplicationState.getInstance().getClient();</span>
-<span class="nc" id="L212">    client.subscribeErrors(this);</span>
-<span class="nc" id="L213">    client.subscribeResults(this);</span>
-<span class="nc" id="L214">    client.subscribeRaceUpdates(this);</span>
 <span class="nc" id="L215">  }</span>
 
-  private void unsubscribe() {
+  private void subscribe() {
 <span class="nc" id="L218">    Client client = ApplicationState.getInstance().getClient();</span>
-<span class="nc" id="L219">    client.unsubscribeErrors(this);</span>
-<span class="nc" id="L220">    client.unsubscribeResults(this);</span>
-<span class="nc" id="L221">    client.unsubscribeRaceUpdates(this);</span>
+<span class="nc" id="L219">    client.subscribeErrors(this);</span>
+<span class="nc" id="L220">    client.subscribeResults(this);</span>
+<span class="nc" id="L221">    client.subscribeRaceUpdates(this);</span>
 <span class="nc" id="L222">  }</span>
+
+  private void unsubscribe() {
+<span class="nc" id="L225">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L226">    client.unsubscribeErrors(this);</span>
+<span class="nc" id="L227">    client.unsubscribeResults(this);</span>
+<span class="nc" id="L228">    client.unsubscribeRaceUpdates(this);</span>
+<span class="nc" id="L229">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

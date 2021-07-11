@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Typeracer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">typeracer</a> &gt; <span class="el_source">Typeracer.java</span></div><h1>Typeracer.java</h1><pre class="source lang-java linenums">package typeracer;
 
-import database.TextDatabase;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.IOException;
-
 /** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
-public class Typeracer {
+public class Typeracer implements TyperacerInterface {
 
   private final GameState state;
-<span class="fc" id="L12">  private final PropertyChangeSupport support = new PropertyChangeSupport(this);</span>
 
-<span class="fc" id="L14">  public Typeracer(final String text) {</span>
-<span class="fc" id="L15">    state = new GameState(text);</span>
-<span class="fc" id="L16">  }</span>
-
-  public void addPropertyChangeListener(final PropertyChangeListener changeListener) {
-<span class="nc" id="L19">    support.addPropertyChangeListener(changeListener);</span>
-<span class="nc" id="L20">  }</span>
-
-  public static Typeracer create() throws IOException {
-<span class="nc" id="L23">    String randomText = new TextDatabase().getPhrase();</span>
-<span class="nc" id="L24">    return new Typeracer(randomText);</span>
-  }
-
-  private void notifyListeners() {
-<span class="fc" id="L28">    support.firePropertyChange(&quot;GameState&quot;, null, this.getState());</span>
-<span class="fc" id="L29">  }</span>
+<span class="fc" id="L8">  public Typeracer(final String text) {</span>
+<span class="fc" id="L9">    state = new GameState(text);</span>
+<span class="fc" id="L10">  }</span>
 
   public GameState getState() {
-<span class="fc" id="L32">    return state;</span>
+<span class="fc" id="L13">    return state;</span>
   }
 
   /**
-   * Check the given character. This method can only be called on an active game. Otherwise, an
+   * Checks the given character. This method can only be called on an active game. Otherwise, an
    * IllegalStateException is thrown.
    *
    * @param guessedCharacter character to guess
@@ -41,17 +22,26 @@ public class Typeracer {
    * @throws IllegalStateException – if the current Typeracer game is not running
    */
   public CheckResult check(char guessedCharacter) throws IllegalStateException {
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">    if (state.getCurrentGamePhase() != GamePhase.RUNNING) {</span>
-<span class="nc" id="L45">      throw new IllegalStateException(&quot;Game not running.&quot;);</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">    if (state.getCurrentGamePhase() != GamePhase.RUNNING) {</span>
+<span class="nc" id="L26">      throw new IllegalStateException(&quot;Game not running.&quot;);</span>
     }
 
-<span class="fc" id="L48">    CheckResult result = state.getTypeChar().checkChar(guessedCharacter);</span>
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">    if (state.getTypeChar().checkFinish()) {</span>
-<span class="nc" id="L50">      state.endGame();</span>
+<span class="fc" id="L29">    CheckResult result = state.getTypeChar().checkChar(guessedCharacter);</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">    if (state.getTypeChar().checkFinish()) {</span>
+<span class="nc" id="L31">      state.endGame();</span>
     }
 
-<span class="fc" id="L53">    notifyListeners();</span>
-<span class="fc" id="L54">    return result;</span>
+<span class="fc" id="L34">    return result;</span>
   }
+
+  /**
+   * Forfeit the current game. This method can only be called on an active game. Otherwise, an
+   * IllegalStateException is thrown.
+   *
+   * @throws IllegalStateException – if the current Typeracer game is not running
+   */
+  public void forfeit() {
+<span class="fc" id="L44">    state.endGame();</span>
+<span class="fc" id="L45">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

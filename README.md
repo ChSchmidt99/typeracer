@@ -37,7 +37,9 @@ To run the application during development without any checks, run `./gradlew run
 
 To start the server, run `./gradlew runServer` .
 
-To run the provided jar releases use `java -jar server.jar` or `java -jar client.jar` 
+To run the provided jar releases use `java -jar server.jar` or `java -jar client_<OS>.jar`.
+`client_linux.jar` was tested on Arch Linux.
+`client_macOS.jar` was tested on macOS Catalina 10.15.7.
 
 ## Code Formatting 
 
