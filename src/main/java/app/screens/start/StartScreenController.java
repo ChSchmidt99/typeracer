@@ -3,8 +3,6 @@ package app.screens.start;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
-import javafx.application.Platform;
-
 import java.io.IOException;
 
 /** Handles transition functionality for startscreen. */
