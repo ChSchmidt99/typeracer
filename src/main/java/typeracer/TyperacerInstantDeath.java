@@ -1,14 +1,10 @@
 package typeracer;
 
-import database.TextDatabase;
-import java.io.IOException;
-
-/** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
-public class Typeracer implements TyperacerInterface {
-
+/** Represents a Typeracer game mode which ends on the first mistake. */
+public class TyperacerInstantDeath implements TyperacerInterface {
   private final GameState state;
 
-  public Typeracer(final String text) {
+  TyperacerInstantDeath(final String text) {
     state = new GameState(text);
   }
 
@@ -17,7 +13,7 @@ public class Typeracer implements TyperacerInterface {
   }
 
   /**
-   * Checks the given character. This method can only be called on an active game. Otherwise, an
+   * Check the given character. This method can only be called on an active game. Otherwise, an
    * IllegalStateException is thrown.
    *
    * @param guessedCharacter character to guess
@@ -31,6 +27,9 @@ public class Typeracer implements TyperacerInterface {
 
     CheckResult result = state.getTypeChar().checkChar(guessedCharacter);
     if (state.getTypeChar().checkFinish()) {
+      state.endGame();
+    }
+    if (result.getState() == CorrectionStates.INCORRECT) {
       state.endGame();
     }
 

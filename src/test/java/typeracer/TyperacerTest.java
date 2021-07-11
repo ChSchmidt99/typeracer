@@ -1,5 +1,6 @@
 package typeracer;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -10,32 +11,41 @@ class TyperacerTest {
   @Test
   void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('t').getState();
-    CorrectionStates expectation = CorrectionStates.CORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('t');
+    CheckResult expectation = new CheckResult(CorrectionStates.CORRECT, 't', 't', 0);
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckAutocorrected() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('z').getState();
-    CorrectionStates expectation = CorrectionStates.AUTOCORRECTED;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('z');
+    CheckResult expectation = new CheckResult(CorrectionStates.AUTOCORRECTED, 'z', 't', 0);
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckIncorrect() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('x').getState();
-    CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('x');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'x', 't', 0);
+    assertEquals(actual.getState(), expectation.getState());
   }
 
   @Test
   void testCheckUpperCaseAndLowerCase() {
     Typeracer tp = new Typeracer("test");
-    CorrectionStates actual = tp.check('Z').getState();
-    CorrectionStates expectation = CorrectionStates.INCORRECT;
-    assertEquals(actual, expectation);
+    CheckResult actual = tp.check('Z');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'Z', 't', 0);
+    assertEquals(actual.getState(), expectation.getState());
+  }
+
+  @Test
+  void testForfeit() {
+    Typeracer tp = new Typeracer("");
+    GamePhase expectation = GamePhase.FINISHED;
+    tp.forfeit();
+    GamePhase actual = tp.getState().getCurrentGamePhase();
+    assertEquals(expectation, actual);
   }
 }
