@@ -1,11 +1,12 @@
-package model;
+package typeracer;
 
 /** Used as result of check char. Contains all information about the check. */
 public class CheckResult {
 
-  public CorrectionStates state;
-  public char expected;
-  public char typed;
+  private final CorrectionStates state;
+  private final char expected;
+  private final char typed;
+  private final int index;
 
   /**
    * Create Result.
@@ -14,14 +15,11 @@ public class CheckResult {
    * @param typed typed character
    * @param expected expected character
    */
-  CheckResult(CorrectionStates state, char typed, char expected) {
+  CheckResult(CorrectionStates state, char typed, char expected, int index) {
     this.state = state;
     this.typed = typed;
     this.expected = expected;
-  }
-
-  public CorrectionStates getState() {
-    return state;
+    this.index = index;
   }
 
   public char getExpected() {
@@ -30,5 +28,13 @@ public class CheckResult {
 
   public char getTyped() {
     return typed;
+  }
+
+  public CorrectionStates getState() {
+    return state;
+  }
+
+  public int getTextIndex() {
+    return index;
   }
 }

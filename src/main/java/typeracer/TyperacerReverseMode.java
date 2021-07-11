@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Represents a reverse Typeracer game mode. */
 public class TyperacerReverseMode implements TyperacerInterface {

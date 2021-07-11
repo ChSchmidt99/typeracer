@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +12,7 @@ class TyperacerTest {
   void testCheckCorrect() {
     Typeracer tp = new Typeracer("test");
     CheckResult actual = tp.check('t');
-    CheckResult expectation = new CheckResult(CorrectionStates.CORRECT, 't', 't');
+    CheckResult expectation = new CheckResult(CorrectionStates.CORRECT, 't', 't', 0);
     assertEquals(actual.getState(), expectation.getState());
   }
 
@@ -20,7 +20,7 @@ class TyperacerTest {
   void testCheckAutocorrected() {
     Typeracer tp = new Typeracer("test");
     CheckResult actual = tp.check('z');
-    CheckResult expectation = new CheckResult(CorrectionStates.AUTOCORRECTED, 'z', 't');
+    CheckResult expectation = new CheckResult(CorrectionStates.AUTOCORRECTED, 'z', 't', 0);
     assertEquals(actual.getState(), expectation.getState());
   }
 
@@ -28,7 +28,7 @@ class TyperacerTest {
   void testCheckIncorrect() {
     Typeracer tp = new Typeracer("test");
     CheckResult actual = tp.check('x');
-    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'x', 't');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'x', 't', 0);
     assertEquals(actual.getState(), expectation.getState());
   }
 
@@ -36,7 +36,7 @@ class TyperacerTest {
   void testCheckUpperCaseAndLowerCase() {
     Typeracer tp = new Typeracer("test");
     CheckResult actual = tp.check('Z');
-    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'Z', 't');
+    CheckResult expectation = new CheckResult(CorrectionStates.INCORRECT, 'Z', 't', 0);
     assertEquals(actual.getState(), expectation.getState());
   }
 

@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
 public interface TyperacerInterface {

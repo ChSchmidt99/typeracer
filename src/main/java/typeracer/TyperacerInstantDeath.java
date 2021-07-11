@@ -1,4 +1,4 @@
-package model;
+package typeracer;
 
 /** Represents a Typeracer game mode which ends on the first mistake. */
 public class TyperacerInstantDeath implements TyperacerInterface {
