@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxWidth="90.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Finished" textAlignment="CENTER" wrapText="true" />
    <VBox alignment="CENTER" maxWidth="900.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <children>
@@ -21,13 +21,18 @@
                   <graphic>
                      <Label fx:id="firstPlace" contentDisplay="TOP" styleClass="first">
                         <graphic>
-                           <ImageView fx:id="firstPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           <ImageView fx:id="firstPlaceImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                         </graphic>
                         <padding>
                            <Insets top="10.0" />
                         </padding>
                      </Label>
                   </graphic>
+               </Label>
+               <Label fx:id="statsFirst" alignment="CENTER" contentDisplay="CENTER" styleClass="first" text="Label">
+                  <VBox.margin>
+                     <Insets top="5.0" />
+                  </VBox.margin>
                </Label>
             </children>
             <styleClass>
@@ -45,13 +50,18 @@
                               <graphic>
                                  <Label fx:id="secondPlace" contentDisplay="TOP" styleClass="second">
                                     <graphic>
-                                       <ImageView fx:id="secondPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                       <ImageView fx:id="secondPlaceImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                                     </graphic>
                                     <padding>
                                        <Insets left="20.0" />
                                     </padding>
                                  </Label>
                               </graphic>
+                           </Label>
+                           <Label fx:id="statsSecond" alignment="CENTER" contentDisplay="CENTER" styleClass="second" text="Label">
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
                            </Label>
                         </children>
                         <styleClass>
@@ -65,13 +75,18 @@
                               <graphic>
                                  <Label fx:id="thirdPlace" alignment="CENTER_RIGHT" contentDisplay="TOP" styleClass="third">
                                     <graphic>
-                                       <ImageView fx:id="thirdPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                                       <ImageView fx:id="thirdPlaceImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                                     </graphic>
                                     <padding>
                                        <Insets right="20.0" />
                                     </padding>
                                  </Label>
                               </graphic>
+                           </Label>
+                           <Label fx:id="statsThird" alignment="CENTER" contentDisplay="CENTER" styleClass="third" text="Label">
+                              <VBox.margin>
+                                 <Insets top="5.0" />
+                              </VBox.margin>
                            </Label>
                         </children>
                         <styleClass>

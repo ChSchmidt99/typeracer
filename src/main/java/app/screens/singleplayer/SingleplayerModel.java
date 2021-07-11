@@ -34,6 +34,7 @@ public class SingleplayerModel implements Closeable {
   private State state;
   private final ScheduledExecutorService scheduler;
   private app.screens.singleplayer.FinishedMessage finishedMessage;
+  private int wpm;
 
   String username;
   String iconId;
@@ -148,6 +149,7 @@ public class SingleplayerModel implements Closeable {
     long duration = Timestamp.currentTimestamp() - raceStart;
     int typedCharCounter = typeracer.getState().getTypeChar().getCounter();
     int wpm = wordsPerMinute(typedCharCounter, duration);
+    this.wpm = wpm;
     int textLength = typeracer.getState().getTypeChar().getCompleteText().length();
     float progress = (float) typedCharCounter / textLength;
     this.update = new PlayerUpdate(username, wpm, progress, false, duration);
@@ -161,5 +163,16 @@ public class SingleplayerModel implements Closeable {
 
   long getDuration() {
     return Timestamp.currentTimestamp() - raceStart;
+  }
+
+  int getWpm() {
+    return this.wpm;
+  }
+
+  double getAccuracy() {
+    return (1.0
+            - (double) typeracer.getState().getTypeChar().getMistakeCounter()
+                / (double) typeracer.getState().getTypeChar().getCompleteText().length())
+        * 100;
   }
 }

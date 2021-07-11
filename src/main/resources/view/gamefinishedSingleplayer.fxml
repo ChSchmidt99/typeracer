@@ -22,13 +22,18 @@
                   <graphic>
                      <Label fx:id="firstPlace" contentDisplay="TOP" styleClass="first">
                         <graphic>
-                           <ImageView fx:id="firstPlaceImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           <ImageView fx:id="firstPlaceImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                         </graphic>
                         <padding>
                            <Insets top="10.0" />
                         </padding>
                      </Label>
                   </graphic>
+               </Label>
+               <Label fx:id="stats" styleClass="first" text="Label">
+                  <VBox.margin>
+                     <Insets top="5.0" />
+                  </VBox.margin>
                </Label>
             </children>
          </VBox>

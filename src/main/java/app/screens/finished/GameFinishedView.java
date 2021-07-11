@@ -34,6 +34,12 @@ public class GameFinishedView extends View {
 
   @FXML private Button returnButton;
 
+  @FXML private Label statsFirst;
+
+  @FXML private Label statsSecond;
+
+  @FXML private Label statsThird;
+
   /**
    * Create new game finished view.
    *
@@ -49,25 +55,28 @@ public class GameFinishedView extends View {
 
   void updateView(RaceResult result) throws FileNotFoundException {
     duration.setText("Time: " + result.duration + " s");
-    String resultText = "%s (WPM: %d Acc: %.2f%%)";
+    String resultText = "WPM: %d, Acc: %.2f%%";
     List<String> outputs = new ArrayList<>();
     for (UserResult user : result.classification) {
       Double acc = (1.0 - (double) user.mistakes / (double) result.text.length()) * 100;
-      outputs.add(String.format(resultText, user.userData.name, user.wpm, acc));
+      outputs.add(String.format(resultText, user.wpm, acc));
     }
 
     if (outputs.size() >= 1) {
-      firstPlace.setText(outputs.get(0));
+      firstPlace.setText(result.classification.get(0).userData.name);
+      statsFirst.setText(outputs.get(0));
       firstPlaceImage.setImage(
           IconManager.iconForId(result.classification.get(0).userData.iconId).getImage());
     }
     if (outputs.size() >= 2) {
-      secondPlace.setText(outputs.get(1));
+      secondPlace.setText(result.classification.get(1).userData.name);
+      statsSecond.setText(outputs.get(1));
       secondPlaceImage.setImage(
           IconManager.iconForId(result.classification.get(1).userData.iconId).getImage());
     }
     if (outputs.size() >= 3) {
-      thirdPlace.setText(outputs.get(2));
+      thirdPlace.setText(result.classification.get(2).userData.name);
+      statsThird.setText(outputs.get(2));
       thirdPlaceImage.setImage(
           IconManager.iconForId(result.classification.get(2).userData.iconId).getImage());
     }

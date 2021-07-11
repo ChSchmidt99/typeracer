@@ -23,7 +23,12 @@ public class GameFinishedControllerSingleplayer implements GameFinishedModelObse
     this.model = model;
     bindings(view);
     try {
-      this.view.updateView(model.getUsername(), model.getIconId(), model.getDuration());
+      this.view.updateView(
+          model.getUsername(),
+          model.getIconId(),
+          model.getDuration(),
+          model.getWpm(),
+          model.getAcc());
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }

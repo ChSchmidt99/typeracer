@@ -22,6 +22,8 @@ public class GameFinishedViewSingleplayer extends View {
 
   @FXML private Button returnButton;
 
+  @FXML private Label stats;
+
   /**
    * Create new game finished view.
    *
@@ -35,8 +37,12 @@ public class GameFinishedViewSingleplayer extends View {
     return returnButton;
   }
 
-  void updateView(String username, String iconId, long time) throws FileNotFoundException {
+  void updateView(String username, String iconId, long time, int wpm, double acc)
+      throws FileNotFoundException {
     duration.setText("Time: " + time + " s");
+    String result = "WPM: %d, Acc: %.2f%%";
+    String resultFormatted = String.format(result, wpm, acc);
+    stats.setText(resultFormatted);
     firstPlace.setText(username);
     firstPlaceImage.setImage(IconManager.iconForId(iconId).getImage());
   }
