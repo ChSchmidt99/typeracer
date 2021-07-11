@@ -3,9 +3,9 @@ package app.screens.singleplayer;
 import app.screens.finished.GameFinishedController;
 import app.screens.finished.GameFinishedModel;
 import app.screens.finished.GameFinishedView;
-import app.screens.finishedSingleplayer.GameFinishedControllerSingleplayer;
-import app.screens.finishedSingleplayer.GameFinishedModelSingleplayer;
-import app.screens.finishedSingleplayer.GameFinishedViewSingleplayer;
+import app.screens.finishedsingleplayer.GameFinishedControllerSingleplayer;
+import app.screens.finishedsingleplayer.GameFinishedModelSingleplayer;
+import app.screens.finishedsingleplayer.GameFinishedViewSingleplayer;
 import app.screens.start.StartScreenController;
 import app.screens.start.StartScreenModel;
 import app.screens.start.StartScreenView;
@@ -13,11 +13,18 @@ import javafx.scene.input.KeyEvent;
 import protocol.RaceResult;
 import typeracer.CheckResult;
 
+/** Controller for Singleplayer screen. */
 public class SingleplayerController implements SingleplayerModelObserver {
 
   private final SingleplayerModel model;
   private final SingleplayerView view;
 
+  /**
+   * Create new Singleplayer Cotnroller and show view.
+   *
+   * @param model for data
+   * @param view for representation
+   */
   public SingleplayerController(SingleplayerModel model, SingleplayerView view) {
     this.view = view;
     this.model = model;

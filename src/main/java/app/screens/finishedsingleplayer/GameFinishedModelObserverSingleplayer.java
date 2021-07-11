@@ -1,4 +1,4 @@
-package app.screens.finishedSingleplayer;
+package app.screens.finishedsingleplayer;
 
 /** Observer for GameFinishedModel. */
 interface GameFinishedModelObserverSingleplayer {

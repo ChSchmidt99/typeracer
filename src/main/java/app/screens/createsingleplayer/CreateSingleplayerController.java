@@ -1,4 +1,4 @@
-package app.screens.createSingleplayer;
+package app.screens.createsingleplayer;
 
 import app.IconManager;
 import app.screens.singleplayer.SingleplayerController;
@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import protocol.RaceDataSingleplayer;
 
+/** Controller for Singleplayer Create screen. */
 public class CreateSingleplayerController {
 
   private final CreateSingleplayerModel model;

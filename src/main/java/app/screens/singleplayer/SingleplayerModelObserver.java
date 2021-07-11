@@ -2,6 +2,7 @@ package app.screens.singleplayer;
 
 import protocol.RaceResult;
 
+/** Observer for singleplayer model. */
 public interface SingleplayerModelObserver {
 
   void raceStarted();

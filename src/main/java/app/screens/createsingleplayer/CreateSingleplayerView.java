@@ -1,4 +1,4 @@
-package app.screens.createSingleplayer;
+package app.screens.createsingleplayer;
 
 import app.screens.View;
 import javafx.fxml.FXML;
@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+/** View for Singleplayer create screen. */
 public class CreateSingleplayerView extends View {
 
   private static final String FXML_PATH = "view/createsingleplayer.fxml";

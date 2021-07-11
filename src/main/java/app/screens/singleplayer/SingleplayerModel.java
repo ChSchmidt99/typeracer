@@ -14,6 +14,7 @@ import typeracer.GamePhase;
 import typeracer.Typeracer;
 import util.Timestamp;
 
+/** Model for singleplayer screen. */
 public class SingleplayerModel implements Closeable {
 
   /** Update interval in sec. */
@@ -45,6 +46,11 @@ public class SingleplayerModel implements Closeable {
     CHECKERED_FLAG
   }
 
+  /**
+   * Create new Singleplayer model.
+   *
+   * @param raceData data for the race
+   */
   public SingleplayerModel(RaceDataSingleplayer raceData) {
     this.username = raceData.name;
     this.iconId = raceData.iconId;

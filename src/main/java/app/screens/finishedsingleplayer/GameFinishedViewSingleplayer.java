@@ -1,4 +1,4 @@
-package app.screens.finishedSingleplayer;
+package app.screens.finishedsingleplayer;
 
 import app.IconManager;
 import app.screens.View;

@@ -21,6 +21,7 @@ import protocol.PlayerUpdate;
 import protocol.RaceDataSingleplayer;
 import typeracer.CheckResult;
 
+/** View for Singleplayer screen. */
 public class SingleplayerView extends View {
 
   private static final String FXML_PATH = "view/singleplayer.fxml";
