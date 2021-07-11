@@ -1,5 +1,6 @@
 package app.screens.create;
 
+import app.ApplicationState;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
@@ -27,6 +28,8 @@ public class CreateController implements CreateModelObserver {
     bindButtons(view);
     this.model = model;
     model.setObserver(this);
+    String name = ApplicationState.getInstance().getName();
+    view.putLobbyName(name + "'s race");
     view.show();
   }
 

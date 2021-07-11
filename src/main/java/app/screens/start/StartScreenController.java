@@ -1,5 +1,6 @@
 package app.screens.start;
 
+import app.ApplicationState;
 import app.IconManager;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
@@ -28,6 +29,8 @@ public class StartScreenController implements StartScreenModelObserver {
     this.model = model;
     bindButtons(view);
     model.setObserver(this);
+    String name = ApplicationState.getInstance().getName();
+    view.putUsername(name);
     this.view.show();
   }
 
@@ -55,9 +58,11 @@ public class StartScreenController implements StartScreenModelObserver {
   }
 
   private void clickedMultiplayer() {
-    if (view.getUsername().equals("")) {
+    String name = view.getUsername();
+    if (name.equals("")) {
       view.displayError(USERNAME_ERROR);
     } else {
+      ApplicationState.getInstance().setName(name);
       try {
         model.register(view.getUsername());
       } catch (IOException e) {
@@ -67,11 +72,13 @@ public class StartScreenController implements StartScreenModelObserver {
   }
 
   private void clickedSingleplayer() throws IOException {
-    if (view.getUsername().equals("")) {
+    String name = view.getUsername();
+    if (name.equals("")) {
       view.displayError(USERNAME_ERROR);
     } else {
+      ApplicationState.getInstance().setName(name);
       CreateSingleplayerModel model =
-          new CreateSingleplayerModel(view.getUsername(), IconManager.getSelectedIcon().getId());
+          new CreateSingleplayerModel(name, IconManager.getSelectedIcon().getId());
       CreateSingleplayerView view = new CreateSingleplayerView(this.view.getStage());
       new CreateSingleplayerController(model, view);
     }

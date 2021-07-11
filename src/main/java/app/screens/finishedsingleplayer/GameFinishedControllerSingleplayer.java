@@ -1,8 +1,16 @@
 package app.screens.finishedsingleplayer;
 
+import app.ApplicationState;
+import app.Icon;
+import app.IconManager;
+import app.screens.createsingleplayer.CreateSingleplayerController;
+import app.screens.createsingleplayer.CreateSingleplayerModel;
+import app.screens.createsingleplayer.CreateSingleplayerView;
 import app.screens.start.StartScreenController;
 import app.screens.start.StartScreenModel;
 import app.screens.start.StartScreenView;
+import javafx.scene.input.KeyEvent;
+
 import java.io.FileNotFoundException;
 
 /** Controller for game finished screen. */
@@ -53,6 +61,9 @@ public class GameFinishedControllerSingleplayer implements GameFinishedModelObse
   }
 
   private void clickedReturn() throws FileNotFoundException {
-    new StartScreenController(new StartScreenModel(), new StartScreenView(view.getStage()));
+    String name = ApplicationState.getInstance().getName();
+    Icon icon = IconManager.getSelectedIcon();
+    new CreateSingleplayerController(new CreateSingleplayerModel(name, icon.getId()),
+            new CreateSingleplayerView(view.getStage()));
   }
 }

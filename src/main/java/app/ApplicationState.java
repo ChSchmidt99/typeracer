@@ -16,9 +16,11 @@ public class ApplicationState {
 
   private String userId;
   private Client client;
+  private String name;
   private final List<Closeable> closeables;
 
   private ApplicationState() {
+    name = "";
     closeables = new ArrayList<>();
   }
 
@@ -48,6 +50,14 @@ public class ApplicationState {
 
   public void removeCloseable(Closeable closeable) {
     closeables.remove(closeable);
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 
   /** Close all closeables. */

@@ -78,10 +78,6 @@ public class SingleplayerView extends View {
     countdownSubtitle.setText(text);
   }
 
-  void setCountdownSubtitleVisible(boolean isVisible) {
-    countdownSubtitle.setVisible(isVisible);
-  }
-
   void updatedRaceState(PlayerUpdate update) {
     trackUpdate(update);
     wpmUpdate(update);

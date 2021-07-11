@@ -1,6 +1,7 @@
 package app.screens.create;
 
 import app.screens.View;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -24,10 +25,20 @@ public class CreateView extends View {
    */
   public CreateView(Stage stage) {
     super(stage, FXML_PATH);
+    lobbyName.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+      if (isNowFocused) {
+        Platform.runLater(() -> lobbyName.selectAll());
+      }
+    });
+
   }
 
   String getLobbyName() {
     return lobbyName.getText();
+  }
+
+  void putLobbyName(String name) {
+    lobbyName.setText(name);
   }
 
   Button getBackButton() {
