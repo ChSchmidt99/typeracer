@@ -1,15 +1,15 @@
-package typeracer;
+package model;
 
-import database.TextDatabase;
-import java.io.IOException;
-
-/** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
-public class Typeracer implements TyperacerInterface {
-
+/** Represents a reverse Typeracer game mode. */
+public class TyperacerReverseMode implements TyperacerInterface {
   private final GameState state;
 
-  public Typeracer(final String text) {
-    state = new GameState(text);
+  TyperacerReverseMode(final String text) {
+
+    StringBuilder reversedText = new StringBuilder();
+    reversedText.append(text);
+    reversedText.reverse();
+    state = new GameState(reversedText.toString());
   }
 
   public GameState getState() {
@@ -17,7 +17,7 @@ public class Typeracer implements TyperacerInterface {
   }
 
   /**
-   * Checks the given character. This method can only be called on an active game. Otherwise, an
+   * Check the given character. This method can only be called on an active game. Otherwise, an
    * IllegalStateException is thrown.
    *
    * @param guessedCharacter character to guess
