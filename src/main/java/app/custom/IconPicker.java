@@ -1,4 +1,4 @@
-package app.cursom;
+package app.custom;
 
 import app.Icon;
 import app.IconManager;

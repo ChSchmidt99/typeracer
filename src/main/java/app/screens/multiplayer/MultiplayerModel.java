@@ -169,6 +169,7 @@ public class MultiplayerModel
 
   private void sendProgress() {
     Client client = ApplicationState.getInstance().getClient();
+    System.out.println(typeracer.getState().getTypeChar().getMistakeCounter());
     client.sendProgressUpdate(
         new ProgressSnapshot(
             raceStart,

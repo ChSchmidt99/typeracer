@@ -1,7 +1,9 @@
 package typeracer;
 
+import database.TextDatabase;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 
 /** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
 public class Typeracer {
@@ -17,8 +19,8 @@ public class Typeracer {
     support.addPropertyChangeListener(changeListener);
   }
 
-  public static Typeracer create() {
-    String randomText = "new WordDatabase().getWord()";
+  public static Typeracer create() throws IOException {
+    String randomText = new TextDatabase().getPhrase();
     return new Typeracer(randomText);
   }
 
