@@ -4,9 +4,9 @@ import app.IconManager;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
-import app.screens.createSingleplayer.CreateSingleplayerController;
-import app.screens.createSingleplayer.CreateSingleplayerModel;
-import app.screens.createSingleplayer.CreateSingleplayerView;
+import app.screens.createsingleplayer.CreateSingleplayerController;
+import app.screens.createsingleplayer.CreateSingleplayerModel;
+import app.screens.createsingleplayer.CreateSingleplayerView;
 import java.io.IOException;
 
 /** Handles transition functionality for startscreen. */
@@ -70,11 +70,10 @@ public class StartScreenController implements StartScreenModelObserver {
     if (view.getUsername().equals("")) {
       view.displayError(USERNAME_ERROR);
     } else {
-      CreateSingleplayerModel createSingleplayerModel =
+      CreateSingleplayerModel model =
           new CreateSingleplayerModel(view.getUsername(), IconManager.getSelectedIcon().getId());
-      CreateSingleplayerView createSingleplayerView = new CreateSingleplayerView(view.getStage());
-      CreateSingleplayerController createSingleplayerController =
-          new CreateSingleplayerController(createSingleplayerModel, createSingleplayerView);
+      CreateSingleplayerView view = new CreateSingleplayerView(this.view.getStage());
+      new CreateSingleplayerController(model, view);
     }
   }
 }

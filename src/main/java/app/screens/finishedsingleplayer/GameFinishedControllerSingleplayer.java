@@ -1,4 +1,4 @@
-package app.screens.finishedSingleplayer;
+package app.screens.finishedsingleplayer;
 
 import app.screens.start.StartScreenController;
 import app.screens.start.StartScreenModel;

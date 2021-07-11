@@ -14,6 +14,8 @@ and this project adheres to
 - Countdown before race start
 - Chat on Lobby screen
 - Leave button on game screen
+- Singleplayer
+- Extended Stats
 
 ### Changed
 - Closing Client on Window Close

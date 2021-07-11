@@ -1,4 +1,4 @@
-package app.screens.finishedSingleplayer;
+package app.screens.finishedsingleplayer;
 
 /** Model for GameFinished View. */
 public class GameFinishedModelSingleplayer {
@@ -9,6 +9,15 @@ public class GameFinishedModelSingleplayer {
   private final int wpm;
   private final double acc;
 
+  /**
+   * Create model for singleplayer finished screen.
+   *
+   * @param username name
+   * @param iconId icon id
+   * @param duration duration of race
+   * @param wpm words per minute
+   * @param acc accuracy
+   */
   public GameFinishedModelSingleplayer(
       String username, String iconId, Long duration, int wpm, double acc) {
     this.username = username;
