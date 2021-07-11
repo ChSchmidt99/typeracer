@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <Label alignment="CENTER" contentDisplay="CENTER" ellipsisString="" maxHeight="900.0" prefHeight="510.0" prefWidth="90.0" styleClass="title" text="Solo" textAlignment="CENTER" wrapText="true" GridPane.rowSpan="2147483647" />
     <VBox alignment="CENTER" maxWidth="700.0" prefWidth="700.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
       <ImageView fx:id="usericon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
