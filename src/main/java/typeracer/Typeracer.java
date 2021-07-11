@@ -1,8 +1,5 @@
 package typeracer;
 
-import database.TextDatabase;
-import java.io.IOException;
-
 /** Represents a Typeracer game. Serves as an interface for e.g. the UI. */
 public class Typeracer implements TyperacerInterface {
 
