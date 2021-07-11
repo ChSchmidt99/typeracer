@@ -1,6 +1,6 @@
 package app.screens.multiplayer;
 
-import app.cursom.RaceTrack;
+import app.custom.RaceTrack;
 import javafx.scene.control.Label;
 
 class Lane {
