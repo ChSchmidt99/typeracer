@@ -62,12 +62,12 @@ public class GameFinishedView extends View {
           IconManager.iconForId(result.classification.get(0).userData.iconId).getImage());
     }
     if (outputs.size() >= 2) {
-      firstPlace.setText(outputs.get(1));
+      secondPlace.setText(outputs.get(1));
       secondPlaceImage.setImage(
           IconManager.iconForId(result.classification.get(1).userData.iconId).getImage());
     }
     if (outputs.size() >= 3) {
-      firstPlace.setText(outputs.get(2));
+      thirdPlace.setText(outputs.get(2));
       thirdPlaceImage.setImage(
           IconManager.iconForId(result.classification.get(2).userData.iconId).getImage());
     }
