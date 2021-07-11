@@ -50,5 +50,8 @@
     <VBox alignment="CENTER" pickOnBounds="false">
         <Label fx:id="countdownLabel" styleClass="countdownLabel" />
         <Label fx:id="countdownSubtitle" visible="false" styleClass="countdownSubtitle" />
+      <StackPane.margin>
+        <Insets bottom="120.0" />
+      </StackPane.margin>
     </VBox>
 </StackPane>

@@ -28,6 +28,8 @@ public class SingleplayerModel implements Closeable {
 
   private SingleplayerModelObserver observer;
 
+  final String username;
+  final String iconId;
   private long raceStart;
   private final Typeracer typeracer;
   private final RaceDataSingleplayer raceData;
@@ -36,9 +38,6 @@ public class SingleplayerModel implements Closeable {
   private final ScheduledExecutorService scheduler;
   private app.screens.singleplayer.FinishedMessage finishedMessage;
   private int wpm;
-
-  String username;
-  String iconId;
 
   enum State {
     PRE_START,
@@ -59,6 +58,7 @@ public class SingleplayerModel implements Closeable {
     this.typeracer = new Typeracer(raceData.textToType);
     this.state = State.PRE_START;
     this.finishedMessage = NOT_FINISHED;
+    this.update = new PlayerUpdate(username, 0, 0, false, 0);
     ApplicationState.getInstance().addCloseable(this);
   }
 

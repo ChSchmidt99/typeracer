@@ -66,13 +66,11 @@
     -fx-border-color: #fe55f7;
     -fx-border-width: 5px 5px 5px 5px;
     -fx-padding: 5px;
-    -fx-opacity: 0.6;
 }
 
 .countdownSubtitle {
     -fx-text-fill: #fe55f7;
     -fx-font-size: 30px;;
-    -fx-opacity: 0.6;
 }
 
 .title {

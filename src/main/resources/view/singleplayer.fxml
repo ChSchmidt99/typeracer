@@ -49,6 +49,9 @@
     </GridPane>
     <VBox alignment="CENTER" pickOnBounds="false">
         <Label fx:id="countdownLabel" styleClass="countdownLabel" />
-        <Label fx:id="countdownSubtitle" visible="false" styleClass="countdownSubtitle" />
+        <Label fx:id="countdownSubtitle" styleClass="countdownSubtitle" visible="false" />
+      <StackPane.margin>
+         <Insets bottom="120.0" />
+      </StackPane.margin>
     </VBox>
 </StackPane>

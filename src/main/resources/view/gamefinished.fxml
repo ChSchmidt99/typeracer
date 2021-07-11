@@ -29,7 +29,7 @@
                      </Label>
                   </graphic>
                </Label>
-               <Label fx:id="statsFirst" alignment="CENTER" contentDisplay="CENTER" styleClass="first" text="Label">
+               <Label fx:id="statsFirst" alignment="CENTER" contentDisplay="CENTER" styleClass="first" >
                   <VBox.margin>
                      <Insets top="5.0" />
                   </VBox.margin>
@@ -58,7 +58,7 @@
                                  </Label>
                               </graphic>
                            </Label>
-                           <Label fx:id="statsSecond" alignment="CENTER" contentDisplay="CENTER" styleClass="second" text="Label">
+                           <Label fx:id="statsSecond" alignment="CENTER" contentDisplay="CENTER" styleClass="second" >
                               <VBox.margin>
                                  <Insets top="5.0" />
                               </VBox.margin>
@@ -83,7 +83,7 @@
                                  </Label>
                               </graphic>
                            </Label>
-                           <Label fx:id="statsThird" alignment="CENTER" contentDisplay="CENTER" styleClass="third" text="Label">
+                           <Label fx:id="statsThird" alignment="CENTER" contentDisplay="CENTER" styleClass="third" >
                               <VBox.margin>
                                  <Insets top="5.0" />
                               </VBox.margin>
