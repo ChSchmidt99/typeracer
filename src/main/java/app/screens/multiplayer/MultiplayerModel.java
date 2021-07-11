@@ -30,7 +30,7 @@ public class MultiplayerModel
 
   private static final long FALL_BACK_START_DELAY = 3;
   private static final FinishedMessage FINISHED =
-      new FinishedMessage("FINISHED", "waiting for race end");
+      new FinishedMessage("FINISHED", "waiting for race to end");
   private static final FinishedMessage NOT_FINISHED = new FinishedMessage("HURRY!", "");
 
   private MultiplayerModelObserver observer;

@@ -46,17 +46,33 @@
     -fx-text-fill: #fe55f7;
 }
 
+.chat-button {
+    -fx-text-fill: #62fbf7;
+    -fx-background-color: transparent;
+    -fx-font-size: 25px;
+    -fx-border-color: #fe55f7;
+    -fx-border-width: 3px 3px 3px 3px;
+    -fx-pref-height: 40px;
+}
+
+.chat-button:hover {
+    -fx-border-color: #62fbf7;
+    -fx-font-color: #fe55f7;
+}
+
 .countdownLabel {
     -fx-text-fill: #fe55f7;
     -fx-font-size: 80px;
     -fx-border-color: #fe55f7;
     -fx-border-width: 5px 5px 5px 5px;
     -fx-padding: 5px;
+    -fx-opacity: 0.6;
 }
 
 .countdownSubtitle {
     -fx-text-fill: #fe55f7;
     -fx-font-size: 30px;;
+    -fx-opacity: 0.6;
 }
 
 .title {
@@ -151,6 +167,12 @@
 
 .left {
   -fx-border-width: 5px 0px 5px 5px;
+}
+
+.podium-singleplayer {
+  -fx-border-color: #ffffff;
+  -fx-font-size: 50px !important;
+  -fx-border-width: 5px 5px 5px 5px;
 }
 
 .first {

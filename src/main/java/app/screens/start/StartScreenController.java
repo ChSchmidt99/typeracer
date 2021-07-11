@@ -1,8 +1,13 @@
 package app.screens.start;
 
+import app.ApplicationState;
+import app.IconManager;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
+import app.screens.createsingleplayer.CreateSingleplayerController;
+import app.screens.createsingleplayer.CreateSingleplayerModel;
+import app.screens.createsingleplayer.CreateSingleplayerView;
 import java.io.IOException;
 
 /** Handles transition functionality for startscreen. */
@@ -24,6 +29,8 @@ public class StartScreenController implements StartScreenModelObserver {
     this.model = model;
     bindButtons(view);
     model.setObserver(this);
+    String name = ApplicationState.getInstance().getName();
+    view.putUsername(name);
     this.view.show();
   }
 
@@ -38,14 +45,24 @@ public class StartScreenController implements StartScreenModelObserver {
   }
 
   private void bindButtons(StartScreenView view) {
-    view.getSingleplayerButton().setOnAction((actionEvent) -> clickedSingleplayer());
+    view.getSingleplayerButton()
+        .setOnAction(
+            (actionEvent) -> {
+              try {
+                clickedSingleplayer();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            });
     view.getMultiplayerButton().setOnAction((actionEvent) -> clickedMultiplayer());
   }
 
   private void clickedMultiplayer() {
-    if (view.getUsername().equals("")) {
+    String name = view.getUsername();
+    if (name.equals("")) {
       view.displayError(USERNAME_ERROR);
     } else {
+      ApplicationState.getInstance().setName(name);
       try {
         model.register(view.getUsername());
       } catch (IOException e) {
@@ -54,5 +71,16 @@ public class StartScreenController implements StartScreenModelObserver {
     }
   }
 
-  private void clickedSingleplayer() {}
+  private void clickedSingleplayer() throws IOException {
+    String name = view.getUsername();
+    if (name.equals("")) {
+      view.displayError(USERNAME_ERROR);
+    } else {
+      ApplicationState.getInstance().setName(name);
+      CreateSingleplayerModel model =
+          new CreateSingleplayerModel(name, IconManager.getSelectedIcon().getId());
+      CreateSingleplayerView view = new CreateSingleplayerView(this.view.getStage());
+      new CreateSingleplayerController(model, view);
+    }
+  }
 }

@@ -47,13 +47,19 @@
                      </children>
                      </AnchorPane>
                  </ScrollPane>
-                <HBox>
-                    <TextField fx:id="chatInputTextField" styleClass="inputfield">
+                <HBox alignment="CENTER">
+                    <TextField fx:id="chatInputTextField" minWidth="230.0" styleClass="inputfield">
                         <VBox.margin>
                             <Insets top="20.0" />
                         </VBox.margin>
                     </TextField>
-                    <Button fx:id="sendButton" mnemonicParsing="false" styleClass="joinbutton" text="Send" />
+                    <Button fx:id="sendButton" mnemonicParsing="false" styleClass="chat-button" text="Send">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Button>
+                  <VBox.margin>
+                     <Insets top="15.0" />
+                  </VBox.margin>
                 </HBox>
             </children>
          </VBox>

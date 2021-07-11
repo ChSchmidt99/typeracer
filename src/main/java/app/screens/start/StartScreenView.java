@@ -36,6 +36,10 @@ public class StartScreenView extends View {
     return username.getText();
   }
 
+  void putUsername(String name) {
+    username.setText(name);
+  }
+
   Button getSingleplayerButton() {
     return singleplayerButton;
   }
