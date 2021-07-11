@@ -202,6 +202,14 @@ public class MultiplayerModel
         }
         sendProgress();
         break;
+      case CHECKERED_FLAG:
+        if (observer != null) {
+          Platform.runLater(() -> observer.changedFinishedMessage(finishedMessage));
+        }
+        if (typeracer.getState().getCurrentGamePhase() == GamePhase.RUNNING) {
+          sendProgress();
+        }
+        break;
       default:
     }
   }
