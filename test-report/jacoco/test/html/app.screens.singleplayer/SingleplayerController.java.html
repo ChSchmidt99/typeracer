@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SingleplayerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.singleplayer</a> &gt; <span class="el_source">SingleplayerController.java</span></div><h1>SingleplayerController.java</h1><pre class="source lang-java linenums">package app.screens.singleplayer;
+
+import app.screens.finished.GameFinishedController;
+import app.screens.finished.GameFinishedModel;
+import app.screens.finished.GameFinishedView;
+import app.screens.finishedsingleplayer.GameFinishedControllerSingleplayer;
+import app.screens.finishedsingleplayer.GameFinishedModelSingleplayer;
+import app.screens.finishedsingleplayer.GameFinishedViewSingleplayer;
+import app.screens.start.StartScreenController;
+import app.screens.start.StartScreenModel;
+import app.screens.start.StartScreenView;
+import javafx.scene.input.KeyEvent;
+import protocol.RaceResult;
+import typeracer.CheckResult;
+
+/** Controller for Singleplayer screen. */
+public class SingleplayerController implements SingleplayerModelObserver {
+
+  private final SingleplayerModel model;
+  private final SingleplayerView view;
+
+  /**
+   * Create new Singleplayer Cotnroller and show view.
+   *
+   * @param model for data
+   * @param view for representation
+   */
+<span class="nc" id="L28">  public SingleplayerController(SingleplayerModel model, SingleplayerView view) {</span>
+<span class="nc" id="L29">    this.view = view;</span>
+<span class="nc" id="L30">    this.model = model;</span>
+<span class="nc" id="L31">    bindings(view);</span>
+<span class="nc" id="L32">    model.setObserver(this);</span>
+<span class="nc" id="L33">    model.initRaceStart();</span>
+<span class="nc" id="L34">    view.setupView(model.getRaceData());</span>
+<span class="nc" id="L35">    view.show();</span>
+<span class="nc" id="L36">  }</span>
+
+  @Override
+  public void raceStarted() {
+<span class="nc" id="L40">    view.setCountdownLabelVisible(false);</span>
+<span class="nc" id="L41">  }</span>
+
+  @Override
+  public void updatedRaceState() {
+<span class="nc" id="L45">    view.updatedRaceState(model.getRaceUpdate());</span>
+<span class="nc" id="L46">  }</span>
+
+  @Override
+  public void receivedRaceResult(RaceResult result) {
+<span class="nc" id="L50">    new GameFinishedController(</span>
+<span class="nc" id="L51">        new GameFinishedModel(result), new GameFinishedView(view.getStage()));</span>
+<span class="nc" id="L52">    view.getStage().getScene().removeEventHandler(KeyEvent.KEY_TYPED, this::typedKey);</span>
+<span class="nc" id="L53">  }</span>
+
+  @Override
+  public void changedFinishedMessage(FinishedMessage message) {
+<span class="nc" id="L57">    setFinishedMessage(message);</span>
+<span class="nc" id="L58">  }</span>
+
+  @Override
+  public void checkeredFlag(long raceEndTimestamp) {
+<span class="nc" id="L62">    new GameFinishedControllerSingleplayer(</span>
+        new GameFinishedModelSingleplayer(
+<span class="nc" id="L64">            model.username, model.iconId, model.getDuration(), model.getWpm(), model.getAccuracy()),</span>
+<span class="nc" id="L65">        new GameFinishedViewSingleplayer(view.getStage()));</span>
+<span class="nc" id="L66">  }</span>
+
+  @Override
+  public void updatedTimer(long time) {
+<span class="nc" id="L70">    view.updateTimer(time);</span>
+<span class="nc" id="L71">  }</span>
+
+  @Override
+  public void updatedCountDown(long time) {
+<span class="nc" id="L75">    view.updatedCountdownLabel(Long.toString(time));</span>
+<span class="nc" id="L76">  }</span>
+
+  @Override
+  public void receivedError(String message) {
+<span class="nc" id="L80">    view.displayError(message);</span>
+<span class="nc" id="L81">  }</span>
+
+  private void bindings(SingleplayerView view) {
+<span class="nc" id="L84">    view.getLeaveButton().setOnAction(event -&gt; clickedLeave());</span>
+<span class="nc" id="L85">    view.getStage().getScene().addEventHandler(KeyEvent.KEY_TYPED, this::typedKey);</span>
+<span class="nc" id="L86">  }</span>
+
+  private void clickedLeave() {
+<span class="nc" id="L89">    new StartScreenController(new StartScreenModel(), new StartScreenView(view.getStage()));</span>
+<span class="nc" id="L90">    view.getStage().getScene().removeEventHandler(KeyEvent.KEY_TYPED, this::typedKey);</span>
+<span class="nc" id="L91">  }</span>
+
+  private void typedKey(KeyEvent event) {
+<span class="nc" id="L94">    String typed = event.getCharacter();</span>
+<span class="nc" id="L95">    CheckResult check = model.typed(typed);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">    if (check != null) {</span>
+<span class="nc" id="L97">      view.showTextProgress(check);</span>
+<span class="nc" id="L98">      model.updateProgress();</span>
+    }
+<span class="nc" id="L100">  }</span>
+
+  private void setFinishedMessage(FinishedMessage message) {
+<span class="nc" id="L103">    view.updatedCountdownLabel(message.getMainMessage());</span>
+<span class="nc" id="L104">    view.updatedCountdownSubtitle(message.getSubMessage());</span>
+<span class="nc" id="L105">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

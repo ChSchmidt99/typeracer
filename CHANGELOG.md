@@ -22,6 +22,7 @@ and this project adheres to
 - Lobby list now refreshes automatically in set interval (1 sec)
 - Smoother updates on game screen (time based instead of character based)
 - Now showing player state on lobby screen
+- On Multiplayer screen, instead of using 2 text fields we only use one and color characters accordingly
 
 ## [Abgabe 3] - 2021-07-04
 ### Added

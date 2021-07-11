@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StartScreenController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.start</a> &gt; <span class="el_source">StartScreenController.java</span></div><h1>StartScreenController.java</h1><pre class="source lang-java linenums">package app.screens.start;
 
+import app.ApplicationState;
+import app.IconManager;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
+import app.screens.createsingleplayer.CreateSingleplayerController;
+import app.screens.createsingleplayer.CreateSingleplayerModel;
+import app.screens.createsingleplayer.CreateSingleplayerView;
 import java.io.IOException;
 
 /** Handles transition functionality for startscreen. */
@@ -19,41 +24,64 @@ public class StartScreenController implements StartScreenModelObserver {
    * @param model {@link StartScreenModel}
    * @param view {@link StartScreenView}
    */
-<span class="nc" id="L22">  public StartScreenController(StartScreenModel model, StartScreenView view) {</span>
-<span class="nc" id="L23">    this.view = view;</span>
-<span class="nc" id="L24">    this.model = model;</span>
-<span class="nc" id="L25">    bindButtons(view);</span>
-<span class="nc" id="L26">    model.setObserver(this);</span>
-<span class="nc" id="L27">    this.view.show();</span>
-<span class="nc" id="L28">  }</span>
+<span class="nc" id="L27">  public StartScreenController(StartScreenModel model, StartScreenView view) {</span>
+<span class="nc" id="L28">    this.view = view;</span>
+<span class="nc" id="L29">    this.model = model;</span>
+<span class="nc" id="L30">    bindButtons(view);</span>
+<span class="nc" id="L31">    model.setObserver(this);</span>
+<span class="nc" id="L32">    String name = ApplicationState.getInstance().getName();</span>
+<span class="nc" id="L33">    view.putUsername(name);</span>
+<span class="nc" id="L34">    this.view.show();</span>
+<span class="nc" id="L35">  }</span>
 
   /** Called when user was registered successfully. */
   public void registered() {
-<span class="nc" id="L32">    new LobbyBrowserController(new LobbyBrowserModel(), new LobbyBrowserView(view.getStage()));</span>
-<span class="nc" id="L33">  }</span>
+<span class="nc" id="L39">    new LobbyBrowserController(new LobbyBrowserModel(), new LobbyBrowserView(view.getStage()));</span>
+<span class="nc" id="L40">  }</span>
 
   @Override
   public void receivedError(String message) {
-<span class="nc" id="L37">    view.displayError(message);</span>
-<span class="nc" id="L38">  }</span>
+<span class="nc" id="L44">    view.displayError(message);</span>
+<span class="nc" id="L45">  }</span>
 
   private void bindButtons(StartScreenView view) {
-<span class="nc" id="L41">    view.getSingleplayerButton().setOnAction((actionEvent) -&gt; clickedSingleplayer());</span>
-<span class="nc" id="L42">    view.getMultiplayerButton().setOnAction((actionEvent) -&gt; clickedMultiplayer());</span>
-<span class="nc" id="L43">  }</span>
+<span class="nc" id="L48">    view.getSingleplayerButton()</span>
+<span class="nc" id="L49">        .setOnAction(</span>
+            (actionEvent) -&gt; {
+              try {
+<span class="nc" id="L52">                clickedSingleplayer();</span>
+<span class="nc" id="L53">              } catch (IOException e) {</span>
+<span class="nc" id="L54">                e.printStackTrace();</span>
+<span class="nc" id="L55">              }</span>
+<span class="nc" id="L56">            });</span>
+<span class="nc" id="L57">    view.getMultiplayerButton().setOnAction((actionEvent) -&gt; clickedMultiplayer());</span>
+<span class="nc" id="L58">  }</span>
 
   private void clickedMultiplayer() {
-<span class="nc bnc" id="L46" title="All 2 branches missed.">    if (view.getUsername().equals(&quot;&quot;)) {</span>
-<span class="nc" id="L47">      view.displayError(USERNAME_ERROR);</span>
+<span class="nc" id="L61">    String name = view.getUsername();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">    if (name.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L63">      view.displayError(USERNAME_ERROR);</span>
     } else {
+<span class="nc" id="L65">      ApplicationState.getInstance().setName(name);</span>
       try {
-<span class="nc" id="L50">        model.register(view.getUsername());</span>
-<span class="nc" id="L51">      } catch (IOException e) {</span>
-<span class="nc" id="L52">        view.displayError(e.getMessage());</span>
-<span class="nc" id="L53">      }</span>
+<span class="nc" id="L67">        model.register(view.getUsername());</span>
+<span class="nc" id="L68">      } catch (IOException e) {</span>
+<span class="nc" id="L69">        view.displayError(e.getMessage());</span>
+<span class="nc" id="L70">      }</span>
     }
-<span class="nc" id="L55">  }</span>
+<span class="nc" id="L72">  }</span>
 
-<span class="nc" id="L57">  private void clickedSingleplayer() {}</span>
+  private void clickedSingleplayer() throws IOException {
+<span class="nc" id="L75">    String name = view.getUsername();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">    if (name.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L77">      view.displayError(USERNAME_ERROR);</span>
+    } else {
+<span class="nc" id="L79">      ApplicationState.getInstance().setName(name);</span>
+<span class="nc" id="L80">      CreateSingleplayerModel model =</span>
+<span class="nc" id="L81">          new CreateSingleplayerModel(name, IconManager.getSelectedIcon().getId());</span>
+<span class="nc" id="L82">      CreateSingleplayerView view = new CreateSingleplayerView(this.view.getStage());</span>
+<span class="nc" id="L83">      new CreateSingleplayerController(model, view);</span>
+    }
+<span class="nc" id="L85">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

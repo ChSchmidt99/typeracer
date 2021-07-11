@@ -3,9 +3,12 @@ app.custom
 app.screens
 app.screens.browser
 app.screens.create
+app.screens.createsingleplayer
 app.screens.finished
+app.screens.finishedsingleplayer
 app.screens.lobby
 app.screens.multiplayer
+app.screens.singleplayer
 app.screens.start
 backend
 client

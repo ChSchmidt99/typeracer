@@ -34,43 +34,52 @@ public class GameFinishedView extends View {
 
   @FXML private Button returnButton;
 
+  @FXML private Label statsFirst;
+
+  @FXML private Label statsSecond;
+
+  @FXML private Label statsThird;
+
   /**
    * Create new game finished view.
    *
    * @param stage to host view
    */
   public GameFinishedView(Stage stage) {
-<span class="nc" id="L43">    super(stage, FXML_PATH);</span>
-<span class="nc" id="L44">  }</span>
+<span class="nc" id="L49">    super(stage, FXML_PATH);</span>
+<span class="nc" id="L50">  }</span>
 
   Button getReturnButton() {
-<span class="nc" id="L47">    return returnButton;</span>
+<span class="nc" id="L53">    return returnButton;</span>
   }
 
   void updateView(RaceResult result) throws FileNotFoundException {
-<span class="nc" id="L51">    duration.setText(&quot;Time: &quot; + result.duration + &quot; s&quot;);</span>
-<span class="nc" id="L52">    String resultText = &quot;%s (WPM: %d Acc: %.2f%%)&quot;;</span>
-<span class="nc" id="L53">    List&lt;String&gt; outputs = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">    for (UserResult user : result.classification) {</span>
-<span class="nc" id="L55">      Double acc = (1.0 - (double) user.mistakes / (double) result.text.length()) * 100;</span>
-<span class="nc" id="L56">      outputs.add(String.format(resultText, user.userData.name, user.wpm, acc));</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L57">    duration.setText(&quot;Time: &quot; + result.duration + &quot; s&quot;);</span>
+<span class="nc" id="L58">    String resultText = &quot;WPM: %d, Acc: %.2f%%&quot;;</span>
+<span class="nc" id="L59">    List&lt;String&gt; outputs = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">    for (UserResult user : result.classification) {</span>
+<span class="nc" id="L61">      Double acc = (1.0 - (double) user.mistakes / (double) result.text.length()) * 100;</span>
+<span class="nc" id="L62">      outputs.add(String.format(resultText, user.wpm, acc));</span>
+<span class="nc" id="L63">    }</span>
 
-<span class="nc bnc" id="L59" title="All 2 branches missed.">    if (outputs.size() &gt;= 1) {</span>
-<span class="nc" id="L60">      firstPlace.setText(outputs.get(0));</span>
-<span class="nc" id="L61">      firstPlaceImage.setImage(</span>
-<span class="nc" id="L62">          IconManager.iconForId(result.classification.get(0).userData.iconId).getImage());</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">    if (outputs.size() &gt;= 1) {</span>
+<span class="nc" id="L66">      firstPlace.setText(result.classification.get(0).userData.name);</span>
+<span class="nc" id="L67">      statsFirst.setText(outputs.get(0));</span>
+<span class="nc" id="L68">      firstPlaceImage.setImage(</span>
+<span class="nc" id="L69">          IconManager.iconForId(result.classification.get(0).userData.iconId).getImage());</span>
     }
-<span class="nc bnc" id="L64" title="All 2 branches missed.">    if (outputs.size() &gt;= 2) {</span>
-<span class="nc" id="L65">      firstPlace.setText(outputs.get(1));</span>
-<span class="nc" id="L66">      secondPlaceImage.setImage(</span>
-<span class="nc" id="L67">          IconManager.iconForId(result.classification.get(1).userData.iconId).getImage());</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">    if (outputs.size() &gt;= 2) {</span>
+<span class="nc" id="L72">      secondPlace.setText(result.classification.get(1).userData.name);</span>
+<span class="nc" id="L73">      statsSecond.setText(outputs.get(1));</span>
+<span class="nc" id="L74">      secondPlaceImage.setImage(</span>
+<span class="nc" id="L75">          IconManager.iconForId(result.classification.get(1).userData.iconId).getImage());</span>
     }
-<span class="nc bnc" id="L69" title="All 2 branches missed.">    if (outputs.size() &gt;= 3) {</span>
-<span class="nc" id="L70">      firstPlace.setText(outputs.get(2));</span>
-<span class="nc" id="L71">      thirdPlaceImage.setImage(</span>
-<span class="nc" id="L72">          IconManager.iconForId(result.classification.get(2).userData.iconId).getImage());</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">    if (outputs.size() &gt;= 3) {</span>
+<span class="nc" id="L78">      thirdPlace.setText(result.classification.get(2).userData.name);</span>
+<span class="nc" id="L79">      statsThird.setText(outputs.get(2));</span>
+<span class="nc" id="L80">      thirdPlaceImage.setImage(</span>
+<span class="nc" id="L81">          IconManager.iconForId(result.classification.get(2).userData.iconId).getImage());</span>
     }
-<span class="nc" id="L74">  }</span>
+<span class="nc" id="L83">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

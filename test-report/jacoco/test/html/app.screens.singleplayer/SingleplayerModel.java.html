@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SingleplayerModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.singleplayer</a> &gt; <span class="el_source">SingleplayerModel.java</span></div><h1>SingleplayerModel.java</h1><pre class="source lang-java linenums">package app.screens.singleplayer;
+
+import app.ApplicationState;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javafx.application.Platform;
+import protocol.PlayerUpdate;
+import protocol.RaceDataSingleplayer;
+import typeracer.CheckResult;
+import typeracer.GamePhase;
+import typeracer.Typeracer;
+import util.Timestamp;
+
+/** Model for singleplayer screen. */
+public class SingleplayerModel implements Closeable {
+
+  /** Update interval in sec. */
+  private static final long POLLING_INTERVAL = 1;
+
+  private static final long FALL_BACK_START_DELAY = 3;
+<span class="nc" id="L24">  private static final app.screens.singleplayer.FinishedMessage FINISHED =</span>
+      new app.screens.singleplayer.FinishedMessage(&quot;FINISHED&quot;, &quot;waiting for race to end&quot;);
+<span class="nc" id="L26">  private static final app.screens.singleplayer.FinishedMessage NOT_FINISHED =</span>
+      new app.screens.singleplayer.FinishedMessage(&quot;HURRY!&quot;, &quot;&quot;);
+
+  private SingleplayerModelObserver observer;
+
+  final String username;
+  final String iconId;
+  private long raceStart;
+  private final Typeracer typeracer;
+  private final RaceDataSingleplayer raceData;
+  private PlayerUpdate update;
+  private State state;
+  private final ScheduledExecutorService scheduler;
+  private app.screens.singleplayer.FinishedMessage finishedMessage;
+  private int wpm;
+
+<span class="nc" id="L42">  enum State {</span>
+<span class="nc" id="L43">    PRE_START,</span>
+<span class="nc" id="L44">    RACING,</span>
+<span class="nc" id="L45">    CHECKERED_FLAG</span>
+  }
+
+  /**
+   * Create new Singleplayer model.
+   *
+   * @param raceData data for the race
+   */
+<span class="nc" id="L53">  public SingleplayerModel(RaceDataSingleplayer raceData) {</span>
+<span class="nc" id="L54">    this.username = raceData.name;</span>
+<span class="nc" id="L55">    this.iconId = raceData.iconId;</span>
+<span class="nc" id="L56">    this.scheduler = Executors.newScheduledThreadPool(2);</span>
+<span class="nc" id="L57">    this.raceData = raceData;</span>
+<span class="nc" id="L58">    this.typeracer = new Typeracer(raceData.textToType);</span>
+<span class="nc" id="L59">    this.state = State.PRE_START;</span>
+<span class="nc" id="L60">    this.finishedMessage = NOT_FINISHED;</span>
+<span class="nc" id="L61">    this.update = new PlayerUpdate(username, 0, 0, false, 0);</span>
+<span class="nc" id="L62">    ApplicationState.getInstance().addCloseable(this);</span>
+<span class="nc" id="L63">  }</span>
+
+  @Override
+  public void close() throws IOException {
+<span class="nc" id="L67">    scheduler.shutdownNow();</span>
+<span class="nc" id="L68">  }</span>
+
+  void setObserver(SingleplayerModelObserver observer) {
+<span class="nc" id="L71">    this.observer = observer;</span>
+<span class="nc" id="L72">  }</span>
+
+  RaceDataSingleplayer getRaceData() {
+<span class="nc" id="L75">    return raceData;</span>
+  }
+
+  CheckResult typed(String key) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">    if ((this.state == State.PRE_START)</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        || typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {</span>
+<span class="nc" id="L81">      return null;</span>
+    }
+<span class="nc" id="L83">    CheckResult check = typeracer.check(key.charAt(0));</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {</span>
+<span class="nc" id="L85">      updateView();</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">      if (observer != null) {</span>
+<span class="nc" id="L87">        Platform.runLater(</span>
+            () -&gt; {
+<span class="nc" id="L89">              observer.checkeredFlag(getDuration());</span>
+<span class="nc" id="L90">            });</span>
+      }
+<span class="nc" id="L92">      this.state = State.CHECKERED_FLAG;</span>
+    }
+<span class="nc" id="L94">    return check;</span>
+  }
+
+  PlayerUpdate getRaceUpdate() {
+<span class="nc" id="L98">    return update;</span>
+  }
+
+  void initRaceStart() {
+<span class="nc" id="L102">    startPolling();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">    if (raceData.startTime &lt; Timestamp.currentTimestamp()) {</span>
+      // Server race start is already in the past, start race later;
+<span class="nc" id="L105">      this.raceStart = Timestamp.currentTimestamp() + FALL_BACK_START_DELAY;</span>
+    } else {
+      // Race start is in the future, schedule race start.
+<span class="nc" id="L108">      this.raceStart = raceData.startTime;</span>
+    }
+<span class="nc" id="L110">  }</span>
+
+  private void raceStart() {
+<span class="nc" id="L113">    state = State.RACING;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L115">      Platform.runLater(() -&gt; observer.raceStarted());</span>
+    }
+<span class="nc" id="L117">  }</span>
+
+  private void updateView() {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L121">      Platform.runLater(() -&gt; observer.updatedRaceState());</span>
+    }
+<span class="nc" id="L123">  }</span>
+
+  private void startPolling() {
+<span class="nc" id="L126">    scheduler.scheduleAtFixedRate(this::tick, 0, POLLING_INTERVAL, TimeUnit.SECONDS);</span>
+<span class="nc" id="L127">  }</span>
+
+  private void tick() {
+<span class="nc bnc" id="L130" title="All 3 branches missed.">    switch (state) {</span>
+      case PRE_START:
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L133">          long countDown = this.raceStart - Timestamp.currentTimestamp();</span>
+<span class="nc" id="L134">          Platform.runLater(() -&gt; observer.updatedCountDown(countDown));</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">          if (countDown == 0) {</span>
+<span class="nc" id="L136">            raceStart();</span>
+          }
+<span class="nc" id="L138">        }</span>
+        break;
+      case RACING:
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L142">          Platform.runLater(() -&gt; observer.changedFinishedMessage(finishedMessage));</span>
+        }
+<span class="nc" id="L144">        long time = Timestamp.currentTimestamp() - raceStart;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (observer != null) {</span>
+<span class="nc" id="L146">          Platform.runLater(() -&gt; observer.updatedTimer(time));</span>
+        }
+<span class="nc" id="L148">        updateView();</span>
+<span class="nc" id="L149">        break;</span>
+      default:
+    }
+<span class="nc" id="L152">  }</span>
+
+  void updateProgress() {
+<span class="nc" id="L155">    long duration = Timestamp.currentTimestamp() - raceStart;</span>
+<span class="nc" id="L156">    int typedCharCounter = typeracer.getState().getTypeChar().getCounter();</span>
+<span class="nc" id="L157">    int wpm = wordsPerMinute(typedCharCounter, duration);</span>
+<span class="nc" id="L158">    this.wpm = wpm;</span>
+<span class="nc" id="L159">    int textLength = typeracer.getState().getTypeChar().getCompleteText().length();</span>
+<span class="nc" id="L160">    float progress = (float) typedCharCounter / textLength;</span>
+<span class="nc" id="L161">    this.update = new PlayerUpdate(username, wpm, progress, false, duration);</span>
+<span class="nc" id="L162">  }</span>
+
+  private int wordsPerMinute(int charsTyped, long durationInSec) {
+<span class="nc" id="L165">    float durationInMin = (float) durationInSec / 60;</span>
+<span class="nc" id="L166">    int wordsTyped = charsTyped / 5;</span>
+<span class="nc" id="L167">    return (int) (wordsTyped / durationInMin);</span>
+  }
+
+  long getDuration() {
+<span class="nc" id="L171">    return Timestamp.currentTimestamp() - raceStart;</span>
+  }
+
+  int getWpm() {
+<span class="nc" id="L175">    return this.wpm;</span>
+  }
+
+  double getAccuracy() {
+<span class="nc" id="L179">    return (1.0</span>
+<span class="nc" id="L180">            - (double) typeracer.getState().getTypeChar().getMistakeCounter()</span>
+<span class="nc" id="L181">                / (double) typeracer.getState().getTypeChar().getCompleteText().length())</span>
+        * 100;
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

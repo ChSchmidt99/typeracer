@@ -24,39 +24,41 @@ import protocol.LobbyData;
 <span class="nc" id="L24">    client.registerUser(name, IconManager.getSelectedIcon().getId());</span>
 <span class="nc" id="L25">  }</span>
 
+<span class="nc" id="L27">  void registerSingleplayer(String name) throws IOException {}</span>
+
   void setObserver(StartScreenModelObserver observer) {
-<span class="nc" id="L28">    this.observer = observer;</span>
-<span class="nc" id="L29">  }</span>
+<span class="nc" id="L30">    this.observer = observer;</span>
+<span class="nc" id="L31">  }</span>
 
   @Override
   public void registered(String userId) {
-<span class="nc" id="L33">    unsubscribe();</span>
-<span class="nc" id="L34">    ApplicationState.getInstance().setUserId(userId);</span>
-<span class="nc bnc" id="L35" title="All 2 branches missed.">    if (observer != null) {</span>
-<span class="nc" id="L36">      Platform.runLater(() -&gt; observer.registered());</span>
+<span class="nc" id="L35">    unsubscribe();</span>
+<span class="nc" id="L36">    ApplicationState.getInstance().setUserId(userId);</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L38">      Platform.runLater(() -&gt; observer.registered());</span>
     }
-<span class="nc" id="L38">  }</span>
+<span class="nc" id="L40">  }</span>
 
   @Override
-<span class="nc" id="L41">  public void receivedOpenLobbies(List&lt;LobbyData&gt; lobbies) {}</span>
+<span class="nc" id="L43">  public void receivedOpenLobbies(List&lt;LobbyData&gt; lobbies) {}</span>
 
   @Override
   public void receivedError(String message) {
-<span class="nc bnc" id="L45" title="All 2 branches missed.">    if (observer != null) {</span>
-<span class="nc" id="L46">      Platform.runLater(() -&gt; observer.receivedError(message));</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">    if (observer != null) {</span>
+<span class="nc" id="L48">      Platform.runLater(() -&gt; observer.receivedError(message));</span>
     }
-<span class="nc" id="L48">  }</span>
+<span class="nc" id="L50">  }</span>
 
   private void subscribe() {
-<span class="nc" id="L51">    Client client = ApplicationState.getInstance().getClient();</span>
-<span class="nc" id="L52">    client.subscribeErrors(this);</span>
-<span class="nc" id="L53">    client.subscribe(this);</span>
-<span class="nc" id="L54">  }</span>
+<span class="nc" id="L53">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L54">    client.subscribeErrors(this);</span>
+<span class="nc" id="L55">    client.subscribe(this);</span>
+<span class="nc" id="L56">  }</span>
 
   private void unsubscribe() {
-<span class="nc" id="L57">    Client client = ApplicationState.getInstance().getClient();</span>
-<span class="nc" id="L58">    client.unsubscribeErrors(this);</span>
-<span class="nc" id="L59">    client.unsubscribe(this);</span>
-<span class="nc" id="L60">  }</span>
+<span class="nc" id="L59">    Client client = ApplicationState.getInstance().getClient();</span>
+<span class="nc" id="L60">    client.unsubscribeErrors(this);</span>
+<span class="nc" id="L61">    client.unsubscribe(this);</span>
+<span class="nc" id="L62">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

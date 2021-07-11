@@ -23,6 +23,7 @@ public class CreateSingleplayerController {
    *
    * @param model to fill view with
    * @param view that will be shown
+   * @throws FileNotFoundException if icon was not found
    */
   public CreateSingleplayerController(CreateSingleplayerModel model, CreateSingleplayerView view)
       throws FileNotFoundException {

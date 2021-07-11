@@ -100,9 +100,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="app/screens/package-tree.html">app.screens</a>, </li>
 <li><a href="app/screens/browser/package-tree.html">app.screens.browser</a>, </li>
 <li><a href="app/screens/create/package-tree.html">app.screens.create</a>, </li>
+<li><a href="app/screens/createsingleplayer/package-tree.html">app.screens.createsingleplayer</a>, </li>
 <li><a href="app/screens/finished/package-tree.html">app.screens.finished</a>, </li>
+<li><a href="app/screens/finishedsingleplayer/package-tree.html">app.screens.finishedsingleplayer</a>, </li>
 <li><a href="app/screens/lobby/package-tree.html">app.screens.lobby</a>, </li>
 <li><a href="app/screens/multiplayer/package-tree.html">app.screens.multiplayer</a>, </li>
+<li><a href="app/screens/singleplayer/package-tree.html">app.screens.singleplayer</a>, </li>
 <li><a href="app/screens/start/package-tree.html">app.screens.start</a>, </li>
 <li><a href="backend/package-tree.html">backend</a>, </li>
 <li><a href="client/package-tree.html">client</a>, </li>
@@ -133,9 +136,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">typeracer.<a href="typeracer/Counter.html" title="class in typeracer"><span class="typeNameLink">Counter</span></a></li>
 <li class="circle">app.screens.create.<a href="app/screens/create/CreateController.html" title="class in app.screens.create"><span class="typeNameLink">CreateController</span></a></li>
 <li class="circle">app.screens.create.<a href="app/screens/create/CreateModel.html" title="class in app.screens.create"><span class="typeNameLink">CreateModel</span></a> (implements client.<a href="client/ErrorObserver.html" title="interface in client">ErrorObserver</a>, client.<a href="client/LobbyObserver.html" title="interface in client">LobbyObserver</a>)</li>
+<li class="circle">app.screens.createsingleplayer.<a href="app/screens/createsingleplayer/CreateSingleplayerController.html" title="class in app.screens.createsingleplayer"><span class="typeNameLink">CreateSingleplayerController</span></a></li>
+<li class="circle">app.screens.createsingleplayer.<a href="app/screens/createsingleplayer/CreateSingleplayerModel.html" title="class in app.screens.createsingleplayer"><span class="typeNameLink">CreateSingleplayerModel</span></a></li>
 <li class="circle">database.<a href="database/DatabaseImpl.html" title="class in database"><span class="typeNameLink">DatabaseImpl</span></a> (implements database.<a href="database/Database.html" title="interface in database">Database</a>)</li>
 <li class="circle">app.screens.finished.<a href="app/screens/finished/GameFinishedController.html" title="class in app.screens.finished"><span class="typeNameLink">GameFinishedController</span></a></li>
+<li class="circle">app.screens.finishedsingleplayer.<a href="app/screens/finishedsingleplayer/GameFinishedControllerSingleplayer.html" title="class in app.screens.finishedsingleplayer"><span class="typeNameLink">GameFinishedControllerSingleplayer</span></a></li>
 <li class="circle">app.screens.finished.<a href="app/screens/finished/GameFinishedModel.html" title="class in app.screens.finished"><span class="typeNameLink">GameFinishedModel</span></a> (implements client.<a href="client/ErrorObserver.html" title="interface in client">ErrorObserver</a>, client.<a href="client/LobbyObserver.html" title="interface in client">LobbyObserver</a>)</li>
+<li class="circle">app.screens.finishedsingleplayer.<a href="app/screens/finishedsingleplayer/GameFinishedModelSingleplayer.html" title="class in app.screens.finishedsingleplayer"><span class="typeNameLink">GameFinishedModelSingleplayer</span></a></li>
 <li class="circle">app.screens.lobby.<a href="app/screens/lobby/GameLobbyController.html" title="class in app.screens.lobby"><span class="typeNameLink">GameLobbyController</span></a></li>
 <li class="circle">app.screens.lobby.<a href="app/screens/lobby/GameLobbyModel.html" title="class in app.screens.lobby"><span class="typeNameLink">GameLobbyModel</span></a> (implements client.<a href="client/ErrorObserver.html" title="interface in client">ErrorObserver</a>, client.<a href="client/LobbyObserver.html" title="interface in client">LobbyObserver</a>)</li>
 <li class="circle">typeracer.<a href="typeracer/GameState.html" title="class in typeracer"><span class="typeNameLink">GameState</span></a></li>
@@ -194,6 +201,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">protocol.<a href="protocol/PlayerUpdate.html" title="class in protocol"><span class="typeNameLink">PlayerUpdate</span></a></li>
 <li class="circle">protocol.<a href="protocol/ProgressSnapshot.html" title="class in protocol"><span class="typeNameLink">ProgressSnapshot</span></a></li>
 <li class="circle">protocol.<a href="protocol/RaceData.html" title="class in protocol"><span class="typeNameLink">RaceData</span></a></li>
+<li class="circle">protocol.<a href="protocol/RaceDataSingleplayer.html" title="class in protocol"><span class="typeNameLink">RaceDataSingleplayer</span></a></li>
 <li class="circle">protocol.<a href="protocol/RaceResult.html" title="class in protocol"><span class="typeNameLink">RaceResult</span></a></li>
 <li class="circle">protocol.<a href="protocol/Request.html" title="class in protocol"><span class="typeNameLink">Request</span></a></li>
 <li class="circle">protocol.<a href="protocol/Request.Types.html" title="class in protocol"><span class="typeNameLink">Request.Types</span></a></li>
@@ -204,22 +212,29 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">app.<a href="app/Runner.html" title="class in app"><span class="typeNameLink">Runner</span></a></li>
 <li class="circle">server.<a href="server/Server.html" title="class in server"><span class="typeNameLink">Server</span></a> (implements java.io.Closeable)</li>
 <li class="circle">server.<a href="server/ServerRunner.html" title="class in server"><span class="typeNameLink">ServerRunner</span></a></li>
+<li class="circle">app.screens.singleplayer.<a href="app/screens/singleplayer/SingleplayerController.html" title="class in app.screens.singleplayer"><span class="typeNameLink">SingleplayerController</span></a> (implements app.screens.singleplayer.<a href="app/screens/singleplayer/SingleplayerModelObserver.html" title="interface in app.screens.singleplayer">SingleplayerModelObserver</a>)</li>
+<li class="circle">app.screens.singleplayer.<a href="app/screens/singleplayer/SingleplayerModel.html" title="class in app.screens.singleplayer"><span class="typeNameLink">SingleplayerModel</span></a> (implements java.io.Closeable)</li>
 <li class="circle">app.screens.start.<a href="app/screens/start/StartScreenController.html" title="class in app.screens.start"><span class="typeNameLink">StartScreenController</span></a></li>
 <li class="circle">app.screens.start.<a href="app/screens/start/StartScreenModel.html" title="class in app.screens.start"><span class="typeNameLink">StartScreenModel</span></a> (implements client.<a href="client/ClientObserver.html" title="interface in client">ClientObserver</a>, client.<a href="client/ErrorObserver.html" title="interface in client">ErrorObserver</a>)</li>
 <li class="circle">database.<a href="database/TextDatabase.html" title="class in database"><span class="typeNameLink">TextDatabase</span></a></li>
 <li class="circle">typeracer.<a href="typeracer/TextToType.html" title="class in typeracer"><span class="typeNameLink">TextToType</span></a></li>
 <li class="circle">util.<a href="util/Timestamp.html" title="class in util"><span class="typeNameLink">Timestamp</span></a></li>
-<li class="circle">typeracer.<a href="typeracer/Typeracer.html" title="class in typeracer"><span class="typeNameLink">Typeracer</span></a></li>
+<li class="circle">typeracer.<a href="typeracer/Typeracer.html" title="class in typeracer"><span class="typeNameLink">Typeracer</span></a> (implements typeracer.<a href="typeracer/TyperacerInterface.html" title="interface in typeracer">TyperacerInterface</a>)</li>
+<li class="circle">typeracer.<a href="typeracer/TyperacerInstantDeath.html" title="class in typeracer"><span class="typeNameLink">TyperacerInstantDeath</span></a> (implements typeracer.<a href="typeracer/TyperacerInterface.html" title="interface in typeracer">TyperacerInterface</a>)</li>
+<li class="circle">typeracer.<a href="typeracer/TyperacerReverseMode.html" title="class in typeracer"><span class="typeNameLink">TyperacerReverseMode</span></a> (implements typeracer.<a href="typeracer/TyperacerInterface.html" title="interface in typeracer">TyperacerInterface</a>)</li>
 <li class="circle">protocol.<a href="protocol/UserData.html" title="class in protocol"><span class="typeNameLink">UserData</span></a></li>
 <li class="circle">database.<a href="database/UserDatabase.html" title="class in database"><span class="typeNameLink">UserDatabase</span></a></li>
 <li class="circle">protocol.<a href="protocol/UserResult.html" title="class in protocol"><span class="typeNameLink">UserResult</span></a></li>
 <li class="circle">app.screens.<a href="app/screens/View.html" title="class in app.screens"><span class="typeNameLink">View</span></a>
 <ul>
+<li class="circle">app.screens.createsingleplayer.<a href="app/screens/createsingleplayer/CreateSingleplayerView.html" title="class in app.screens.createsingleplayer"><span class="typeNameLink">CreateSingleplayerView</span></a></li>
 <li class="circle">app.screens.create.<a href="app/screens/create/CreateView.html" title="class in app.screens.create"><span class="typeNameLink">CreateView</span></a></li>
 <li class="circle">app.screens.finished.<a href="app/screens/finished/GameFinishedView.html" title="class in app.screens.finished"><span class="typeNameLink">GameFinishedView</span></a></li>
+<li class="circle">app.screens.finishedsingleplayer.<a href="app/screens/finishedsingleplayer/GameFinishedViewSingleplayer.html" title="class in app.screens.finishedsingleplayer"><span class="typeNameLink">GameFinishedViewSingleplayer</span></a></li>
 <li class="circle">app.screens.lobby.<a href="app/screens/lobby/GameLobbyView.html" title="class in app.screens.lobby"><span class="typeNameLink">GameLobbyView</span></a></li>
 <li class="circle">app.screens.browser.<a href="app/screens/browser/LobbyBrowserView.html" title="class in app.screens.browser"><span class="typeNameLink">LobbyBrowserView</span></a> (implements app.custom.<a href="app/custom/JoinHandler.html" title="interface in app.custom">JoinHandler</a>)</li>
 <li class="circle">app.screens.multiplayer.<a href="app/screens/multiplayer/MultiplayerView.html" title="class in app.screens.multiplayer"><span class="typeNameLink">MultiplayerView</span></a></li>
+<li class="circle">app.screens.singleplayer.<a href="app/screens/singleplayer/SingleplayerView.html" title="class in app.screens.singleplayer"><span class="typeNameLink">SingleplayerView</span></a></li>
 <li class="circle">app.screens.start.<a href="app/screens/start/StartScreenView.html" title="class in app.screens.start"><span class="typeNameLink">StartScreenView</span></a></li>
 </ul>
 </li>
@@ -253,6 +268,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">server.<a href="server/PushService.html" title="interface in server"><span class="typeNameLink">PushService</span></a></li>
 <li class="circle">client.<a href="client/RaceObserver.html" title="interface in client"><span class="typeNameLink">RaceObserver</span></a></li>
 <li class="circle">client.<a href="client/RaceResultObserver.html" title="interface in client"><span class="typeNameLink">RaceResultObserver</span></a></li>
+<li class="circle">app.screens.singleplayer.<a href="app/screens/singleplayer/SingleplayerModelObserver.html" title="interface in app.screens.singleplayer"><span class="typeNameLink">SingleplayerModelObserver</span></a></li>
+<li class="circle">typeracer.<a href="typeracer/TyperacerInterface.html" title="interface in typeracer"><span class="typeNameLink">TyperacerInterface</span></a></li>
 </ul>
 </section>
 <section role="region">
