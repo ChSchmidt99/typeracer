@@ -81,11 +81,9 @@ public class SingleplayerView extends View {
     countdownSubtitle.setVisible(isVisible);
   }
 
-  void updatedRaceState(List<PlayerUpdate> updates) {
-    for (PlayerUpdate update : updates) {
+  void updatedRaceState(PlayerUpdate update) {
       trackUpdate(update);
       wpmUpdate(update);
-    }
   }
 
   /** Creates labels for user input which will be added to hbox enteredText. */

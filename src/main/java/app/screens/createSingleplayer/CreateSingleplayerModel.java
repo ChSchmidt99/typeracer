@@ -1,4 +1,4 @@
-package app.screens.createsingleplayer;
+package app.screens.createSingleplayer;
 
 /** Model for CreateView for Singleplayer. */
 public class CreateSingleplayerModel  {

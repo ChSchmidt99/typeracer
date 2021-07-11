@@ -1,10 +1,14 @@
 package app.screens.singleplayer;
 
 import app.ApplicationState;
+import app.screens.finishedSingleplayer.GameFinishedControllerSingleplayer;
+import app.screens.finishedSingleplayer.GameFinishedModelSingleplayer;
+import app.screens.finishedSingleplayer.GameFinishedViewSingleplayer;
 import client.Client;
 import client.ErrorObserver;
 import client.RaceObserver;
 import client.RaceResultObserver;
+import database.TextDatabase;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +25,7 @@ import typeracer.GamePhase;
 import typeracer.Typeracer;
 import util.Timestamp;
 
-public class SingleplayerModel implements RaceObserver, RaceResultObserver, ErrorObserver, Closeable {
+public class SingleplayerModel implements Closeable {
 
   /** Update interval in sec. */
   private static final long POLLING_INTERVAL = 1;
@@ -36,14 +40,13 @@ public class SingleplayerModel implements RaceObserver, RaceResultObserver, Erro
   private long raceStart;
   private final Typeracer typeracer;
   private final RaceDataSingleplayer raceData;
-  private List<PlayerUpdate> updates;
+  private PlayerUpdate update;
   private State state;
   private final ScheduledExecutorService scheduler;
   private app.screens.singleplayer.FinishedMessage finishedMessage;
 
-  String user;
+  String username;
   String iconId;
-  String textToType;
 
   enum State {
     PRE_START,
@@ -52,51 +55,14 @@ public class SingleplayerModel implements RaceObserver, RaceResultObserver, Erro
   }
 
   public SingleplayerModel(RaceDataSingleplayer raceData) {
-    this.user = raceData.name;
+    this.username = raceData.name;
     this.iconId = raceData.iconId;
-    this.textToType = raceData.textToType;
     this.scheduler = Executors.newScheduledThreadPool(2);
     this.raceData = raceData;
-    this.typeracer = new Typeracer(textToType);
+    this.typeracer = new Typeracer(raceData.textToType);
     this.state = State.PRE_START;
     this.finishedMessage = NOT_FINISHED;
     ApplicationState.getInstance().addCloseable(this);
-  }
-
-  @Override
-  public void receivedRaceUpdate(List<PlayerUpdate> updates) {
-    this.updates = updates;
-    if (observer != null) {
-      Platform.runLater(() -> observer.updatedRaceState());
-    }
-  }
-
-  @Override
-  public void receivedCheckeredFlag(long raceStop) {
-    if (observer != null) {
-      Platform.runLater(() -> observer.changedFinishedMessage(finishedMessage));
-    }
-    this.state = State.CHECKERED_FLAG;
-    if (observer != null) {
-      Platform.runLater(
-          () -> {
-            observer.checkeredFlag(raceStop);
-          });
-    }
-  }
-
-  @Override
-  public void receivedRaceResult(RaceResult result) {
-    if (observer != null) {
-      Platform.runLater(() -> observer.receivedRaceResult(result));
-    }
-  }
-
-  @Override
-  public void receivedError(String message) {
-    if (observer != null) {
-      Platform.runLater(() -> observer.receivedError(message));
-    }
   }
 
   @Override
@@ -119,18 +85,19 @@ public class SingleplayerModel implements RaceObserver, RaceResultObserver, Erro
     }
     CheckResult check = typeracer.check(key.charAt(0));
     if (typeracer.getState().getCurrentGamePhase() == GamePhase.FINISHED) {
-      sendProgress();
-      this.finishedMessage = FINISHED;
+      updateView();
       if (observer != null) {
-        Platform.runLater(() -> observer.changedFinishedMessage(FINISHED));
+        Platform.runLater(() -> {
+          observer.checkeredFlag(getDuration());
+        });
       }
       this.state = State.CHECKERED_FLAG;
     }
     return check;
   }
 
-  List<PlayerUpdate> getRaceUpdate() {
-    return updates;
+  PlayerUpdate getRaceUpdate() {
+    return update;
   }
 
   void initRaceStart() {
@@ -151,14 +118,10 @@ public class SingleplayerModel implements RaceObserver, RaceResultObserver, Erro
     }
   }
 
-  private void sendProgress() {
-    Client client = ApplicationState.getInstance().getClient();
-    client.sendProgressUpdate(
-        new ProgressSnapshot(
-            raceStart,
-            Timestamp.currentTimestamp(),
-            typeracer.getState().getTypeChar().getCounter(),
-            typeracer.getState().getTypeChar().getMistakeCounter()));
+  private void updateView() {
+    if (observer != null) {
+      Platform.runLater(() -> observer.updatedRaceState());
+    }
   }
 
   private void startPolling() {
@@ -184,10 +147,29 @@ public class SingleplayerModel implements RaceObserver, RaceResultObserver, Erro
         if (observer != null) {
           Platform.runLater(() -> observer.updatedTimer(time));
         }
-        sendProgress();
+        updateView();
         break;
       default:
     }
+  }
+
+  void updateProgress() {
+    long duration = Timestamp.currentTimestamp() - raceStart;
+    int typedCharCounter = typeracer.getState().getTypeChar().getCounter();
+    int wpm = wordsPerMinute(typedCharCounter, duration);
+    int textLength = typeracer.getState().getTypeChar().getCompleteText().length();
+    float progress = (float) typedCharCounter / textLength;
+    this.update = new PlayerUpdate(username, wpm, progress, false, duration);
+  }
+
+  private int wordsPerMinute(int charsTyped, long durationInSec) {
+    float durationInMin = (float) durationInSec / 60;
+    int wordsTyped = charsTyped / 5;
+    return (int) (wordsTyped / durationInMin);
+  }
+
+  long getDuration() {
+    return Timestamp.currentTimestamp() - raceStart;
   }
 }
 

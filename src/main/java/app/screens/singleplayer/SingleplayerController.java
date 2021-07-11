@@ -3,6 +3,9 @@ package app.screens.singleplayer;
 import app.screens.finished.GameFinishedController;
 import app.screens.finished.GameFinishedModel;
 import app.screens.finished.GameFinishedView;
+import app.screens.finishedSingleplayer.GameFinishedControllerSingleplayer;
+import app.screens.finishedSingleplayer.GameFinishedModelSingleplayer;
+import app.screens.finishedSingleplayer.GameFinishedViewSingleplayer;
 import app.screens.start.StartScreenController;
 import app.screens.start.StartScreenModel;
 import app.screens.start.StartScreenView;
@@ -49,8 +52,7 @@ public class SingleplayerController implements SingleplayerModelObserver {
 
   @Override
   public void checkeredFlag(long raceEndTimestamp) {
-    view.setCountdownLabelVisible(true);
-    view.setCountdownSubtitleVisible(true);
+    new GameFinishedControllerSingleplayer(new GameFinishedModelSingleplayer(model.username, model.iconId, model.getDuration()), new GameFinishedViewSingleplayer(view.getStage()));
   }
 
   @Override
@@ -83,6 +85,7 @@ public class SingleplayerController implements SingleplayerModelObserver {
     CheckResult check = model.typed(typed);
     if (check != null) {
       view.showTextProgress(check);
+      model.updateProgress();
     }
   }
 

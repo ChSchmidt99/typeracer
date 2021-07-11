@@ -1,4 +1,4 @@
-package app.screens.createsingleplayer;
+package app.screens.createSingleplayer;
 
 import app.IconManager;
 import app.screens.singleplayer.SingleplayerController;
@@ -7,7 +7,9 @@ import app.screens.singleplayer.SingleplayerView;
 import app.screens.start.StartScreenController;
 import app.screens.start.StartScreenModel;
 import app.screens.start.StartScreenView;
+import database.TextDatabase;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import protocol.RaceDataSingleplayer;
 
 public class CreateSingleplayerController {
@@ -33,7 +35,7 @@ public class CreateSingleplayerController {
     view.getStartButton().setOnAction(actionEvent -> {
       try {
         clickedStart();
-      } catch (FileNotFoundException e) {
+      } catch (IOException e) {
         e.printStackTrace();
       }
     });
@@ -47,9 +49,8 @@ public class CreateSingleplayerController {
     new StartScreenController(new StartScreenModel(), view);
   }
 
-  private void clickedStart() throws FileNotFoundException {
-    new SingleplayerController(new SingleplayerModel(new RaceDataSingleplayer("Das ist ein Test", 0, model.name,
+  private void clickedStart() throws IOException {
+    new SingleplayerController(new SingleplayerModel(new RaceDataSingleplayer(new TextDatabase().getPhrase(), 0, model.name,
         model.iconId) ), new SingleplayerView(view.getStage()));
   }
-
 }

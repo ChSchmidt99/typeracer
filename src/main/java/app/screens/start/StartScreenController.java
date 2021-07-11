@@ -4,11 +4,10 @@ import app.IconManager;
 import app.screens.browser.LobbyBrowserController;
 import app.screens.browser.LobbyBrowserModel;
 import app.screens.browser.LobbyBrowserView;
-import app.screens.createsingleplayer.CreateSingleplayerController;
-import app.screens.createsingleplayer.CreateSingleplayerModel;
-import app.screens.createsingleplayer.CreateSingleplayerView;
+import app.screens.createSingleplayer.CreateSingleplayerController;
+import app.screens.createSingleplayer.CreateSingleplayerModel;
+import app.screens.createSingleplayer.CreateSingleplayerView;
 import java.io.IOException;
-import javafx.fxml.FXML;
 
 /** Handles transition functionality for startscreen. */
 public class StartScreenController implements StartScreenModelObserver {

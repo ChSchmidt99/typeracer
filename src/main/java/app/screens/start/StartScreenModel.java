@@ -2,8 +2,6 @@ package app.screens.start;
 
 import app.ApplicationState;
 import app.IconManager;
-import app.screens.createsingleplayer.CreateSingleplayerController;
-import app.screens.createsingleplayer.CreateSingleplayerModel;
 import client.Client;
 import client.ClientObserver;
 import client.ErrorObserver;

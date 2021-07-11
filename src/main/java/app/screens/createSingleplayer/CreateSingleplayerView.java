@@ -1,4 +1,4 @@
-package app.screens.createsingleplayer;
+package app.screens.createSingleplayer;
 
 import app.screens.View;
 import javafx.fxml.FXML;
