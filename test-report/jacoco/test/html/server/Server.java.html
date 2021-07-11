@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Server.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">server</a> &gt; <span class="el_source">Server.java</span></div><h1>Server.java</h1><pre class="source lang-java linenums">package server;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Server.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">server</a> &gt; <span class="el_source">Server.java</span></div><h1>Server.java</h1><pre class="source lang-java linenums">package server;
 
 import backend.Api;
 import backend.ApiImpl;
@@ -70,11 +70,11 @@ public class Server implements Closeable, OnDisconnect {
    */
   @Override
   public void closedConnection(Connection connection) {
-<span class="nc" id="L73">    Logger.logInfo(&quot;Connection &quot; + connection.getId() + &quot; disconnected&quot;);</span>
-<span class="nc" id="L74">    closeables.remove(connection);</span>
-<span class="nc" id="L75">    connection.close();</span>
-<span class="nc" id="L76">    pushService.removeConnection(connection);</span>
-<span class="nc" id="L77">  }</span>
+<span class="fc" id="L73">    Logger.logInfo(&quot;Connection &quot; + connection.getId() + &quot; disconnected&quot;);</span>
+<span class="fc" id="L74">    closeables.remove(connection);</span>
+<span class="fc" id="L75">    connection.close();</span>
+<span class="fc" id="L76">    pushService.removeConnection(connection);</span>
+<span class="fc" id="L77">  }</span>
 
   private void awaitConnections() throws IOException {
 <span class="pc bpc" id="L80" title="1 of 2 branches missed.">    while (isRunning) {</span>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">protocol</a> &gt; <span class="el_source">UserResult.java</span></div><h1>UserResult.java</h1><pre class="source lang-java linenums">package protocol;
+
+/** Holds the result a player achieved in one race. */
+public class UserResult {
+
+  public final UserData userData;
+
+  public final int wpm;
+
+  public final int mistakes;
+
+  public final int place;
+
+  /**
+   * Create new UserResult.
+   *
+   * @param userData information about user
+   * @param wpm words per minute
+   * @param mistakes in race
+   * @param place which place the player ended up in
+   */
+<span class="nc" id="L22">  public UserResult(UserData userData, int wpm, int mistakes, int place) {</span>
+<span class="nc" id="L23">    this.userData = userData;</span>
+<span class="nc" id="L24">    this.wpm = wpm;</span>
+<span class="nc" id="L25">    this.mistakes = mistakes;</span>
+<span class="nc" id="L26">    this.place = place;</span>
+<span class="nc" id="L27">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

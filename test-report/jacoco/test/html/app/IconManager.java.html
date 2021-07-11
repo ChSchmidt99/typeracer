@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IconManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app</a> &gt; <span class="el_source">IconManager.java</span></div><h1>IconManager.java</h1><pre class="source lang-java linenums">package app;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/** Stores the currently selected Icon and all paths to all possible icons. */
+<span class="nc" id="L9">public class IconManager {</span>
+
+<span class="nc" id="L11">  private static final Icon[] icons = {</span>
+    new Icon(&quot;1&quot;, &quot;icons/notepad.PNG&quot;),
+    new Icon(&quot;2&quot;, &quot;icons/printer.PNG&quot;),
+    new Icon(&quot;3&quot;, &quot;icons/msdos.PNG&quot;),
+    new Icon(&quot;4&quot;, &quot;icons/paint.PNG&quot;),
+    new Icon(&quot;5&quot;, &quot;icons/print.PNG&quot;),
+    new Icon(&quot;6&quot;, &quot;icons/regedit.PNG&quot;),
+    new Icon(&quot;7&quot;, &quot;icons/solitaire.PNG&quot;),
+    new Icon(&quot;8&quot;, &quot;icons/win.PNG&quot;)
+  };
+
+  /**
+   * Get an array of all possible Icons.
+   *
+   * @return array of {@link Icon}
+   */
+  public static List&lt;Icon&gt; getAllIcons() {
+<span class="nc" id="L28">    List&lt;Icon&gt; out = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L29">    Collections.addAll(out, icons);</span>
+<span class="nc" id="L30">    return out;</span>
+  }
+
+  /**
+   * Set currently selected Icon.
+   *
+   * @return icon {@link Icon}
+   */
+  public static Icon getSelectedIcon() {
+<span class="nc" id="L39">    return selected;</span>
+  }
+
+  /**
+   * Set currently selected Icon.
+   *
+   * @param icon {@link Icon}
+   */
+  public static void setSelectedIcon(Icon icon) {
+<span class="nc" id="L48">    IconManager.selected = icon;</span>
+<span class="nc" id="L49">  }</span>
+
+  /**
+   * Create new Icon.
+   *
+   * @param iconId id of icon consistent across all clients
+   * @return {@link Icon}
+   * @throws FileNotFoundException If icon is not found
+   */
+  public static Icon iconForId(String iconId) throws FileNotFoundException {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    for (Icon icon : icons) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">      if (icon.getId().equals(iconId)) {</span>
+<span class="nc" id="L61">        return icon;</span>
+      }
+    }
+<span class="nc" id="L64">    throw new FileNotFoundException(&quot;Icon not found&quot;);</span>
+  }
+
+  private static Icon selected;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

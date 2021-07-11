@@ -10,6 +10,7 @@ public interface Client extends ObserverHandler, Closeable {
    * Register a new user.
    *
    * @param userName name of user
+   * @param iconId id of icon
    */
   void registerUser(String userName, String iconId);
 

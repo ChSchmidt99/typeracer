@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IconPicker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.custom</a> &gt; <span class="el_source">IconPicker.java</span></div><h1>IconPicker.java</h1><pre class="source lang-java linenums">package app.custom;
+
+import app.Icon;
+import app.IconManager;
+import java.util.List;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+
+/** Custom Picker for Icons. */
+public class IconPicker extends GridPane {
+
+  private final ToggleGroup group;
+
+  /**
+   * Create new IconPicker including all Icons specified in {@link IconManager}.
+   *
+   * @param iconsPerRow after how many icons a new line is started
+   */
+<span class="nc" id="L26">  public IconPicker(int iconsPerRow) {</span>
+<span class="nc" id="L27">    this.group = new ToggleGroup();</span>
+<span class="nc" id="L28">    addIcons(IconManager.getAllIcons(), iconsPerRow);</span>
+<span class="nc" id="L29">    group</span>
+<span class="nc" id="L30">        .selectedToggleProperty()</span>
+<span class="nc" id="L31">        .addListener(</span>
+<span class="nc" id="L32">            new ChangeListener&lt;Toggle&gt;() {</span>
+              @Override
+              public void changed(
+                  ObservableValue&lt;? extends Toggle&gt; observable, Toggle oldValue, Toggle newValue) {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                if (newValue != null) {</span>
+<span class="nc" id="L37">                  IconManager.setSelectedIcon((Icon) newValue.getUserData());</span>
+                }
+<span class="nc" id="L39">              }</span>
+            });
+<span class="nc" id="L41">  }</span>
+
+  private void addIcons(List&lt;Icon&gt; icons, int iconsPerRow) {
+<span class="nc" id="L44">    int index = 0;</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">    for (int i = 0; i &lt; icons.size(); i++) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">      VBox entry = makePickerNode(icons.get(i), i == 0);</span>
+<span class="nc" id="L47">      this.add(entry, index % iconsPerRow, i / iconsPerRow);</span>
+<span class="nc" id="L48">      index++;</span>
+    }
+<span class="nc" id="L50">  }</span>
+
+  private VBox makePickerNode(Icon icon, boolean isSelected) {
+<span class="nc" id="L53">    RadioButton radioButton = new RadioButton();</span>
+<span class="nc" id="L54">    radioButton.setUserData(icon);</span>
+<span class="nc" id="L55">    radioButton.setFocusTraversable(false);</span>
+<span class="nc" id="L56">    radioButton.setStyle(&quot;-fx-background-color: #ffffff; -fx-text-fill: #000000&quot;);</span>
+<span class="nc" id="L57">    radioButton.setToggleGroup(group);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">    if (isSelected) {</span>
+<span class="nc" id="L59">      radioButton.setSelected(isSelected);</span>
+<span class="nc" id="L60">      IconManager.setSelectedIcon(icon);</span>
+    }
+<span class="nc" id="L62">    ImageView view = new ImageView(icon.getImage());</span>
+<span class="nc" id="L63">    VBox box = new VBox();</span>
+<span class="nc" id="L64">    box.setSpacing(15);</span>
+<span class="nc" id="L65">    box.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L66">    box.getChildren().add(view);</span>
+<span class="nc" id="L67">    box.getChildren().add(radioButton);</span>
+<span class="nc" id="L68">    return box;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

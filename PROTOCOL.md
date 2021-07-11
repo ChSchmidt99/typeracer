@@ -169,6 +169,7 @@ After a race was finished, or the result was requested, the following response w
   "type" : "race result",
   "raceResult" : {
     "duration" : "<duration until first player finished as unix epoch long in sec>",
+    "text" : "<typed text as String>",
     "classification" : [{
         "userData" : {
           "name" : "<some name>",

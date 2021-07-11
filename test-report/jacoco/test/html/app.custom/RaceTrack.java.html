@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RaceTrack.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.custom</a> &gt; <span class="el_source">RaceTrack.java</span></div><h1>RaceTrack.java</h1><pre class="source lang-java linenums">package app.custom;
+
+import app.Icon;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+
+/** Custom Race Track Element used to show progress of all Players. */
+public class RaceTrack extends Pane {
+
+  private double progress;
+  private final double trackWidth;
+  private final double imageWidth;
+  private final ImageView imageView;
+
+  /**
+   * Create new Race track with given dimensions. Size of Icons is adjusted automatically.
+   *
+   * @param icon of Player on track
+   * @param trackWidth width of track in pixels
+   * @param trackHeight height of track in pixels
+   * @param trackColor background color of track
+   */
+<span class="nc" id="L26">  public RaceTrack(Icon icon, double trackWidth, double trackHeight, Paint trackColor) {</span>
+<span class="nc" id="L27">    Rectangle track = new Rectangle(trackWidth, trackHeight, trackColor);</span>
+<span class="nc" id="L28">    getChildren().add(track);</span>
+<span class="nc" id="L29">    Image image = icon.getImage();</span>
+<span class="nc" id="L30">    this.imageView = new ImageView(image);</span>
+<span class="nc" id="L31">    imageView.setPreserveRatio(true);</span>
+<span class="nc" id="L32">    imageView.setFitHeight(trackHeight);</span>
+<span class="nc" id="L33">    imageView.setX(0);</span>
+<span class="nc" id="L34">    double aspectRatio = image.getWidth() / image.getHeight();</span>
+<span class="nc" id="L35">    this.imageWidth = imageView.getFitHeight() * aspectRatio;</span>
+<span class="nc" id="L36">    getChildren().add(imageView);</span>
+<span class="nc" id="L37">    this.trackWidth = trackWidth;</span>
+<span class="nc" id="L38">    this.progress = 0;</span>
+<span class="nc" id="L39">  }</span>
+
+  /**
+   * Update progress of player on track.
+   *
+   * @param progress of player in range [0,1]
+   */
+  public void updateProgress(double progress) {
+<span class="nc" id="L47">    this.progress = progress;</span>
+<span class="nc" id="L48">    this.imageView.setX(currentXpos());</span>
+<span class="nc" id="L49">  }</span>
+
+  private double currentXpos() {
+<span class="nc" id="L52">    double effectiveWidth = this.trackWidth - imageWidth;</span>
+<span class="nc" id="L53">    return effectiveWidth * progress;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

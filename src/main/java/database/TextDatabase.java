@@ -21,7 +21,6 @@ public class TextDatabase {
    */
   public TextDatabase() throws IOException {
     dictionary = new ArrayList<>();
-
     InputStream in = this.getClass().getResourceAsStream("/dictionary.txt");
     if (in == null) {
       throw new FileNotFoundException();
@@ -30,28 +29,7 @@ public class TextDatabase {
     while (reader.ready()) {
       dictionary.add(reader.readLine());
     }
-
     reader.close();
-
-    /*
-    URL path = this.getClass().getClassLoader().getResource("dictionary.txt");
-    // URL path = this.getClass().getClassLoader().getResource("database.txt");
-    if (path == null) {
-      throw new FileNotFoundException();
-    }
-
-    System.out.println(path.getPath());
-
-
-    File f = new File(path.getPath());
-    Scanner s = new Scanner(f, StandardCharsets.UTF_8);
-
-    while (s.hasNextLine()) {
-      dictionary.add(s.nextLine());
-    }
-
-    s.close();
-     */
   }
 
   /**

@@ -10,7 +10,7 @@ public class DatabaseTest {
   @Test
   void getValidUserId() {
     try {
-      TestDatabase t = new TestDatabase();
+      UserDatabase t = new UserDatabase();
       String name = "dude";
       String userId = t.registerUser(name);
       String username = t.getUsername(userId);

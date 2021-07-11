@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">ApiImpl.java</span></div><h1>ApiImpl.java</h1><pre class="source lang-java linenums">package backend;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">backend</a> &gt; <span class="el_source">ApiImpl.java</span></div><h1>ApiImpl.java</h1><pre class="source lang-java linenums">package backend;
 
 import database.Database;
 import java.util.List;
@@ -13,7 +13,8 @@ import util.Logger;
 public class ApiImpl implements Api {
 
   private final PushService pushService;
-  private final SessionStore sessionStore;
+  private final LobbyStore lobbyStore;
+  private final UserStore userStore;
   private final Database database;
   private final RaceSettings raceSettings;
 
@@ -23,60 +24,126 @@ public class ApiImpl implements Api {
    * @param pushService service where responses are sent to
    * @param database database
    */
-<span class="fc" id="L26">  public ApiImpl(PushService pushService, Database database) {</span>
-<span class="fc" id="L27">    this.pushService = pushService;</span>
-<span class="fc" id="L28">    this.database = database;</span>
-<span class="fc" id="L29">    this.sessionStore = new SessionStore(this.database);</span>
-<span class="fc" id="L30">    this.raceSettings = new RaceSettings(5, 1);</span>
-<span class="fc" id="L31">  }</span>
+<span class="fc" id="L27">  public ApiImpl(PushService pushService, Database database) {</span>
+<span class="fc" id="L28">    this.pushService = pushService;</span>
+<span class="fc" id="L29">    this.database = database;</span>
+<span class="fc" id="L30">    this.userStore = new UserStore();</span>
+<span class="fc" id="L31">    this.lobbyStore = new LobbyStore(this.database);</span>
+<span class="fc" id="L32">    this.raceSettings = new RaceSettings(5, 1);</span>
+<span class="fc" id="L33">  }</span>
 
   @Override
-  public void registerPlayer(String connectionId, String name) {
+  public void registerPlayer(String connectionId, String name, String iconId) {
     try {
-<span class="nc" id="L36">      String userId = database.registerUser(name);</span>
-<span class="nc" id="L37">      Response response = ResponseFactory.makeRegisteredResponse(userId);</span>
-<span class="nc" id="L38">      pushService.sendResponse(connectionId, response);</span>
-<span class="nc" id="L39">    } catch (Exception e) {</span>
-<span class="nc" id="L40">      Logger.logError(e.getMessage());</span>
-<span class="nc" id="L41">    }</span>
-<span class="nc" id="L42">  }</span>
+<span class="fc" id="L38">      String userId = database.registerUser(name);</span>
+<span class="fc" id="L39">      this.userStore.addNewUser(</span>
+          connectionId, new User(userId, name, iconId, connectionId, pushService));
+<span class="fc" id="L41">      Response response = ResponseFactory.makeRegisteredResponse(userId);</span>
+<span class="fc" id="L42">      pushService.sendResponse(connectionId, response);</span>
+<span class="nc" id="L43">    } catch (Exception e) {</span>
+<span class="nc" id="L44">      Logger.logError(e.getMessage());</span>
+<span class="fc" id="L45">    }</span>
+<span class="fc" id="L46">  }</span>
 
   @Override
-  public void createNewLobby(String connectionId, String userId, String lobbyName) {
-<span class="fc" id="L46">    String lobbyId = sessionStore.createNewLobby(connectionId, lobbyName, pushService);</span>
-<span class="fc" id="L47">    sessionStore.joinLobby(lobbyId, connectionId, userId);</span>
-<span class="fc" id="L48">  }</span>
+  public void createNewLobby(String connectionId, String lobbyName) {
+<span class="fc" id="L50">    User user = userStore.getUser(connectionId);</span>
+<span class="fc" id="L51">    String lobbyId = lobbyStore.createNewLobby(user, lobbyName);</span>
+    try {
+<span class="fc" id="L53">      lobbyStore.addToLobby(lobbyId, user);</span>
+<span class="nc" id="L54">    } catch (Exception e) {</span>
+<span class="nc" id="L55">      Response error = ResponseFactory.makeErrorResponse(e.getMessage());</span>
+<span class="nc" id="L56">      pushService.sendResponse(connectionId, error);</span>
+<span class="fc" id="L57">    }</span>
+<span class="fc" id="L58">  }</span>
 
   @Override
-  public void joinLobby(String lobbyId, String connectionId, String userId) {
-<span class="nc" id="L52">    sessionStore.joinLobby(lobbyId, connectionId, userId);</span>
-<span class="nc" id="L53">  }</span>
+  public void joinLobby(String connectionId, String lobbyId) {
+    try {
+<span class="nc" id="L63">      User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L64">      lobbyStore.addToLobby(lobbyId, user);</span>
+<span class="nc" id="L65">    } catch (Exception e) {</span>
+<span class="nc" id="L66">      Response error = ResponseFactory.makeErrorResponse(e.getMessage());</span>
+<span class="nc" id="L67">      pushService.sendResponse(connectionId, error);</span>
+<span class="nc" id="L68">    }</span>
+<span class="nc" id="L69">  }</span>
 
   @Override
   public void leaveLobby(String connectionId) {
-<span class="nc" id="L57">    sessionStore.leaveLobby(connectionId);</span>
-<span class="nc" id="L58">  }</span>
+<span class="fc" id="L73">    User user = userStore.getUser(connectionId);</span>
+<span class="fc" id="L74">    lobbyStore.removeFromLobby(user);</span>
+<span class="fc" id="L75">  }</span>
 
   @Override
   public void startRace(String connectionId) {
-<span class="nc" id="L62">    sessionStore.startGame(connectionId, raceSettings);</span>
-<span class="nc" id="L63">  }</span>
+<span class="nc" id="L79">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L80">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">    if (lobby != null) {</span>
+<span class="nc" id="L82">      lobby.startRace(user, raceSettings);</span>
+    }
+<span class="nc" id="L84">  }</span>
 
   @Override
   public void getLobbies(String connectionId) {
-<span class="fc" id="L67">    List&lt;LobbyModel&gt; lobbies = sessionStore.getOpenLobbies();</span>
-<span class="fc" id="L68">    Response response = ResponseFactory.makeLobbiesResponse(lobbies);</span>
-<span class="fc" id="L69">    pushService.sendResponse(connectionId, response);</span>
-<span class="fc" id="L70">  }</span>
+<span class="fc" id="L88">    List&lt;LobbyData&gt; lobbies = lobbyStore.getOpenLobbies();</span>
+<span class="fc" id="L89">    Response response = ResponseFactory.makeLobbiesResponse(lobbies);</span>
+<span class="fc" id="L90">    pushService.sendResponse(connectionId, response);</span>
+<span class="fc" id="L91">  }</span>
+
+  @Override
+  public void sendLobbyUpdate(String connectionId) {
+<span class="nc" id="L95">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L96">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">    if (lobby != null) {</span>
+<span class="nc" id="L98">      lobby.sendUpdate(user);</span>
+    }
+<span class="nc" id="L100">  }</span>
 
   @Override
   public void setPlayerReady(String connectionId, boolean isReady) {
-<span class="nc" id="L74">    sessionStore.setPlayerReady(connectionId, isReady);</span>
-<span class="nc" id="L75">  }</span>
+<span class="nc" id="L104">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L105">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">    if (lobby != null) {</span>
+<span class="nc" id="L107">      lobby.setPlayerReady(user, isReady);</span>
+    }
+<span class="nc" id="L109">  }</span>
 
   @Override
   public void updateProgress(String connectionId, ProgressSnapshot snapshot) {
-<span class="nc" id="L79">    sessionStore.updateProgress(connectionId, snapshot);</span>
-<span class="nc" id="L80">  }</span>
+<span class="nc" id="L113">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L114">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">    if (lobby != null &amp;&amp; lobby.isRunning()) {</span>
+<span class="nc" id="L116">      Race race = lobby.getRace();</span>
+<span class="nc" id="L117">      race.updateProgress(user, snapshot);</span>
+    }
+<span class="nc" id="L119">  }</span>
+
+  @Override
+  public void sendPreviousRaceResult(String connectionId) {
+<span class="nc" id="L123">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L124">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    if (lobby != null) {</span>
+<span class="nc" id="L126">      lobby.sendPreviousRaceResult(user);</span>
+    }
+<span class="nc" id="L128">  }</span>
+
+  @Override
+  public void requestChatHistory(String connectionId) {
+<span class="nc" id="L132">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L133">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">    if (lobby != null) {</span>
+<span class="nc" id="L135">      lobby.sendChatHistory(user);</span>
+    }
+<span class="nc" id="L137">  }</span>
+
+  @Override
+  public void sendChat(String connectionId, String message) {
+<span class="nc" id="L141">    User user = userStore.getUser(connectionId);</span>
+<span class="nc" id="L142">    Lobby lobby = lobbyStore.getLobby(user);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">    if (lobby != null) {</span>
+<span class="nc" id="L144">      ChatMessage chatMessage = new ChatMessage(user, message);</span>
+<span class="nc" id="L145">      lobby.sendChatMessage(chatMessage);</span>
+    }
+<span class="nc" id="L147">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

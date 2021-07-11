@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreateController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.create</a> &gt; <span class="el_source">CreateController.java</span></div><h1>CreateController.java</h1><pre class="source lang-java linenums">package app.screens.create;
+
+import app.screens.browser.LobbyBrowserController;
+import app.screens.browser.LobbyBrowserModel;
+import app.screens.browser.LobbyBrowserView;
+import app.screens.lobby.GameLobbyController;
+import app.screens.lobby.GameLobbyModel;
+import app.screens.lobby.GameLobbyView;
+import protocol.LobbyData;
+
+/** Handles all gui functionality for game creation. */
+public class CreateController implements CreateModelObserver {
+
+  private static final String LOBBY_NAME_ERROR = &quot;Please enter lobby name&quot;;
+
+  private final CreateModel model;
+  private final CreateView view;
+
+  /**
+   * Creates new controller and shows view.
+   *
+   * @param model to fill view with
+   * @param view that will be shown
+   */
+<span class="nc" id="L25">  public CreateController(CreateModel model, CreateView view) {</span>
+<span class="nc" id="L26">    this.view = view;</span>
+<span class="nc" id="L27">    bindButtons(view);</span>
+<span class="nc" id="L28">    this.model = model;</span>
+<span class="nc" id="L29">    model.setObserver(this);</span>
+<span class="nc" id="L30">    view.show();</span>
+<span class="nc" id="L31">  }</span>
+
+  @Override
+  public void joinedLobby(LobbyData lobby) {
+<span class="nc" id="L35">    new GameLobbyController(new GameLobbyModel(lobby), new GameLobbyView(view.getStage()));</span>
+<span class="nc" id="L36">  }</span>
+
+  @Override
+  public void receivedError(String message) {
+<span class="nc" id="L40">    view.displayError(message);</span>
+<span class="nc" id="L41">  }</span>
+
+  private void bindButtons(CreateView view) {
+<span class="nc" id="L44">    view.getCreateButton().setOnAction(actionEvent -&gt; clickedCreate());</span>
+<span class="nc" id="L45">    view.getBackButton().setOnAction(actionEvent -&gt; clickedBack());</span>
+<span class="nc" id="L46">  }</span>
+
+  private void clickedBack() {
+<span class="nc" id="L49">    LobbyBrowserView view = new LobbyBrowserView(this.view.getStage());</span>
+<span class="nc" id="L50">    new LobbyBrowserController(new LobbyBrowserModel(), view);</span>
+<span class="nc" id="L51">  }</span>
+
+  private void clickedCreate() {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">    if (view.getLobbyName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L55">      view.displayError(LOBBY_NAME_ERROR);</span>
+    } else {
+<span class="nc" id="L57">      model.createLobby(view.getLobbyName());</span>
+    }
+<span class="nc" id="L59">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

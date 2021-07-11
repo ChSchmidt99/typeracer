@@ -46,9 +46,7 @@ public class LobbyBrowserModel implements LobbyObserver, ClientObserver, ErrorOb
   public void receivedChatHistory(List<ChatMessageData> chatHistory) {}
 
   @Override
-  public void registered(String userId) {
-    // TODO: remove unused functions from interface
-  }
+  public void registered(String userId) {}
 
   @Override
   public void receivedOpenLobbies(List<LobbyData> lobbies) {

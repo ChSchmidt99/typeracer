@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">client</a> &gt; <span class="el_source">ResponseHandler.java</span></div><h1>ResponseHandler.java</h1><pre class="source lang-java linenums">package client;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">client</a> &gt; <span class="el_source">ResponseHandler.java</span></div><h1>ResponseHandler.java</h1><pre class="source lang-java linenums">package client;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import protocol.Response;
@@ -17,22 +18,24 @@ class ResponseHandler implements Closeable {
   private final BufferedReader reader;
   private final Gson gson;
   private final ExecutorService executorService;
-  private final HashSet&lt;ClientObserver&gt; observers;
-  private final HashSet&lt;RaceObserver&gt; raceObservers;
-  private final HashSet&lt;LobbyObserver&gt; lobbyObservers;
-  private final HashSet&lt;ErrorObserver&gt; errorObservers;
+  private final List&lt;ClientObserver&gt; observers;
+  private final List&lt;RaceObserver&gt; raceObservers;
+  private final List&lt;RaceResultObserver&gt; resultObservers;
+  private final List&lt;LobbyObserver&gt; lobbyObservers;
+  private final List&lt;ErrorObserver&gt; errorObservers;
 
-<span class="nc" id="L25">  ResponseHandler(Socket socket, Gson gson) throws IOException {</span>
-<span class="nc" id="L26">    this.reader =</span>
-<span class="nc" id="L27">        new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));</span>
-<span class="nc" id="L28">    this.gson = gson;</span>
-<span class="nc" id="L29">    this.observers = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L30">    this.lobbyObservers = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L31">    this.raceObservers = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L32">    this.errorObservers = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L33">    executorService = Executors.newFixedThreadPool(1);</span>
-<span class="nc" id="L34">    executorService.execute(this::startListening);</span>
-<span class="nc" id="L35">  }</span>
+<span class="nc" id="L27">  ResponseHandler(Socket socket, Gson gson) throws IOException {</span>
+<span class="nc" id="L28">    this.reader =</span>
+<span class="nc" id="L29">        new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));</span>
+<span class="nc" id="L30">    this.gson = gson;</span>
+<span class="nc" id="L31">    this.observers = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="nc" id="L32">    this.lobbyObservers = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="nc" id="L33">    this.raceObservers = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="nc" id="L34">    this.resultObservers = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="nc" id="L35">    this.errorObservers = new CopyOnWriteArrayList&lt;&gt;();</span>
+<span class="nc" id="L36">    executorService = Executors.newFixedThreadPool(1);</span>
+<span class="nc" id="L37">    executorService.execute(this::startListening);</span>
+<span class="nc" id="L38">  }</span>
 
   /**
    * Closes reader and executor service.
@@ -41,102 +44,130 @@ class ResponseHandler implements Closeable {
    */
   @Override
   public void close() throws IOException {
-<span class="nc" id="L44">    this.executorService.shutdownNow();</span>
-<span class="nc" id="L45">    this.reader.close();</span>
-<span class="nc" id="L46">  }</span>
-
-  void subscribe(ClientObserver observer) {
-<span class="nc" id="L49">    observers.add(observer);</span>
+<span class="nc" id="L47">    this.errorObservers.clear();</span>
+<span class="nc" id="L48">    this.reader.close();</span>
+<span class="nc" id="L49">    this.executorService.shutdownNow();</span>
 <span class="nc" id="L50">  }</span>
 
-  void unsubscribe(ClientObserver observer) {
-<span class="nc" id="L53">    observers.remove(observer);</span>
+  void subscribe(ClientObserver observer) {
+<span class="nc" id="L53">    observers.add(observer);</span>
 <span class="nc" id="L54">  }</span>
 
-  void subscribeRaceUpdates(RaceObserver observer) {
-<span class="nc" id="L57">    raceObservers.add(observer);</span>
+  void unsubscribe(ClientObserver observer) {
+<span class="nc" id="L57">    observers.remove(observer);</span>
 <span class="nc" id="L58">  }</span>
 
-  void unsubscribeRaceUpdates(RaceObserver observer) {
-<span class="nc" id="L61">    raceObservers.remove(observer);</span>
+  void subscribeRaceUpdates(RaceObserver observer) {
+<span class="nc" id="L61">    raceObservers.add(observer);</span>
 <span class="nc" id="L62">  }</span>
 
-  void subscribeLobbyUpdates(LobbyObserver observer) {
-<span class="nc" id="L65">    lobbyObservers.add(observer);</span>
+  void unsubscribeRaceUpdates(RaceObserver observer) {
+<span class="nc" id="L65">    raceObservers.remove(observer);</span>
 <span class="nc" id="L66">  }</span>
 
-  void unsubscribeLobbyUpdates(LobbyObserver observer) {
-<span class="nc" id="L69">    lobbyObservers.remove(observer);</span>
+  void subscribeLobbyUpdates(LobbyObserver observer) {
+<span class="nc" id="L69">    lobbyObservers.add(observer);</span>
 <span class="nc" id="L70">  }</span>
 
-  void subscribeErrors(ErrorObserver observer) {
-<span class="nc" id="L73">    errorObservers.add(observer);</span>
+  void unsubscribeLobbyUpdates(LobbyObserver observer) {
+<span class="nc" id="L73">    lobbyObservers.remove(observer);</span>
 <span class="nc" id="L74">  }</span>
 
-  void unsubscribeErrors(ErrorObserver observer) {
-<span class="nc" id="L77">    errorObservers.remove(observer);</span>
+  void subscribeResults(RaceResultObserver observer) {
+<span class="nc" id="L77">    resultObservers.add(observer);</span>
 <span class="nc" id="L78">  }</span>
+
+  void unsubscribeResults(RaceResultObserver observer) {
+<span class="nc" id="L81">    resultObservers.remove(observer);</span>
+<span class="nc" id="L82">  }</span>
+
+  void subscribeErrors(ErrorObserver observer) {
+<span class="nc" id="L85">    errorObservers.add(observer);</span>
+<span class="nc" id="L86">  }</span>
+
+  void unsubscribeErrors(ErrorObserver observer) {
+<span class="nc" id="L89">    errorObservers.remove(observer);</span>
+<span class="nc" id="L90">  }</span>
 
   private void startListening() {
     try {
       String line;
-<span class="nc bnc" id="L83" title="All 2 branches missed.">      while ((line = this.reader.readLine()) != null) {</span>
-<span class="nc" id="L84">        Response response = gson.fromJson(line, Response.class);</span>
-<span class="nc" id="L85">        receivedResponse(response);</span>
-<span class="nc" id="L86">      }</span>
-<span class="nc" id="L87">    } catch (IOException e) {</span>
-      // TODO: Handle lost Server connection
-<span class="nc" id="L89">      System.out.println(e.getMessage());</span>
-<span class="nc" id="L90">    }</span>
-<span class="nc" id="L91">  }</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">      while ((line = this.reader.readLine()) != null) {</span>
+<span class="nc" id="L96">        Response response = gson.fromJson(line, Response.class);</span>
+<span class="nc" id="L97">        receivedResponse(response);</span>
+<span class="nc" id="L98">      }</span>
+<span class="nc" id="L99">      disconnected();</span>
+<span class="nc" id="L100">    } catch (IOException e) {</span>
+<span class="nc" id="L101">      disconnected();</span>
+<span class="nc" id="L102">    }</span>
+<span class="nc" id="L103">  }</span>
+
+  private void disconnected() {
+<span class="nc" id="L106">    errorObservers.forEach(</span>
+        (observer) -&gt; {
+<span class="nc" id="L108">          observer.receivedError(&quot;Lost server connection&quot;);</span>
+<span class="nc" id="L109">        });</span>
+<span class="nc" id="L110">  }</span>
 
   private void receivedResponse(Response response) {
-<span class="nc bnc" id="L94" title="All 8 branches missed.">    switch (response.type) {</span>
+<span class="nc bnc" id="L113" title="All 10 branches missed.">    switch (response.type) {</span>
       case Response.Types.REGISTERED:
-<span class="nc" id="L96">        observers.forEach(</span>
+<span class="nc" id="L115">        observers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L98">              observer.registered(response.userId);</span>
-<span class="nc" id="L99">            });</span>
-<span class="nc" id="L100">        break;</span>
+<span class="nc" id="L117">              observer.registered(response.userId);</span>
+<span class="nc" id="L118">            });</span>
+<span class="nc" id="L119">        break;</span>
       case Response.Types.ERROR:
-<span class="nc" id="L102">        errorObservers.forEach(</span>
+<span class="nc" id="L121">        errorObservers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L104">              observer.receivedError(response.message);</span>
-<span class="nc" id="L105">            });</span>
-<span class="nc" id="L106">        break;</span>
+<span class="nc" id="L123">              observer.receivedError(&quot;SERVER ERROR: &quot; + response.message);</span>
+<span class="nc" id="L124">            });</span>
+<span class="nc" id="L125">        break;</span>
       case Response.Types.GAME_STARTING:
-<span class="nc" id="L108">        lobbyObservers.forEach(</span>
+<span class="nc" id="L127">        lobbyObservers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L110">              observer.gameStarting(response.race);</span>
-<span class="nc" id="L111">            });</span>
-<span class="nc" id="L112">        break;</span>
+<span class="nc" id="L129">              observer.gameStarting(response.race);</span>
+<span class="nc" id="L130">            });</span>
+<span class="nc" id="L131">        break;</span>
       case Response.Types.LOBBY_UPDATE:
-<span class="nc" id="L114">        lobbyObservers.forEach(</span>
+<span class="nc" id="L133">        lobbyObservers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L116">              observer.receivedLobbyUpdate(response.lobby);</span>
-<span class="nc" id="L117">            });</span>
-<span class="nc" id="L118">        break;</span>
+<span class="nc" id="L135">              observer.receivedLobbyUpdate(response.lobby);</span>
+<span class="nc" id="L136">            });</span>
+<span class="nc" id="L137">        break;</span>
       case Response.Types.OPEN_LOBBIES:
-<span class="nc" id="L120">        observers.forEach(</span>
+<span class="nc" id="L139">        observers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L122">              observer.receivedOpenLobbies(response.lobbies);</span>
-<span class="nc" id="L123">            });</span>
-<span class="nc" id="L124">        break;</span>
+<span class="nc" id="L141">              observer.receivedOpenLobbies(response.lobbies);</span>
+<span class="nc" id="L142">            });</span>
+<span class="nc" id="L143">        break;</span>
       case Response.Types.RACE_UPDATE:
-<span class="nc" id="L126">        raceObservers.forEach(</span>
+<span class="nc" id="L145">        raceObservers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L128">              observer.receivedRaceUpdate(response.playerUpdates);</span>
-<span class="nc" id="L129">            });</span>
-<span class="nc" id="L130">        break;</span>
+<span class="nc" id="L147">              observer.receivedRaceUpdate(response.playerUpdates);</span>
+<span class="nc" id="L148">            });</span>
+<span class="nc" id="L149">        break;</span>
       case Response.Types.CHECKERED_FLAG:
-<span class="nc" id="L132">        raceObservers.forEach(</span>
+<span class="nc" id="L151">        raceObservers.forEach(</span>
             (observer) -&gt; {
-<span class="nc" id="L134">              observer.receivedCheckeredFlag(response.raceStop);</span>
-<span class="nc" id="L135">            });</span>
-<span class="nc" id="L136">        break;</span>
+<span class="nc" id="L153">              observer.receivedCheckeredFlag(response.raceStop);</span>
+<span class="nc" id="L154">            });</span>
+<span class="nc" id="L155">        break;</span>
+      case Response.Types.RACE_RESULT:
+<span class="nc" id="L157">        resultObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L159">              observer.receivedRaceResult(response.raceResult);</span>
+<span class="nc" id="L160">            });</span>
+<span class="nc" id="L161">        break;</span>
+      case Response.Types.CHAT_HISTORY:
+<span class="nc" id="L163">        lobbyObservers.forEach(</span>
+            (observer) -&gt; {
+<span class="nc" id="L165">              observer.receivedChatHistory(response.chatHistory);</span>
+<span class="nc" id="L166">            });</span>
+<span class="nc" id="L167">        break;</span>
       default:
-<span class="nc" id="L138">        System.out.println(&quot;Received unknown ResponseType: &quot; + response.type);</span>
+<span class="nc" id="L169">        System.out.println(&quot;Received unknown ResponseType: &quot; + response.type);</span>
     }
-<span class="nc" id="L140">  }</span>
+<span class="nc" id="L171">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -17,6 +17,7 @@ public class UserData {
    * @param userId id of user
    * @param name of user
    * @param iconId local Icon Id
+   * @param state the users state
    */
   public UserData(String userId, String name, String iconId, String state) {
     this.name = name;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameFinishedController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">typeracer</a> &gt; <a href="index.source.html" class="el_package">app.screens.finished</a> &gt; <span class="el_source">GameFinishedController.java</span></div><h1>GameFinishedController.java</h1><pre class="source lang-java linenums">package app.screens.finished;
+
+import app.screens.lobby.GameLobbyController;
+import app.screens.lobby.GameLobbyModel;
+import app.screens.lobby.GameLobbyView;
+import java.io.FileNotFoundException;
+import protocol.LobbyData;
+
+/** Controller for game finished screen. */
+public class GameFinishedController implements GameFinishedModelObserver {
+
+  private final GameFinishedModel model;
+  private final GameFinishedView view;
+
+  /**
+   * Creates new controller and shows view.
+   *
+   * @param model to fill view with
+   * @param view that will be shown
+   */
+<span class="nc" id="L21">  public GameFinishedController(GameFinishedModel model, GameFinishedView view) {</span>
+<span class="nc" id="L22">    this.view = view;</span>
+<span class="nc" id="L23">    this.model = model;</span>
+<span class="nc" id="L24">    this.model.setObserver(this);</span>
+<span class="nc" id="L25">    bindings(view);</span>
+    try {
+<span class="nc" id="L27">      this.view.updateView(model.getRaceResult());</span>
+<span class="nc" id="L28">    } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L29">      e.printStackTrace();</span>
+<span class="nc" id="L30">    }</span>
+<span class="nc" id="L31">    this.view.show();</span>
+<span class="nc" id="L32">  }</span>
+
+  @Override
+  public void receivedGameLobby(LobbyData lobby) {
+<span class="nc" id="L36">    model.setObserver(null);</span>
+<span class="nc" id="L37">    new GameLobbyController(new GameLobbyModel(lobby), new GameLobbyView(view.getStage()));</span>
+<span class="nc" id="L38">  }</span>
+
+  @Override
+  public void receivedError(String message) {
+<span class="nc" id="L42">    view.displayError(message);</span>
+<span class="nc" id="L43">  }</span>
+
+  private void bindings(GameFinishedView view) {
+<span class="nc" id="L46">    view.getReturnButton().setOnAction(event -&gt; clickedReturn());</span>
+<span class="nc" id="L47">  }</span>
+
+  private void clickedReturn() {
+<span class="nc" id="L50">    model.requestLobby();</span>
+<span class="nc" id="L51">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

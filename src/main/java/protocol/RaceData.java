@@ -16,6 +16,7 @@ public class RaceData {
    *
    * @param textToType text of the race
    * @param players list of players
+   * @param startTime timestamp of race start as unix epoch long in sec
    */
   public RaceData(String textToType, List<UserData> players, long startTime) {
     this.textToType = textToType;

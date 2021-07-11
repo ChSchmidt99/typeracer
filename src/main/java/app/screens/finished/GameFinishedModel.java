@@ -24,9 +24,7 @@ public class GameFinishedModel implements LobbyObserver, ErrorObserver {
   }
 
   @Override
-  public void gameStarting(RaceData race) {
-    // TODO: Remove unused Observer functions
-  }
+  public void gameStarting(RaceData race) {}
 
   @Override
   public void receivedLobbyUpdate(LobbyData lobby) {

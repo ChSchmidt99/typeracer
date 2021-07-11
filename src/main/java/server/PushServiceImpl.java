@@ -41,7 +41,9 @@ class PushServiceImpl implements PushService {
     }
   }
 
-  // TODO: Maybe send all responses in new Threads to avoid blocking
+  // It would make sense sending responses in a new Thread.
+  // However, given the low expected load, I thought it was ok to not worry about performance or
+  // timeouts.
   private void respond(String connectionId, Response response) throws Exception {
     Connection connection = connections.get(connectionId);
     if (!connections.containsKey(connectionId)) {

@@ -13,7 +13,6 @@ public class PlayerUpdate {
 
   public final long raceDuration;
 
-  // TODO: pass in player instead of user ID?
   /**
    * Create PlayerUpdate.
    *
